@@ -1,6 +1,13 @@
+import path from "node:path";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Self-contained production build (server.js + traced node_modules) for VPS deploys
+  output: "standalone",
+  turbopack: {
+    // A stray lockfile in a parent directory makes Next mis-detect the workspace root
+    root: path.join(__dirname),
+  },
   images: {
     // Let Next.js resize/optimize images served from R2 instead of the
     // browser downloading full-resolution originals for tiny thumbnails.
