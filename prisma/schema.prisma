@@ -1,0 +1,190 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum PostType {
+  NEWS
+  TUTORIAL
+  OPINION
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String   @unique
+  thumbnail String?
+  content   String
+  type      PostType
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Subscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}
+
+model Media {
+  id        String   @id @default(cuid())
+  url       String
+  filename  String
+  createdAt DateTime @default(now())
+}
+
+model Program {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  thumbnail String?
+  // Overall program blurb shown on the detail page, separate from step descriptions.
+  description   String?
+  // Short pill labels, e.g. "grupni sat", "studio", "srednja razina".
+  tags          String[] @default([])
+  // Single full-bleed photo for the detail page's gallery section.
+  galleryImage  String?
+  // Optional downloadable program guide PDF.
+  pdfUrl        String?
+  pdfFilename   String?
+  // Always exactly 5 entries: { title: string; subtitle: string; description: string; image: string }
+  // (subtitle/description/image may be empty strings — only title is required).
+  steps     Json
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Singleton "About" page — every row is created with id "about" so there is
+// only ever one, edited in place rather than listed/created/deleted like Posts
+// or Programs.
+model About {
+  id        String   @id @default("about")
+  name      String   @default("O meni")
+  thumbnail String?
+  // Always exactly 4 entries: { title: string; subtitle: string; description: string; image: string }
+  // (subtitle/description/image may be empty strings — only title is required).
+  steps     Json
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Event {
+  id           String             @id @default(cuid())
+  title        String
+  slug         String             @unique
+  thumbnail    String?
+  date         DateTime
+  // Optional end date & time — may fall on a later day than `date` for
+  // multi-day events.
+  endTime      DateTime?
+  location     String?
+  description  String
+  // Free-text so admins can write "15 €", "Free", "60 EUR", etc.
+  price        String?
+  published    Boolean            @default(true)
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  applications EventApplication[]
+}
+
+model EventApplication {
+  id        String   @id @default(cuid())
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  name      String
+  email     String
+  phone     String?
+  message   String?
+  createdAt DateTime @default(now())
+}
+
+model Product {
+  id            String   @id @default(cuid())
+  name          String
+  slug          String   @unique
+  thumbnail     String?
+  // Array of image URLs picked from the media library.
+  gallery       Json
+  description   String
+  price         Float
+  discountPrice Float?
+  published     Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  orders        Order[]
+}
+
+model Order {
+  id          String   @id @default(cuid())
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  // Snapshots at order time, so the record stays meaningful even if the
+  // product's name or price changes later.
+  productName String
+  price       Float
+  quantity    Int      @default(1)
+  name        String
+  email       String
+  phone       String?
+  // Shipping address.
+  address     String?
+  city        String?
+  postalCode  String?
+  country     String?
+  message     String?
+  createdAt   DateTime @default(now())
+}
+
+// Free downloadable PDFs ("Free content" in the admin sidebar).
+model Ebook {
+  id          String   @id @default(cuid())
+  title       String
+  thumbnail   String?
+  description String?
+  pdfUrl      String
+  pdfFilename String
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Singleton "Practice" page — same id-default pattern as About.
+model Practice {
+  id        String   @id @default("practice")
+  name      String   @default("Vježbe")
+  // Always exactly 3 entries: { title: string; subtitle: string; description: string }
+  // description is rich text HTML from the editor; only title is required.
+  items     Json
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Testimonial {
+  id          String   @id @default(cuid())
+  authorName  String
+  title       String?
+  description String
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  topic     String
+  message   String
+  createdAt DateTime @default(now())
+}

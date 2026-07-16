@@ -1,8 +1,23 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --color-stone: #f5f2ec;
+  --brand-green: #2f4a3e;
+  --brand-green-dark: #22362c;
+  --brand-yellow: #f2dca6;
+  --brand-yellow-dark: #e8c97e;
+  --brand-text: #1f2a24;
+
+  /* Nav overlay palette (from design handoff) */
+  --nav-bg: #5f6d6a;
+  --nav-highlight: #cdf0b1;
+  --nav-highlight-dark: #b9e296;
+  --nav-overlay-text: #edebe3;
+  --nav-dark-text: #2c3a2c;
+  --accent-clay: #b4643e;
 }
 
 @theme inline {
@@ -23,4 +38,90 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+@keyframes menuRise {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes footerWaveDrift {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: -400px;
+  }
+}
+
+@keyframes waveLine1 {
+  0%,
+  100% {
+    d: path("M4,8 Q11,8 18,8 T32,8");
+  }
+  50% {
+    d: path("M4,8 Q11,3 18,8 T32,8");
+  }
+}
+
+@keyframes waveLine2 {
+  0%,
+  100% {
+    d: path("M4,16 Q11,16 18,16 T32,16");
+  }
+  50% {
+    d: path("M4,16 Q11,21 18,16 T32,16");
+  }
+}
+
+@keyframes waveLine3 {
+  0%,
+  100% {
+    d: path("M4,24 Q11,24 18,24 T32,24");
+  }
+  50% {
+    d: path("M4,24 Q11,19 18,24 T32,24");
+  }
+}
+
+.blog-article :is(h1, h2, h3, h4) {
+  font-family: var(--font-marcellus), serif;
+  font-weight: 400;
+  color: var(--nav-dark-text);
+}
+
+.blog-article blockquote {
+  font-family: var(--font-marcellus), serif;
+  font-style: normal;
+  border-left: 2px solid var(--accent-clay);
+  padding-left: 24px;
+  color: var(--nav-dark-text);
+}
+
+.blog-article p {
+  color: #3b443f;
+  line-height: 1.8;
 }
