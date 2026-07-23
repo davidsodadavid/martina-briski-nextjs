@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Marcellus, Jost } from "next/font/google";
+import PageTransitionProvider from "@/components/PageTransitionProvider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -42,7 +43,7 @@ export default function RootLayout({
         className="min-h-full flex flex-col"
         suppressHydrationWarning
       >
-        {children}
+        <PageTransitionProvider>{children}</PageTransitionProvider>
       </body>
     </html>
   );

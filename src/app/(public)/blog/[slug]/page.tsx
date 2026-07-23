@@ -36,8 +36,6 @@ export default async function BlogPostPage({
     .filter((p, i, arr) => arr.findIndex((x) => x.id === p.id) === i)
     .slice(0, 3);
 
-  const postUrl = `https://martina-briski.com/blog/${post.slug}`;
-
   return (
     <main className="w-full flex-1 bg-[var(--nav-overlay-text)] text-[var(--nav-dark-text)]">
       <div className="mx-auto max-w-[1267px] px-6 md:px-10">
@@ -120,37 +118,6 @@ export default async function BlogPostPage({
               className="blog-article prose prose-neutral max-w-none"
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
-
-            <div className="mt-12 flex flex-wrap items-center gap-3.5 border-t border-[#D5D2C4] pt-7">
-              <span
-                className="text-[11px] font-medium tracking-[0.16em] text-[#6B6458] uppercase"
-                style={{ fontFamily: "var(--font-jost), sans-serif" }}
-              >
-                Podijeli
-              </span>
-              <a
-                href="https://www.instagram.com/martinabriski/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[13.5px] text-[var(--nav-bg)] hover:underline"
-              >
-                Instagram
-              </a>
-              <a
-                href="https://www.linkedin.com/in/martina-briski/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[13.5px] text-[var(--nav-bg)] hover:underline"
-              >
-                LinkedIn
-              </a>
-              <a
-                href={`mailto:?subject=${encodeURIComponent(post.title)}&body=${encodeURIComponent(postUrl)}`}
-                className="text-[13.5px] text-[var(--nav-bg)] hover:underline"
-              >
-                E-mail
-              </a>
-            </div>
           </article>
 
           {/* Related posts sidebar */}

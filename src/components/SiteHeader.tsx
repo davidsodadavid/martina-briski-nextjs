@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Logo from "@/components/Logo";
 import PracticeCardsGrid from "@/components/PracticeCardsGrid";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
@@ -284,8 +285,30 @@ export default function SiteHeader({
   programs?: Program[];
 }) {
   const dict = useDict();
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+  // the contact page uses a cream header with green logo/icon instead of
+  // the usual dark-green header with cream logo/icon — but only while the
+  // menu is closed; once opened it matches every other page (a dark-green
+  // overlay fades in, using the exact same opacity transition as the nav
+  // panel below it), then reverts back to light once closed again
+  // these routes render a cream `<main>` background (same as the contact
+  // page) instead of the usual dark-green one, so the header gets the same
+  // light treatment: cream bg, green logo/icon, reverting to dark whenever
+  // the menu opens or the footer is reached
+  const CREAM_PAGES = ["/contact", "/about", "/free-content", "/events", "/blog", "/shop"];
+  const isCreamPage =
+    CREAM_PAGES.includes(pathname) ||
+    pathname.startsWith("/blog/") ||
+    pathname.startsWith("/shop/") ||
+    pathname.startsWith("/programs/");
+  const [footerInView, setFooterInView] = useState(false);
+  // reaching the footer should darken the header the same way opening the
+  // menu does, so the header never reads lighter than the section behind it
+  const showDarkTheme = open || footerInView;
+  const isLightHeader = isCreamPage && !showDarkTheme;
+  const headerInk = isLightHeader ? "var(--nav-bg)" : "var(--nav-overlay-text)";
 
   const PRACTICE_CARDS = [
     {
@@ -331,45 +354,85 @@ export default function SiteHeader({
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  useEffect(() => {
+    if (!isCreamPage) return;
+    const footer = document.querySelector("footer");
+    const header = document.querySelector("header");
+    if (!footer || !header) return;
+
+    function update() {
+      const headerHeight = header!.getBoundingClientRect().height;
+      const footerTop = footer!.getBoundingClientRect().top;
+      setFooterInView(footerTop <= headerHeight);
+    }
+
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [isCreamPage]);
+
   return (
     <>
-      <header className="sticky top-0 z-40 flex items-center justify-between bg-[var(--nav-bg)] px-6 py-5 md:px-10">
-        <Link href="/" onClick={closeMenu}>
-          <Logo className="h-4 w-auto md:h-5" />
+      <header
+        className={`sticky top-0 z-40 flex items-center justify-between px-6 py-5 md:px-10 ${
+          isCreamPage ? "bg-[var(--nav-overlay-text)]" : "bg-[var(--nav-bg)]"
+        }`}
+      >
+        {isCreamPage && (
+          // fades in/out with the exact same timing as the nav panel below
+          // it, so the two read as one continuous surface, not two
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 bg-[var(--nav-bg)] transition-opacity duration-[450ms] ease-out"
+            style={{ opacity: showDarkTheme ? 1 : 0 }}
+          />
+        )}
+        <Link href="/" onClick={closeMenu} className="relative">
+          <Logo className="h-4 w-auto md:h-5" color={headerInk} />
         </Link>
 
-        <div className="flex items-center gap-6">
+        <div className="relative flex items-center gap-6">
           <div
             style={{
               opacity: open ? 1 : 0,
               pointerEvents: open ? "auto" : "none",
+              color: headerInk,
             }}
-            className="transition-opacity duration-[250ms]"
+            className="transition-[opacity,color] duration-[450ms] ease-out"
           >
-            <LanguageSwitcher className="text-[var(--nav-overlay-text)]" />
+            <LanguageSwitcher />
           </div>
 
           <button
             type="button"
             onClick={() => (open ? closeMenu() : setOpen(true))}
             aria-label={dict.nav.menu}
-            className="relative z-[100] block h-8 w-14 cursor-pointer text-[var(--nav-overlay-text)]"
+            className="relative z-[100] block h-8 w-14 cursor-pointer transition-colors duration-[450ms] ease-out"
+            style={{ color: headerInk }}
           >
             <WavyBars animate={!open} />
             <span
-              className="absolute left-[10px] h-0.5 w-9 bg-[var(--nav-overlay-text)] transition-[top,transform,opacity] duration-[350ms] ease-[cubic-bezier(.6,.05,.2,1)]"
+              className="absolute left-[10px] h-0.5 w-9 transition-[top,transform,opacity,background-color] duration-[350ms] ease-[cubic-bezier(.6,.05,.2,1)]"
               style={{
                 top: open ? "14px" : "0px",
                 transform: open ? "rotate(45deg)" : "none",
                 opacity: open ? 1 : 0,
+                backgroundColor: headerInk,
+                transitionDuration: "350ms, 350ms, 350ms, 450ms",
               }}
             />
             <span
-              className="absolute left-[10px] h-0.5 w-9 bg-[var(--nav-overlay-text)] transition-[top,transform,opacity] duration-[350ms] ease-[cubic-bezier(.6,.05,.2,1)]"
+              className="absolute left-[10px] h-0.5 w-9 transition-[top,transform,opacity,background-color] duration-[350ms] ease-[cubic-bezier(.6,.05,.2,1)]"
               style={{
                 top: open ? "14px" : "28px",
                 transform: open ? "rotate(-45deg)" : "none",
+                backgroundColor: headerInk,
                 opacity: open ? 1 : 0,
+                transitionDuration: "350ms, 350ms, 350ms, 450ms",
               }}
             />
           </button>

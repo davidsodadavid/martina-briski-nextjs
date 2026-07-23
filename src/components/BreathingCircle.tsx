@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export interface BreathingCircleProps {
   /** Seconds spent breathing in. Default 6. */
@@ -15,6 +15,8 @@ export interface BreathingCircleProps {
   label?: string;
   /** Whether to show the top label ("disanje · Xs udah / Xs izdah"). Default true. */
   showLabel?: boolean;
+  /** Delay (ms) before the label fades in. Default 0 (shows immediately). */
+  labelRevealDelayMs?: number;
   /** Scales the rendered circle's size (and its container) up or down. Default 1. */
   sizeScale?: number;
   /** Font size (px) of the centered "udahni"/"izdahni" text. Default 20. */
@@ -27,9 +29,6 @@ export interface BreathingCircleProps {
   /** Seconds to rest at full contraction after exhaling, before it starts
    * to grow again. No text is shown during the rest. Default 0 (no rest). */
   restSeconds?: number;
-  /** Reveal a wavy line pattern inside the circle on hover, fading out
-   * again when the pointer leaves. Default false. */
-  hoverPattern?: boolean;
 }
 
 export default function BreathingCircle({
@@ -39,26 +38,28 @@ export default function BreathingCircle({
   ink = "#EDEBE3",
   label = "disanje",
   showLabel = true,
+  labelRevealDelayMs = 0,
   sizeScale = 1,
   phaseFontSize = 20,
   phaseFade = false,
   holdSeconds = 0,
   restSeconds = 0,
-  hoverPattern = false,
 }: BreathingCircleProps) {
   const pathRef = useRef<SVGPathElement>(null);
   const phaseRef = useRef<SVGTextElement>(null);
   const startRef = useRef(0);
-  const [hovered, setHovered] = useState(false);
-  const reactId = useId().replace(/:/g, "");
-  const clipId = `breath-clip-${reactId}`;
-  const pathId = `breath-path-${reactId}`;
-  const patternId = `breath-pattern-${reactId}`;
   const lastPhaseRef = useRef<"inhale" | "hold" | "exhale" | "rest" | null>(
     null,
   );
   const preFadeStartedRef = useRef(false);
   const preColorFadeStartedRef = useRef(false);
+  const [labelVisible, setLabelVisible] = useState(labelRevealDelayMs === 0);
+
+  useEffect(() => {
+    if (labelRevealDelayMs === 0) return;
+    const t = setTimeout(() => setLabelVisible(true), labelRevealDelayMs);
+    return () => clearTimeout(t);
+  }, [labelRevealDelayMs]);
 
   useEffect(() => {
     const path = pathRef.current;
@@ -256,6 +257,9 @@ export default function BreathingCircle({
             textAlign: "center",
             pointerEvents: "none",
             zIndex: 3,
+            opacity: labelVisible ? 1 : 0,
+            transform: labelVisible ? "translateY(0)" : "translateY(16px)",
+            transition: "opacity 700ms ease-out, transform 700ms ease-out",
           }}
         >
           <span
@@ -301,54 +305,15 @@ export default function BreathingCircle({
             overflow: "visible",
           }}
         >
-          {hoverPattern && (
-            <defs>
-              <clipPath id={clipId}>
-                <use href={`#${pathId}`} />
-              </clipPath>
-              <pattern
-                id={patternId}
-                width="34"
-                height="24"
-                patternUnits="userSpaceOnUse"
-              >
-                <path
-                  d="M0,12 Q8.5,2 17,12 T34,12"
-                  fill="none"
-                  stroke={ink}
-                  strokeWidth="1"
-                  opacity="0.4"
-                />
-              </pattern>
-            </defs>
-          )}
           <g transform="translate(200, 200)">
             <path
-              id={pathId}
               ref={pathRef}
-              fill={hoverPattern ? "transparent" : "none"}
+              fill="none"
               stroke={ink}
               strokeWidth="1"
               strokeLinecap="round"
               strokeLinejoin="round"
-              onMouseEnter={hoverPattern ? () => setHovered(true) : undefined}
-              onMouseLeave={hoverPattern ? () => setHovered(false) : undefined}
             />
-            {hoverPattern && (
-              <rect
-                x={-220}
-                y={-220}
-                width={440}
-                height={440}
-                fill={`url(#${patternId})`}
-                clipPath={`url(#${clipId})`}
-                pointerEvents="none"
-                style={{
-                  opacity: hovered ? 1 : 0,
-                  transition: "opacity 500ms ease",
-                }}
-              />
-            )}
             <text
               ref={phaseRef}
               x="0"

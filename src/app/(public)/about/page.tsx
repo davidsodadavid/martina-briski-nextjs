@@ -74,7 +74,7 @@ export default async function AboutPage() {
       {/* Marquee */}
       {marqueeLine && (
         <section className="my-14 overflow-hidden bg-[var(--nav-bg)] py-4 whitespace-nowrap">
-          <div className="inline-flex animate-[marquee_26s_linear_infinite] gap-10 will-change-transform">
+          <div className="inline-flex animate-[marquee_26s_linear_infinite] will-change-transform">
             {[0, 1].map((rep) => (
               <span
                 key={rep}
