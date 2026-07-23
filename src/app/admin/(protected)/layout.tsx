@@ -1,5 +1,9 @@
 import AdminSidebar from "@/components/AdminSidebar";
 
+// Admin pages must always show live data (and `next build` has no DB to
+// prerender them against).
+export const dynamic = "force-dynamic";
+
 export default function ProtectedAdminLayout({
   children,
 }: {

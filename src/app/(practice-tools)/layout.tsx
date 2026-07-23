@@ -3,6 +3,10 @@ import { prisma } from "@/lib/prisma";
 import { getLocale, getDictionary } from "@/lib/i18n";
 import { LocaleProvider } from "@/components/LocaleProvider";
 
+// Reads programs from the database — render per-request so `next build`
+// needs no live DB.
+export const dynamic = "force-dynamic";
+
 export default async function PracticeToolsLayout({
   children,
 }: {

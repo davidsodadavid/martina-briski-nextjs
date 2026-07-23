@@ -5,6 +5,10 @@ import { getLocale, getDictionary } from "@/lib/i18n";
 import { LocaleProvider } from "@/components/LocaleProvider";
 import HideOnRoutes from "@/components/HideOnRoutes";
 
+// All public pages read from the database — render them per-request so new
+// content shows up without a rebuild (and `next build` needs no live DB).
+export const dynamic = "force-dynamic";
+
 export default async function PublicLayout({
   children,
 }: {
