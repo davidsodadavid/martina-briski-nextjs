@@ -27,13 +27,15 @@ const en: Dictionary = {
     backToTop: "Back to top",
   },
   categories: {
-    NEWS: "News",
-    TUTORIAL: "Guide",
-    OPINION: "Opinion",
+    OTHER: "Other",
+    ADAPTATION: "Adaptation",
+    PRANAYAMA: "Pranayama",
+    CALMING: "Calming practice",
   },
   home: {
     label: "Blog",
     title: "Notes on breathing and practice",
+    photoCredit: "Photo credits: Katja Bidovec and Arne Hodalič",
     filterAll: "All",
     noPosts: "There are no posts yet.",
     readMore: "Read more →",
@@ -49,6 +51,10 @@ const en: Dictionary = {
   },
   forms: {
     invalidEmail: "Enter a valid email address",
+  },
+  homepage: {
+    goToPractice: "Go to practice",
+    nextPractice: "Next practice",
   },
 };
 

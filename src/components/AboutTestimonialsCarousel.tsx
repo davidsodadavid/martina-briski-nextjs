@@ -48,7 +48,7 @@ export default function AboutTestimonialsCarousel({
           &ldquo;
         </span>
         <blockquote
-          className="max-w-[24ch] text-[clamp(24px,3.2vw,40px)] leading-[1.35]"
+          className="max-w-[62ch] text-[clamp(16px,1.6vw,20px)] leading-[1.6]"
           style={{ fontFamily: "var(--font-marcellus), serif" }}
         >
           {current.description}

@@ -45,6 +45,9 @@ export default function BreathTimer({
 
   const RESTING = 0.08;
   const fillRgb = hexToRgb(fillTo);
+  const LINE_WHITE: [number, number, number] = [255, 255, 255];
+  const LINE_PULSE: [number, number, number] = [205, 240, 177]; // #CDF0B1
+  const PULSE_PERIOD_MS = 3500;
 
   const onStart = () => {
     startTimeRef.current = performance.now();
@@ -77,9 +80,16 @@ export default function BreathTimer({
       const dpr = dprRef.current;
       const k = (Math.PI * 2 * cfg.waves) / W;
       const amp = cfg.amp * dpr;
+      // smoothly ease the line color between white and light green every
+      // PULSE_PERIOD_MS, independent of the running/resting state
+      const pulse =
+        (Math.sin((t * 1000 / PULSE_PERIOD_MS) * Math.PI * 2 - Math.PI / 2) + 1) / 2;
+      const lr = LINE_WHITE[0] + (LINE_PULSE[0] - LINE_WHITE[0]) * pulse;
+      const lg = LINE_WHITE[1] + (LINE_PULSE[1] - LINE_WHITE[1]) * pulse;
+      const lb = LINE_WHITE[2] + (LINE_PULSE[2] - LINE_WHITE[2]) * pulse;
       ctx.save();
       ctx.globalAlpha = Math.max(0, Math.min(1, surfaceY / (H * 0.22)));
-      ctx.strokeStyle = '#FFFFFF';
+      ctx.strokeStyle = `rgb(${lr}, ${lg}, ${lb})`;
       ctx.lineWidth = 1 * dpr;
       ctx.lineCap = 'round';
       ctx.beginPath();

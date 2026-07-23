@@ -6,9 +6,10 @@ import DeletePostButton from "@/components/DeletePostButton";
 
 const FILTERS: { value: PostType | "ALL"; label: string }[] = [
   { value: "ALL", label: "All" },
-  { value: PostType.NEWS, label: "News" },
-  { value: PostType.TUTORIAL, label: "Tutorial" },
-  { value: PostType.OPINION, label: "Opinion" },
+  { value: PostType.OTHER, label: "Other" },
+  { value: PostType.ADAPTATION, label: "Adaptation" },
+  { value: PostType.PRANAYAMA, label: "Pranayama" },
+  { value: PostType.CALMING, label: "Calming practice" },
 ];
 
 export default async function AdminDashboardPage({

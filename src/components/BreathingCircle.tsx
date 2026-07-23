@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
 export interface BreathingCircleProps {
   /** Seconds spent breathing in. Default 6. */
@@ -13,6 +13,23 @@ export interface BreathingCircleProps {
   ink?: string;
   /** Top-left label, e.g. "disanje". */
   label?: string;
+  /** Whether to show the top label ("disanje · Xs udah / Xs izdah"). Default true. */
+  showLabel?: boolean;
+  /** Scales the rendered circle's size (and its container) up or down. Default 1. */
+  sizeScale?: number;
+  /** Font size (px) of the centered "udahni"/"izdahni" text. Default 20. */
+  phaseFontSize?: number;
+  /** Cross-fade the "udahni"/"izdahni" text instead of swapping it instantly. Default false. */
+  phaseFade?: boolean;
+  /** Seconds to hold the circle at full expansion after inhaling, before it
+   * starts to shrink. No text is shown during the hold. Default 0 (no hold). */
+  holdSeconds?: number;
+  /** Seconds to rest at full contraction after exhaling, before it starts
+   * to grow again. No text is shown during the rest. Default 0 (no rest). */
+  restSeconds?: number;
+  /** Reveal a wavy line pattern inside the circle on hover, fading out
+   * again when the pointer leaves. Default false. */
+  hoverPattern?: boolean;
 }
 
 export default function BreathingCircle({
@@ -21,20 +38,41 @@ export default function BreathingCircle({
   background = "#5F6D6A",
   ink = "#EDEBE3",
   label = "disanje",
+  showLabel = true,
+  sizeScale = 1,
+  phaseFontSize = 20,
+  phaseFade = false,
+  holdSeconds = 0,
+  restSeconds = 0,
+  hoverPattern = false,
 }: BreathingCircleProps) {
   const pathRef = useRef<SVGPathElement>(null);
   const phaseRef = useRef<SVGTextElement>(null);
   const startRef = useRef(0);
-  const lastPhaseRef = useRef(-1);
+  const [hovered, setHovered] = useState(false);
+  const reactId = useId().replace(/:/g, "");
+  const clipId = `breath-clip-${reactId}`;
+  const pathId = `breath-path-${reactId}`;
+  const patternId = `breath-pattern-${reactId}`;
+  const lastPhaseRef = useRef<"inhale" | "hold" | "exhale" | "rest" | null>(
+    null,
+  );
+  const preFadeStartedRef = useRef(false);
+  const preColorFadeStartedRef = useRef(false);
 
   useEffect(() => {
     const path = pathRef.current;
     if (!path) return;
 
     const NUM_POINTS = 128;
+    const TEXT_FADE_MS = 1400;
+    const COLOR_FADE_MS = 400;
+    const PAUSE_COLOR = "#CDF0B1";
     const inhaleMs = inhaleSeconds * 1000;
+    const holdMs = holdSeconds * 1000;
     const exhaleMs = exhaleSeconds * 1000;
-    const cycleMs = inhaleMs + exhaleMs;
+    const restMs = restSeconds * 1000;
+    const cycleMs = inhaleMs + holdMs + exhaleMs + restMs;
 
     function getRadius() {
       const w = window.innerWidth;
@@ -58,15 +96,117 @@ export default function BreathingCircle({
       const tInCycle = (elapsed * 1000) % cycleMs;
 
       const inhaling = tInCycle < inhaleMs;
+      const holding = !inhaling && tInCycle < inhaleMs + holdMs;
+      const exhaling =
+        !inhaling && !holding && tInCycle < inhaleMs + holdMs + exhaleMs;
       const breath = inhaling
         ? tInCycle / inhaleMs
-        : 1 - (tInCycle - inhaleMs) / exhaleMs;
+        : holding
+          ? 1
+          : exhaling
+            ? 1 - (tInCycle - inhaleMs - holdMs) / exhaleMs
+            : 0;
 
-      const phase = inhaling ? 0 : 1;
+      const phase = inhaling
+        ? "inhale"
+        : holding
+          ? "hold"
+          : exhaling
+            ? "exhale"
+            : "rest";
       if (phase !== lastPhaseRef.current) {
+        const prevPhase = lastPhaseRef.current;
         lastPhaseRef.current = phase;
-        if (phaseRef.current) {
-          phaseRef.current.textContent = inhaling ? "udahni" : "izdahni";
+        preFadeStartedRef.current = false;
+        preColorFadeStartedRef.current = false;
+
+        // stroke color: eased to a light green during the hold/rest pause
+        // (already faded in during the tail of the previous phase, see the
+        // pre-fade check below) and eased back to the normal ink color once
+        // the pause ends
+        if (phase === "hold" || phase === "rest") {
+          path.style.transition = "none";
+          path.style.stroke = PAUSE_COLOR;
+        } else if (prevPhase === "hold" || prevPhase === "rest") {
+          path.style.transition = `stroke ${COLOR_FADE_MS}ms ease`;
+          path.style.stroke = ink;
+        }
+
+        const nextText =
+          phase === "inhale"
+            ? "udahni"
+            : phase === "exhale"
+              ? "izdahni"
+              : "";
+        const el = phaseRef.current;
+        if (el) {
+          if (phaseFade) {
+            if (phase === "hold" || phase === "rest") {
+              // entering a pause — the outgoing text already faded out to
+              // invisible during the tail end of the previous phase (see
+              // the pre-fade check below), so just blank it, no transition
+              el.style.transition = "none";
+              el.textContent = "";
+              el.style.opacity = "0";
+            } else if (prevPhase === null) {
+              // very first frame on mount — one slow, smooth fade in
+              el.textContent = nextText;
+              el.style.transition = "none";
+              el.style.opacity = "0";
+              requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                  el.style.transition = "opacity 2800ms ease-in-out";
+                  el.style.opacity = "1";
+                });
+              });
+            } else {
+              // leaving a pause (hold/rest) — start fading in right away,
+              // finishing partway into the new inhale/exhale phase
+              el.textContent = nextText;
+              el.style.transition = `opacity ${TEXT_FADE_MS}ms ease`;
+              el.style.opacity = "1";
+            }
+          } else {
+            el.textContent = nextText;
+          }
+        }
+      }
+
+      // fade the text out early so it finishes exactly as the upcoming
+      // pause (hold/rest) begins, instead of fading during the pause
+      if (
+        phaseFade &&
+        ((phase === "inhale" && holdMs > 0) ||
+          (phase === "exhale" && restMs > 0)) &&
+        !preFadeStartedRef.current
+      ) {
+        const phaseEndT =
+          phase === "inhale" ? inhaleMs : inhaleMs + holdMs + exhaleMs;
+        const remaining = phaseEndT - tInCycle;
+        if (remaining <= TEXT_FADE_MS) {
+          preFadeStartedRef.current = true;
+          const el = phaseRef.current;
+          if (el) {
+            el.style.transition = `opacity ${Math.max(remaining, 0)}ms ease`;
+            el.style.opacity = "0";
+          }
+        }
+      }
+
+      // ease the stroke color to green early so it's already green exactly
+      // as the upcoming pause (hold/rest) begins
+      if (
+        ((phase === "inhale" && holdMs > 0) ||
+          (phase === "exhale" && restMs > 0)) &&
+        !preColorFadeStartedRef.current
+      ) {
+        const phaseEndT =
+          phase === "inhale" ? inhaleMs : inhaleMs + holdMs + exhaleMs;
+        const remaining = phaseEndT - tInCycle;
+        if (remaining <= COLOR_FADE_MS) {
+          preColorFadeStartedRef.current = true;
+          path.style.transition = `stroke ${Math.max(remaining, 0)}ms ease`;
+          path.style.stroke = PAUSE_COLOR;
         }
       }
 
@@ -93,7 +233,7 @@ export default function BreathingCircle({
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", handleResize);
     };
-  }, [inhaleSeconds, exhaleSeconds]);
+  }, [inhaleSeconds, exhaleSeconds, phaseFade, holdSeconds, restSeconds, ink]);
 
   return (
     <div
@@ -103,43 +243,46 @@ export default function BreathingCircle({
         background,
         overflow: "hidden",
         fontFamily: "'Jost', system-ui, sans-serif",
+        zIndex: 45,
       }}
     >
-      <div
-        style={{
-          position: "absolute",
-          top: 34,
-          left: 0,
-          right: 0,
-          textAlign: "center",
-          pointerEvents: "none",
-          zIndex: 3,
-        }}
-      >
-        <span
+      {showLabel && (
+        <div
           style={{
-            fontWeight: 500,
-            fontSize: 12,
-            letterSpacing: "0.34em",
-            textTransform: "uppercase",
-            color: ink,
+            position: "absolute",
+            top: 34,
+            left: 0,
+            right: 0,
+            textAlign: "center",
+            pointerEvents: "none",
+            zIndex: 3,
           }}
         >
-          {label}
-        </span>
-        <span
-          style={{
-            fontWeight: 500,
-            fontSize: 12,
-            letterSpacing: "0.34em",
-            textTransform: "uppercase",
-            color: "#CDF0B1",
-          }}
-        >
-          {" "}
-          &middot; {inhaleSeconds}s udah / {exhaleSeconds}s izdah
-        </span>
-      </div>
+          <span
+            style={{
+              fontWeight: 500,
+              fontSize: 12,
+              letterSpacing: "0.34em",
+              textTransform: "uppercase",
+              color: ink,
+            }}
+          >
+            {label}
+          </span>
+          <span
+            style={{
+              fontWeight: 500,
+              fontSize: 12,
+              letterSpacing: "0.34em",
+              textTransform: "uppercase",
+              color: "#CDF0B1",
+            }}
+          >
+            {" "}
+            &middot; {inhaleSeconds}s udah / {exhaleSeconds}s izdah
+          </span>
+        </div>
+      )}
 
       <div
         style={{
@@ -152,17 +295,60 @@ export default function BreathingCircle({
       >
         <svg
           viewBox="0 0 400 400"
-          style={{ width: "min(80vw, 420px)", height: "min(80vw, 420px)" }}
+          style={{
+            width: `min(${80 * sizeScale}vw, ${420 * sizeScale}px)`,
+            height: `min(${80 * sizeScale}vw, ${420 * sizeScale}px)`,
+            overflow: "visible",
+          }}
         >
+          {hoverPattern && (
+            <defs>
+              <clipPath id={clipId}>
+                <use href={`#${pathId}`} />
+              </clipPath>
+              <pattern
+                id={patternId}
+                width="34"
+                height="24"
+                patternUnits="userSpaceOnUse"
+              >
+                <path
+                  d="M0,12 Q8.5,2 17,12 T34,12"
+                  fill="none"
+                  stroke={ink}
+                  strokeWidth="1"
+                  opacity="0.4"
+                />
+              </pattern>
+            </defs>
+          )}
           <g transform="translate(200, 200)">
             <path
+              id={pathId}
               ref={pathRef}
-              fill="none"
+              fill={hoverPattern ? "transparent" : "none"}
               stroke={ink}
               strokeWidth="1"
               strokeLinecap="round"
               strokeLinejoin="round"
+              onMouseEnter={hoverPattern ? () => setHovered(true) : undefined}
+              onMouseLeave={hoverPattern ? () => setHovered(false) : undefined}
             />
+            {hoverPattern && (
+              <rect
+                x={-220}
+                y={-220}
+                width={440}
+                height={440}
+                fill={`url(#${patternId})`}
+                clipPath={`url(#${clipId})`}
+                pointerEvents="none"
+                style={{
+                  opacity: hovered ? 1 : 0,
+                  transition: "opacity 500ms ease",
+                }}
+              />
+            )}
             <text
               ref={phaseRef}
               x="0"
@@ -171,7 +357,7 @@ export default function BreathingCircle({
               dominantBaseline="middle"
               fill={ink}
               fontFamily="'Marcellus', serif"
-              fontSize="20"
+              fontSize={phaseFontSize}
             >
               udahni
             </text>

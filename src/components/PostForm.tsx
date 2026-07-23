@@ -9,9 +9,10 @@ import { PostType } from "@/generated/prisma/enums";
 type MediaItem = { id: string; url: string; filename: string };
 
 const POST_TYPES: { value: PostType; label: string }[] = [
-  { value: PostType.NEWS, label: "News" },
-  { value: PostType.TUTORIAL, label: "Tutorial" },
-  { value: PostType.OPINION, label: "Opinion" },
+  { value: PostType.OTHER, label: "Other" },
+  { value: PostType.ADAPTATION, label: "Adaptation" },
+  { value: PostType.PRANAYAMA, label: "Pranayama" },
+  { value: PostType.CALMING, label: "Calming practice" },
 ];
 
 type PostFormProps = {
@@ -72,7 +73,7 @@ export default function PostForm({
         </label>
         <select
           name="type"
-          defaultValue={initialPost?.type ?? PostType.NEWS}
+          defaultValue={initialPost?.type ?? PostType.OTHER}
           className="rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none"
         >
           {POST_TYPES.map((t) => (

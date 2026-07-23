@@ -28,7 +28,7 @@ export default async function PublicLayout({
       <LocaleProvider locale={locale} dict={dict}>
         <SiteHeader programs={programs} />
         {children}
-        <HideOnRoutes routes={["/practice"]}>
+        <HideOnRoutes routes={["/", "/practice"]}>
           <SiteFooter dict={dict} />
         </HideOnRoutes>
       </LocaleProvider>

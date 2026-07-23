@@ -44,7 +44,7 @@ export default async function BlogPostPage({
         {/* Back link */}
         <section className="pt-8">
           <Link
-            href="/"
+            href="/blog"
             className="inline-flex items-center gap-2 text-xs font-medium tracking-[0.14em] text-[var(--nav-bg)] uppercase hover:underline"
           >
             ← Sve objave

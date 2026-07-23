@@ -1,15 +1,17 @@
 import { PostType } from "@/generated/prisma/enums";
 
 const STYLES: Record<PostType, string> = {
-  NEWS: "bg-blue-100 text-blue-800",
-  TUTORIAL: "bg-green-100 text-green-800",
-  OPINION: "bg-purple-100 text-purple-800",
+  OTHER: "bg-neutral-100 text-neutral-800",
+  ADAPTATION: "bg-blue-100 text-blue-800",
+  PRANAYAMA: "bg-green-100 text-green-800",
+  CALMING: "bg-purple-100 text-purple-800",
 };
 
 const LABELS: Record<PostType, string> = {
-  NEWS: "News",
-  TUTORIAL: "Tutorial",
-  OPINION: "Opinion",
+  OTHER: "Other",
+  ADAPTATION: "Adaptation",
+  PRANAYAMA: "Pranayama",
+  CALMING: "Calming practice",
 };
 
 export default function PostTypeBadge({ type }: { type: PostType }) {

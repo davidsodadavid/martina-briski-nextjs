@@ -27,7 +27,7 @@ function readPostFields(formData: FormData) {
   const title = String(formData.get("title") || "").trim();
   const thumbnail = String(formData.get("thumbnail") || "").trim();
   const content = String(formData.get("content") || "").trim();
-  const type = String(formData.get("type") || "NEWS") as PostType;
+  const type = String(formData.get("type") || "OTHER") as PostType;
   return { title, thumbnail, content, type };
 }
 

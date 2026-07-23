@@ -11,9 +11,10 @@ datasource db {
 }
 
 enum PostType {
-  NEWS
-  TUTORIAL
-  OPINION
+  OTHER
+  ADAPTATION
+  PRANAYAMA
+  CALMING
 }
 
 model Post {

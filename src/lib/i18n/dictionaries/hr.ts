@@ -25,13 +25,15 @@ const hr = {
     backToTop: "Povratak na vrh",
   },
   categories: {
-    NEWS: "Novosti",
-    TUTORIAL: "Vodič",
-    OPINION: "Mišljenje",
+    OTHER: "Ostalo",
+    ADAPTATION: "Prilagodba",
+    PRANAYAMA: "Pranayama",
+    CALMING: "Umirujuća praksa",
   },
   home: {
     label: "Blog",
     title: "Zapisi o disanju i praksi",
+    photoCredit: "Foto zasluge: Katja Bidovec i Arne Hodalič",
     filterAll: "Sve",
     noPosts: "Trenutno nema objava.",
     readMore: "Pročitaj više →",
@@ -47,6 +49,10 @@ const hr = {
   },
   forms: {
     invalidEmail: "Unesite ispravnu email adresu",
+  },
+  homepage: {
+    goToPractice: "Idi na vježbu",
+    nextPractice: "Sljedeća vježba",
   },
 };
 
