@@ -61,25 +61,31 @@ export default async function HomePage({
               className="absolute inset-0"
               style={{
                 background:
-                  "linear-gradient(to top, rgba(23,20,15,0.8), rgba(23,20,15,0.25) 55%, rgba(23,20,15,0.05))",
+                  "linear-gradient(to top, rgba(10,9,7,0.92), rgba(10,9,7,0.45) 55%, rgba(10,9,7,0.15))",
               }}
             />
             <div className="absolute inset-x-0 bottom-0 px-6 pb-12 md:px-10 md:pb-16">
               <div
-                className="mb-6 text-xs tracking-[0.28em] text-[var(--nav-highlight)] uppercase"
+                className="mb-6 inline-block rounded-full bg-black/30 px-3 py-1.5 text-xs tracking-[0.28em] text-[var(--nav-highlight)] uppercase backdrop-blur-sm"
                 style={{ fontFamily: "var(--font-jost), sans-serif" }}
               >
                 {dict.home.label}
               </div>
               <h1
                 className="max-w-[20ch] text-[clamp(32px,4.6vw,60px)] leading-[1.1] font-normal text-[#F7F5EF]"
-                style={{ fontFamily: "var(--font-marcellus), serif" }}
+                style={{
+                  fontFamily: "var(--font-marcellus), serif",
+                  textShadow: "0 2px 20px rgba(0,0,0,0.6), 0 1px 4px rgba(0,0,0,0.5)",
+                }}
               >
                 {dict.home.title}
               </h1>
               <p
-                className="mt-4 text-xs text-[#F7F5EF]/70"
-                style={{ fontFamily: "var(--font-jost), sans-serif" }}
+                className="mt-4 text-xs text-[#F7F5EF]/90"
+                style={{
+                  fontFamily: "var(--font-jost), sans-serif",
+                  textShadow: "0 1px 8px rgba(0,0,0,0.6)",
+                }}
               >
                 {dict.home.photoCredit}
               </p>
@@ -114,7 +120,7 @@ export default async function HomePage({
             <Link
               key={f.value}
               href={f.value === "ALL" ? "/blog" : `/blog?type=${f.value}`}
-              className={`rounded-full px-3.5 py-1.5 text-sm font-medium ${
+              className={`px-3.5 py-1.5 text-sm font-medium ${
                 activeType === f.value
                   ? "bg-[var(--nav-highlight)] text-[var(--nav-dark-text)]"
                   : "bg-[#E7E3D4] text-[#3B443F] hover:bg-[#DCD8C6]"
