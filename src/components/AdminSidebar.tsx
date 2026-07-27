@@ -17,6 +17,7 @@ const LINKS = [
   { href: "/admin/testimonials", label: "Testimonials" },
   { href: "/admin/media", label: "Media" },
   { href: "/admin/subscribers", label: "Subscribers" },
+  { href: "/admin/cv", label: "CV" },
 ];
 
 const BG = "#5F6D6A";

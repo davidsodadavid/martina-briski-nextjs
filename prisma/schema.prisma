@@ -183,6 +183,18 @@ model BlogSettings {
   updatedAt   DateTime @updatedAt
 }
 
+// Singleton CV page — a simple, unlinked page (no nav/footer entry) meant
+// to be shared directly with clients as a shareable resume link.
+model Cv {
+  id          String   @id @default("cv")
+  title       String   @default("Martina Briški")
+  subtitle    String?
+  // Rich text HTML from the editor — holds the whole CV body (experience,
+  // education, skills, etc).
+  description String?
+  updatedAt   DateTime @updatedAt
+}
+
 model Testimonial {
   id          String   @id @default(cuid())
   authorName  String
