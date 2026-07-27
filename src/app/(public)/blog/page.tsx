@@ -88,7 +88,7 @@ export default async function HomePage({
                 </p>
               )}
               <p
-                className="mt-4 text-[13px] text-[var(--nav-dark-text)]/60"
+                className="mt-4 border-l-2 border-[var(--nav-highlight)] pl-4 text-[13px] italic text-[var(--accent-clay)]"
                 style={{ fontFamily: "var(--font-jost), sans-serif" }}
               >
                 {photoCredit}
@@ -118,7 +118,7 @@ export default async function HomePage({
               </p>
             )}
             <p
-              className="mt-4 text-xs text-[var(--nav-dark-text)]/60"
+              className="mt-4 border-l-2 border-[var(--nav-highlight)] pl-4 text-[13px] italic text-[var(--accent-clay)]"
               style={{ fontFamily: "var(--font-jost), sans-serif" }}
             >
               {photoCredit}
