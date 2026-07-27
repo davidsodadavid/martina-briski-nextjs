@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useDict } from "@/components/LocaleProvider";
 import { usePageTransition } from "@/components/PageTransitionProvider";
 
-/** Appears after the visitor has spent 10s on the homepage, offering a way
+/** Appears after the visitor has spent 5s on the homepage, offering a way
  * into the practice tools instead of just watching the breathing circle. */
 export default function HomePracticeCta() {
   const dict = useDict();
@@ -13,7 +13,7 @@ export default function HomePracticeCta() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const t = setTimeout(() => setVisible(true), 10000);
+    const t = setTimeout(() => setVisible(true), 5000);
     return () => clearTimeout(t);
   }, []);
 

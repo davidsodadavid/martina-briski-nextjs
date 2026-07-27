@@ -10,7 +10,7 @@ export default function HomePage() {
           inhaleSeconds={6}
           exhaleSeconds={6}
           showLabel
-          labelRevealDelayMs={10000}
+          labelRevealDelayMs={5000}
           sizeScale={1.5}
           phaseFontSize={16}
           phaseFade
