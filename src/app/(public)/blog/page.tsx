@@ -38,10 +38,10 @@ export default async function HomePage({
 
   const FILTERS: { value: PostType | "ALL"; label: string }[] = [
     { value: "ALL", label: dict.home.filterAll },
-    { value: PostType.OTHER, label: dict.categories.OTHER },
     { value: PostType.ADAPTATION, label: dict.categories.ADAPTATION },
     { value: PostType.PRANAYAMA, label: dict.categories.PRANAYAMA },
     { value: PostType.CALMING, label: dict.categories.CALMING },
+    { value: PostType.OTHER, label: dict.categories.OTHER },
   ];
 
   const [featured, ...rest] = posts;
@@ -52,7 +52,7 @@ export default async function HomePage({
         {/* Hero */}
         {coverImage ? (
           <>
-            <section className="relative -mx-6 h-[80vh] md:-mx-10">
+            <section className="relative -mx-6 h-[calc(100vh-72px)] md:-mx-10">
               <Image
                 src={coverImage}
                 alt=""
@@ -60,14 +60,19 @@ export default async function HomePage({
                 priority
                 className="object-cover"
               />
+              <div className="absolute top-8 left-6 md:top-11 md:left-10">
+                <span
+                  className="text-[clamp(20px,2.6vw,32px)] font-medium tracking-[0.32em] text-[#F7F5EF] uppercase"
+                  style={{
+                    fontFamily: "var(--font-jost), sans-serif",
+                    textShadow: "0 2px 16px rgba(0,0,0,0.55)",
+                  }}
+                >
+                  {dict.home.label}
+                </span>
+              </div>
             </section>
             <section className="pt-10 md:pt-14">
-              <div
-                className="mb-6 text-[13px] tracking-[0.28em] text-[var(--accent-clay)] uppercase"
-                style={{ fontFamily: "var(--font-jost), sans-serif" }}
-              >
-                {dict.home.label}
-              </div>
               <h1
                 className="max-w-[20ch] text-[clamp(36px,4.6vw,60px)] leading-[1.1] font-normal"
                 style={{ fontFamily: "var(--font-marcellus), serif" }}
