@@ -60,14 +60,16 @@ export default async function HomePage({
                 priority
                 className="object-cover"
               />
-              <div className="absolute top-8 left-6 md:top-11 md:left-10">
-                <div
-                  className="inline-flex items-center gap-2.5 border border-white/40 px-4 py-2.5 text-[11px] tracking-[0.28em] text-[#F7F5EF] uppercase"
-                  style={{ fontFamily: "var(--font-jost), sans-serif" }}
+              <div className="absolute top-0 left-6 flex h-full items-center py-12 md:left-10">
+                <span
+                  className="text-[12px] font-medium tracking-[0.5em] text-[#F7F5EF] uppercase [writing-mode:vertical-rl]"
+                  style={{
+                    fontFamily: "var(--font-jost), sans-serif",
+                    textShadow: "0 2px 12px rgba(0,0,0,0.5)",
+                  }}
                 >
-                  <span className="text-[var(--nav-highlight)]">(01)</span>
                   {dict.home.label}
-                </div>
+                </span>
               </div>
             </section>
             <section className="pt-10 md:pt-14">
