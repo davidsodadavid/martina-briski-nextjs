@@ -1,5 +1,6 @@
 import Image from "next/image";
 import ContactForm from "@/components/ContactForm";
+import InstagramIcon from "@/components/InstagramIcon";
 
 const STUDIO_PHOTO =
   "https://pub-1144190a4cb1457da1471034790b3b55.r2.dev/media/Fotke gradske -14.jpg";
@@ -93,17 +94,10 @@ export default function ContactPage() {
                     href="https://www.instagram.com/martinabriski/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[15px] hover:underline"
+                    aria-label="Instagram"
+                    className="hover:opacity-70"
                   >
-                    Instagram
-                  </a>
-                  <a
-                    href="https://www.linkedin.com/in/martina-briski/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[15px] hover:underline"
-                  >
-                    LinkedIn
+                    <InstagramIcon className="h-5 w-5" />
                   </a>
                 </div>
               </div>

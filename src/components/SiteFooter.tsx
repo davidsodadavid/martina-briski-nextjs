@@ -4,12 +4,10 @@ import Logo from "@/components/Logo";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import FooterReveal from "@/components/FooterReveal";
 import PracticeCardsGrid from "@/components/PracticeCardsGrid";
+import InstagramIcon from "@/components/InstagramIcon";
 import type { Dictionary } from "@/lib/i18n/shared";
 
-const SOCIAL_LINKS = [
-  { label: "Instagram", href: "https://www.instagram.com/martinabriski/" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/martina-briski/" },
-];
+const INSTAGRAM_URL = "https://www.instagram.com/martinabriski/";
 
 function FooterNavLink({
   number,
@@ -152,17 +150,15 @@ export default async function SiteFooter({ dict }: { dict: Dictionary }) {
 
         <div className="relative mx-auto mt-10 flex w-full flex-wrap items-center justify-between gap-4 pb-2">
           <div className="flex items-center gap-5 text-xs tracking-[0.16em] uppercase">
-            {SOCIAL_LINKS.map((s) => (
-              <a
-                key={s.label}
-                href={s.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:underline"
-              >
-                {s.label}
-              </a>
-            ))}
+            <a
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              className="hover:opacity-70"
+            >
+              <InstagramIcon className="h-[18px] w-[18px]" />
+            </a>
             <LanguageSwitcher />
           </div>
           <div className="flex items-center gap-5 text-xs tracking-[0.06em] opacity-70">
