@@ -32,12 +32,20 @@ export default async function AdminDashboardPage({
     <>
       <div className="mb-4 flex items-center justify-between">
         <h1 className="text-xl font-semibold text-white">Blog</h1>
-        <Link
-          href="/admin/posts/new"
-          className="rounded-md bg-[var(--brand-yellow)] px-4 py-2 text-sm font-medium text-[var(--brand-text)] hover:bg-[var(--brand-yellow-dark)]"
-        >
-          New post
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/admin/blog-cover"
+            className="rounded-md border border-neutral-600 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800"
+          >
+            Cover photo
+          </Link>
+          <Link
+            href="/admin/posts/new"
+            className="rounded-md bg-[var(--brand-yellow)] px-4 py-2 text-sm font-medium text-[var(--brand-text)] hover:bg-[var(--brand-yellow-dark)]"
+          >
+            New post
+          </Link>
+        </div>
       </div>
 
       <div className="mb-6 flex gap-2">

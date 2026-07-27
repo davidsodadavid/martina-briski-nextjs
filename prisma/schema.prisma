@@ -171,6 +171,14 @@ model Practice {
   updatedAt DateTime @updatedAt
 }
 
+// Singleton settings for the public blog list page — same id-default
+// pattern as About/Practice, but only ever holds a cover photo (so far).
+model BlogSettings {
+  id         String   @id @default("blog")
+  coverImage String?
+  updatedAt  DateTime @updatedAt
+}
+
 model Testimonial {
   id          String   @id @default(cuid())
   authorName  String

@@ -6,6 +6,7 @@ import { stripHtml, truncate } from "@/lib/text";
 import SubscribeForm from "@/components/SubscribeForm";
 import PostGrid from "@/components/PostGrid";
 import { getLocale, getDictionary } from "@/lib/i18n";
+import { BLOG_SETTINGS_ID } from "@/lib/blogSettings";
 
 export default async function HomePage({
   searchParams,
@@ -18,7 +19,7 @@ export default async function HomePage({
       ? (type as PostType)
       : "ALL";
 
-  const [posts, locale] = await Promise.all([
+  const [posts, locale, blogSettings] = await Promise.all([
     prisma.post.findMany({
       where: {
         published: true,
@@ -27,7 +28,9 @@ export default async function HomePage({
       orderBy: { createdAt: "desc" },
     }),
     getLocale(),
+    prisma.blogSettings.findUnique({ where: { id: BLOG_SETTINGS_ID } }),
   ]);
+  const coverImage = blogSettings?.coverImage ?? null;
   const dict = getDictionary(locale);
   const dateLocale = locale === "en" ? "en-GB" : "hr-HR";
 
@@ -45,26 +48,65 @@ export default async function HomePage({
     <main className="w-full flex-1 bg-[var(--nav-overlay-text)] px-6 text-[var(--nav-dark-text)] md:px-10">
       <div className="mx-auto w-full">
         {/* Hero */}
-        <section className="pt-14 md:pt-20">
-          <div
-            className="mb-6 text-xs tracking-[0.28em] text-[var(--accent-clay)] uppercase"
-            style={{ fontFamily: "var(--font-jost), sans-serif" }}
-          >
-            {dict.home.label}
-          </div>
-          <h1
-            className="max-w-[20ch] text-[clamp(32px,4.6vw,60px)] leading-[1.1] font-normal"
-            style={{ fontFamily: "var(--font-marcellus), serif" }}
-          >
-            {dict.home.title}
-          </h1>
-          <p
-            className="mt-4 text-xs text-[var(--nav-dark-text)]/60"
-            style={{ fontFamily: "var(--font-jost), sans-serif" }}
-          >
-            {dict.home.photoCredit}
-          </p>
-        </section>
+        {coverImage ? (
+          <section className="relative -mx-6 h-[80vh] md:-mx-10">
+            <Image
+              src={coverImage}
+              alt=""
+              fill
+              priority
+              className="object-cover"
+            />
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(to top, rgba(23,20,15,0.8), rgba(23,20,15,0.25) 55%, rgba(23,20,15,0.05))",
+              }}
+            />
+            <div className="absolute inset-x-0 bottom-0 px-6 pb-12 md:px-10 md:pb-16">
+              <div
+                className="mb-6 text-xs tracking-[0.28em] text-[var(--nav-highlight)] uppercase"
+                style={{ fontFamily: "var(--font-jost), sans-serif" }}
+              >
+                {dict.home.label}
+              </div>
+              <h1
+                className="max-w-[20ch] text-[clamp(32px,4.6vw,60px)] leading-[1.1] font-normal text-[#F7F5EF]"
+                style={{ fontFamily: "var(--font-marcellus), serif" }}
+              >
+                {dict.home.title}
+              </h1>
+              <p
+                className="mt-4 text-xs text-[#F7F5EF]/70"
+                style={{ fontFamily: "var(--font-jost), sans-serif" }}
+              >
+                {dict.home.photoCredit}
+              </p>
+            </div>
+          </section>
+        ) : (
+          <section className="pt-14 md:pt-20">
+            <div
+              className="mb-6 text-xs tracking-[0.28em] text-[var(--accent-clay)] uppercase"
+              style={{ fontFamily: "var(--font-jost), sans-serif" }}
+            >
+              {dict.home.label}
+            </div>
+            <h1
+              className="max-w-[20ch] text-[clamp(32px,4.6vw,60px)] leading-[1.1] font-normal"
+              style={{ fontFamily: "var(--font-marcellus), serif" }}
+            >
+              {dict.home.title}
+            </h1>
+            <p
+              className="mt-4 text-xs text-[var(--nav-dark-text)]/60"
+              style={{ fontFamily: "var(--font-jost), sans-serif" }}
+            >
+              {dict.home.photoCredit}
+            </p>
+          </section>
+        )}
 
         {/* Filters */}
         <div className="mt-10 flex flex-wrap gap-2">
