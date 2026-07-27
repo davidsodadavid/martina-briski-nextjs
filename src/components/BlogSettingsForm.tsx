@@ -6,11 +6,13 @@ import { saveBlogSettings } from "@/app/actions/blogSettings";
 
 type MediaItem = { id: string; url: string; filename: string };
 
-export default function BlogCoverForm({
+export default function BlogSettingsForm({
   initialCoverImage,
+  initialDescription,
   mediaLibrary,
 }: {
   initialCoverImage: string | null;
+  initialDescription: string | null;
   mediaLibrary: MediaItem[];
 }) {
   const [state, formAction, pending] = useActionState(saveBlogSettings, {});
@@ -32,6 +34,22 @@ export default function BlogCoverForm({
           name="coverImage"
           initialUrl={initialCoverImage}
           mediaLibrary={mediaLibrary}
+        />
+      </div>
+
+      <div>
+        <label className="mb-1 block text-sm font-medium text-neutral-700">
+          Description (optional)
+        </label>
+        <p className="mb-2 text-xs text-neutral-500">
+          Shown under the title on the public blog page, below the cover
+          photo (or below the title if there&apos;s no cover photo).
+        </p>
+        <textarea
+          name="description"
+          rows={5}
+          defaultValue={initialDescription ?? ""}
+          className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none"
         />
       </div>
 

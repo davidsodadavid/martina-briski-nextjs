@@ -1,9 +1,9 @@
 import Link from "next/link";
-import BlogCoverForm from "@/components/BlogCoverForm";
+import BlogSettingsForm from "@/components/BlogSettingsForm";
 import { prisma } from "@/lib/prisma";
 import { BLOG_SETTINGS_ID } from "@/lib/blogSettings";
 
-export default async function AdminBlogCoverPage() {
+export default async function AdminBlogSettingsPage() {
   const [settings, mediaLibrary] = await Promise.all([
     prisma.blogSettings.findUnique({ where: { id: BLOG_SETTINGS_ID } }),
     prisma.media.findMany({ orderBy: { createdAt: "desc" } }),
@@ -17,10 +17,11 @@ export default async function AdminBlogCoverPage() {
         </Link>
       </div>
       <h1 className="mb-6 text-xl font-semibold text-white">
-        Blog cover photo
+        Blog settings
       </h1>
-      <BlogCoverForm
+      <BlogSettingsForm
         initialCoverImage={settings?.coverImage ?? null}
+        initialDescription={settings?.description ?? null}
         mediaLibrary={mediaLibrary}
       />
     </>

@@ -14,11 +14,16 @@ export async function saveBlogSettings(
   await requireAdmin();
 
   const coverImage = String(formData.get("coverImage") || "").trim();
+  const description = String(formData.get("description") || "").trim();
 
   await prisma.blogSettings.upsert({
     where: { id: BLOG_SETTINGS_ID },
-    create: { id: BLOG_SETTINGS_ID, coverImage: coverImage || null },
-    update: { coverImage: coverImage || null },
+    create: {
+      id: BLOG_SETTINGS_ID,
+      coverImage: coverImage || null,
+      description: description || null,
+    },
+    update: { coverImage: coverImage || null, description: description || null },
   });
 
   revalidatePath("/admin/blog-cover");

@@ -37,7 +37,7 @@ export default async function AdminDashboardPage({
             href="/admin/blog-cover"
             className="rounded-md border border-neutral-600 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800"
           >
-            Cover photo
+            Blog settings
           </Link>
           <Link
             href="/admin/posts/new"
