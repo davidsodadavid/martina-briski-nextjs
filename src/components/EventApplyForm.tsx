@@ -27,7 +27,7 @@ export default function EventApplyForm({ eventId }: { eventId: string }) {
           type="text"
           name="name"
           required
-          className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none"
+          className="w-full border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none"
         />
       </div>
 
@@ -39,7 +39,7 @@ export default function EventApplyForm({ eventId }: { eventId: string }) {
           type="email"
           name="email"
           required
-          className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none"
+          className="w-full border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none"
         />
       </div>
 
@@ -50,7 +50,7 @@ export default function EventApplyForm({ eventId }: { eventId: string }) {
         <input
           type="tel"
           name="phone"
-          className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none"
+          className="w-full border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none"
         />
       </div>
 
@@ -61,7 +61,7 @@ export default function EventApplyForm({ eventId }: { eventId: string }) {
         <textarea
           name="message"
           rows={3}
-          className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none"
+          className="w-full border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none"
         />
       </div>
 

@@ -6,7 +6,7 @@ import { submitOrder, type OrderFormState } from "@/app/actions/orders";
 const initialState: OrderFormState = {};
 
 const inputClassName =
-  "rounded-md border border-[#D5D2C4] bg-[#F8F6EF] px-3 py-2 text-sm text-[#2E332F] focus:border-[var(--nav-bg)] focus:outline-none";
+  "border border-[#D5D2C4] bg-[#F8F6EF] px-3 py-2 text-sm text-[#2E332F] focus:border-[var(--nav-bg)] focus:outline-none";
 const labelClassName = "mb-1 block text-sm font-medium text-[#3B443F]";
 
 export default function OrderForm({

@@ -61,7 +61,7 @@ export default function SubscribeForm() {
               name="email"
               type="email"
               placeholder={dict.home.emailPlaceholder}
-              className="rounded-[10px] border border-[#D5D2C4] bg-[#F8F6EF] px-[18px] py-3.5 text-[14.5px] text-[#2E332F] focus:border-[var(--nav-bg)] focus:outline-none"
+              className="border border-[#D5D2C4] bg-[#F8F6EF] px-[18px] py-3.5 text-[14.5px] text-[#2E332F] focus:border-[var(--nav-bg)] focus:outline-none"
             />
             <button
               type="submit"
