@@ -9,10 +9,12 @@ type MediaItem = { id: string; url: string; filename: string };
 export default function BlogSettingsForm({
   initialCoverImage,
   initialDescription,
+  initialPhotoCredit,
   mediaLibrary,
 }: {
   initialCoverImage: string | null;
   initialDescription: string | null;
+  initialPhotoCredit: string | null;
   mediaLibrary: MediaItem[];
 }) {
   const [state, formAction, pending] = useActionState(saveBlogSettings, {});
@@ -49,6 +51,22 @@ export default function BlogSettingsForm({
           name="description"
           rows={5}
           defaultValue={initialDescription ?? ""}
+          className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none"
+        />
+      </div>
+
+      <div>
+        <label className="mb-1 block text-sm font-medium text-neutral-700">
+          Photo credit (optional)
+        </label>
+        <p className="mb-2 text-xs text-neutral-500">
+          Small line shown under the description, e.g. crediting the
+          photographer(s).
+        </p>
+        <input
+          type="text"
+          name="photoCredit"
+          defaultValue={initialPhotoCredit ?? ""}
           className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none"
         />
       </div>

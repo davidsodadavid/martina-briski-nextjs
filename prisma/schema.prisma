@@ -177,6 +177,9 @@ model BlogSettings {
   id          String   @id @default("blog")
   coverImage  String?
   description String?
+  // Small credit line shown under the description, e.g. crediting the
+  // photographer(s) behind the cover photo.
+  photoCredit String?
   updatedAt   DateTime @updatedAt
 }
 

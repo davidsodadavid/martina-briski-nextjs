@@ -33,6 +33,7 @@ export default async function HomePage({
   const coverImage = blogSettings?.coverImage ?? null;
   const description = blogSettings?.description ?? null;
   const dict = getDictionary(locale);
+  const photoCredit = blogSettings?.photoCredit || dict.home.photoCredit;
   const dateLocale = locale === "en" ? "en-GB" : "hr-HR";
 
   const FILTERS: { value: PostType | "ALL"; label: string }[] = [
@@ -73,21 +74,20 @@ export default async function HomePage({
               >
                 {dict.home.title}
               </h1>
-              {description ? (
+              {description && (
                 <p
                   className="mt-4 max-w-[62ch] leading-[1.7] whitespace-pre-wrap text-[15px] text-[var(--nav-dark-text)]/80"
                   style={{ fontFamily: "var(--font-jost), sans-serif" }}
                 >
                   {description}
                 </p>
-              ) : (
-                <p
-                  className="mt-4 text-[13px] text-[var(--nav-dark-text)]/60"
-                  style={{ fontFamily: "var(--font-jost), sans-serif" }}
-                >
-                  {dict.home.photoCredit}
-                </p>
               )}
+              <p
+                className="mt-4 text-[13px] text-[var(--nav-dark-text)]/60"
+                style={{ fontFamily: "var(--font-jost), sans-serif" }}
+              >
+                {photoCredit}
+              </p>
             </section>
           </>
         ) : (
@@ -104,21 +104,20 @@ export default async function HomePage({
             >
               {dict.home.title}
             </h1>
-            {description ? (
+            {description && (
               <p
                 className="mt-4 max-w-[62ch] leading-[1.7] whitespace-pre-wrap text-[15px] text-[var(--nav-dark-text)]/80"
                 style={{ fontFamily: "var(--font-jost), sans-serif" }}
               >
                 {description}
               </p>
-            ) : (
-              <p
-                className="mt-4 text-xs text-[var(--nav-dark-text)]/60"
-                style={{ fontFamily: "var(--font-jost), sans-serif" }}
-              >
-                {dict.home.photoCredit}
-              </p>
             )}
+            <p
+              className="mt-4 text-xs text-[var(--nav-dark-text)]/60"
+              style={{ fontFamily: "var(--font-jost), sans-serif" }}
+            >
+              {photoCredit}
+            </p>
           </section>
         )}
 

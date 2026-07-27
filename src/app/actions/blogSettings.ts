@@ -15,6 +15,7 @@ export async function saveBlogSettings(
 
   const coverImage = String(formData.get("coverImage") || "").trim();
   const description = String(formData.get("description") || "").trim();
+  const photoCredit = String(formData.get("photoCredit") || "").trim();
 
   await prisma.blogSettings.upsert({
     where: { id: BLOG_SETTINGS_ID },
@@ -22,8 +23,13 @@ export async function saveBlogSettings(
       id: BLOG_SETTINGS_ID,
       coverImage: coverImage || null,
       description: description || null,
+      photoCredit: photoCredit || null,
     },
-    update: { coverImage: coverImage || null, description: description || null },
+    update: {
+      coverImage: coverImage || null,
+      description: description || null,
+      photoCredit: photoCredit || null,
+    },
   });
 
   revalidatePath("/admin/blog-cover");
