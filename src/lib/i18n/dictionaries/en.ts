@@ -17,7 +17,6 @@ const en: Dictionary = {
     closeSubmenu: "Close submenu",
     practiceItems: {
       breathTimer: "Plank",
-      audioPractice: "Guided practice",
       breathingCircle: "Breathing rhythm for a calm mind",
     },
   },

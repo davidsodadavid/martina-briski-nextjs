@@ -4,7 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import BreathingCirclePreview from "@/components/BreathingCirclePreview";
 import BreathTimerPreview from "@/components/BreathTimerPreview";
-import AudioPracticePreview from "@/components/AudioPracticePreview";
 
 type PracticeItem = {
   title: string;
@@ -23,17 +22,12 @@ const TOOLS = [
     href: "/practice/breath-timer",
     Preview: BreathTimerPreview,
   },
-  {
-    label: "Vođena praksa",
-    href: "/practice/audio-practice",
-    Preview: AudioPracticePreview,
-  },
 ];
 
 const DEFAULT_TITLE =
   "Pronađi svoj ritam i osjeti kako dah oblikuje tvoju snagu i prisutnost.";
 const DEFAULT_TEXT =
-  "Tri vježbe disanja stoje pred tobom. Prva vježba te vodi kroz ritam udaha i izdaha uz animaciju koja ti pomaže da se sinkroniziraš. Druga vježba plank s brojanjem udaha gradi tvoju snagu i fokus. Treća vježba audio vođenje koje te vraća u tijelo i prisutnost. Odaberi svoju vježbu i započni.";
+  "Dvije vježbe disanja stoje pred tobom. Prva vježba te vodi kroz ritam udaha i izdaha uz animaciju koja ti pomaže da se sinkroniziraš. Druga vježba plank s brojanjem udaha gradi tvoju snagu i fokus. Odaberi svoju vježbu i započni.";
 
 export default function PracticeSection({
   items,
@@ -100,7 +94,7 @@ export default function PracticeSection({
 
       {/* Tool cards — horizontal on desktop */}
       <section className="flex flex-1 items-center px-6 py-8 md:px-10">
-        <div className="mx-auto grid w-full max-w-[1267px] grid-cols-1 gap-5 sm:grid-cols-3">
+        <div className="mx-auto grid w-full max-w-[1267px] grid-cols-1 gap-5 sm:grid-cols-2">
           {TOOLS.map((tool, i) => (
             <div
               key={tool.href}

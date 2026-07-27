@@ -72,10 +72,6 @@ export default async function SiteFooter({ dict }: { dict: Dictionary }) {
       label: dict.nav.practiceItems.breathTimer,
       href: "/practice/breath-timer",
     },
-    {
-      label: dict.nav.practiceItems.audioPractice,
-      href: "/practice/audio-practice",
-    },
   ];
 
   return (

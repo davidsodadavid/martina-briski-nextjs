@@ -1,7 +1,6 @@
 import Link from "next/link";
 import BreathTimerPreview from "@/components/BreathTimerPreview";
 import BreathingCirclePreview from "@/components/BreathingCirclePreview";
-import AudioPracticePreview from "@/components/AudioPracticePreview";
 
 export default function PracticeCardsGrid({
   practiceCards,
@@ -21,7 +20,6 @@ export default function PracticeCardsGrid({
       {practiceCards.map((item, i) => {
         const isBreathTimer = item.href === "/practice/breath-timer";
         const isBreathingCircle = item.href === "/practice/breathing-circle";
-        const isAudioPractice = item.href === "/practice/audio-practice";
 
         return (
           <Link
@@ -29,27 +27,16 @@ export default function PracticeCardsGrid({
             href={item.href}
             onClick={onNavigate}
             className={`relative flex flex-col gap-2 overflow-hidden rounded-2xl border border-[var(--nav-overlay-text)]/25 transition-colors hover:border-[var(--nav-highlight)] ${
-              uniformHeight
-                ? "h-[184px]"
-                : isBreathingCircle || isAudioPractice
-                  ? "h-[153px]"
-                  : ""
+              uniformHeight ? "h-[184px]" : isBreathingCircle ? "h-[153px]" : ""
             }`}
           >
             {isBreathTimer && <BreathTimerPreview className="h-16 w-full" />}
             {isBreathingCircle && (
               <BreathingCirclePreview className="absolute inset-0 h-full w-full" />
             )}
-            {isAudioPractice && (
-              <AudioPracticePreview className="absolute inset-0 h-full w-full" />
-            )}
             <div
               className={`relative z-10 flex flex-col gap-2 p-5 pb-8 md:pb-5 ${
-                isBreathTimer
-                  ? "pt-3"
-                  : isBreathingCircle || isAudioPractice
-                    ? "pt-[85px]"
-                    : ""
+                isBreathTimer ? "pt-3" : isBreathingCircle ? "pt-[85px]" : ""
               }`}
             >
               <span

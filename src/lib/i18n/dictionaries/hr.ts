@@ -15,7 +15,6 @@ const hr = {
     closeSubmenu: "Zatvori podizbornik",
     practiceItems: {
       breathTimer: "Plank",
-      audioPractice: "Vođena praksa",
       breathingCircle: "Ritam disanja za smireni um",
     },
   },

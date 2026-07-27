@@ -7,7 +7,7 @@ export default function BreathTimerPage() {
         duration={30}
         fillTo="#5F6D6A"
         label="plank"
-        nextHref="/practice/audio-practice"
+        nextHref="/practice"
       />
     </main>
   );

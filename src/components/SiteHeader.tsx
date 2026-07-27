@@ -316,7 +316,6 @@ export default function SiteHeader({
       href: "/practice/breathing-circle",
     },
     { label: dict.nav.practiceItems.breathTimer, href: "/practice/breath-timer" },
-    { label: dict.nav.practiceItems.audioPractice, href: "/practice/audio-practice" },
   ];
 
   const links: NavLink[] = [
