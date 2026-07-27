@@ -62,7 +62,7 @@ export default async function HomePage({
               />
               <div className="absolute top-0 left-6 flex h-full items-center py-12 md:left-10">
                 <span
-                  className="text-[12px] font-medium tracking-[0.5em] text-[#F7F5EF] uppercase [writing-mode:vertical-rl]"
+                  className="text-[15px] font-medium tracking-[0.5em] text-[#F7F5EF] uppercase [writing-mode:vertical-rl]"
                   style={{
                     fontFamily: "var(--font-jost), sans-serif",
                     textShadow: "0 2px 12px rgba(0,0,0,0.5)",
