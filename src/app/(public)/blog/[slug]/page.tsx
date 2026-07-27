@@ -100,7 +100,7 @@ export default async function BlogPostPage({
         {/* Featured image */}
         {post.thumbnail && (
           <section className="pt-8 md:pt-11">
-            <div className="relative aspect-4/5 w-full overflow-hidden rounded-[18px] sm:aspect-21/9">
+            <div className="relative aspect-4/5 w-full overflow-hidden sm:aspect-21/9">
               <Image
                 src={post.thumbnail}
                 alt={post.title}
@@ -135,7 +135,7 @@ export default async function BlogPostPage({
                   href={`/blog/${rel.slug}`}
                   className="grid grid-cols-[76px_1fr] items-center gap-3.5"
                 >
-                  <div className="relative h-[76px] w-[76px] overflow-hidden rounded-[10px] bg-[#D8D5C7]">
+                  <div className="relative h-[76px] w-[76px] overflow-hidden bg-[#D8D5C7]">
                     {rel.thumbnail && (
                       <Image
                         src={rel.thumbnail}

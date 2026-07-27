@@ -61,34 +61,30 @@ export default async function HomePage({
               className="absolute inset-0"
               style={{
                 background:
-                  "linear-gradient(to top, rgba(10,9,7,0.92), rgba(10,9,7,0.45) 55%, rgba(10,9,7,0.15))",
+                  "linear-gradient(to top, rgba(10,9,7,0.35), rgba(10,9,7,0.1) 55%, rgba(10,9,7,0.05))",
               }}
             />
-            <div className="absolute inset-x-0 bottom-0 px-6 pb-12 md:px-10 md:pb-16">
-              <div
-                className="mb-6 inline-block rounded-full bg-black/30 px-3 py-1.5 text-xs tracking-[0.28em] text-[var(--nav-highlight)] uppercase backdrop-blur-sm"
-                style={{ fontFamily: "var(--font-jost), sans-serif" }}
-              >
-                {dict.home.label}
+            <div className="absolute inset-x-0 bottom-0 px-6 pb-10 md:px-10 md:pb-14">
+              <div className="inline-block max-w-[560px] rounded-2xl border border-white/10 bg-black/35 p-6 backdrop-blur-md md:p-8">
+                <div
+                  className="mb-4 text-[13px] tracking-[0.28em] text-[var(--nav-highlight)] uppercase"
+                  style={{ fontFamily: "var(--font-jost), sans-serif" }}
+                >
+                  {dict.home.label}
+                </div>
+                <h1
+                  className="max-w-[20ch] text-[clamp(36px,4.6vw,60px)] leading-[1.1] font-normal text-[#F7F5EF]"
+                  style={{ fontFamily: "var(--font-marcellus), serif" }}
+                >
+                  {dict.home.title}
+                </h1>
+                <p
+                  className="mt-4 text-[13px] text-[#F7F5EF]/85"
+                  style={{ fontFamily: "var(--font-jost), sans-serif" }}
+                >
+                  {dict.home.photoCredit}
+                </p>
               </div>
-              <h1
-                className="max-w-[20ch] text-[clamp(32px,4.6vw,60px)] leading-[1.1] font-normal text-[#F7F5EF]"
-                style={{
-                  fontFamily: "var(--font-marcellus), serif",
-                  textShadow: "0 2px 20px rgba(0,0,0,0.6), 0 1px 4px rgba(0,0,0,0.5)",
-                }}
-              >
-                {dict.home.title}
-              </h1>
-              <p
-                className="mt-4 text-xs text-[#F7F5EF]/90"
-                style={{
-                  fontFamily: "var(--font-jost), sans-serif",
-                  textShadow: "0 1px 8px rgba(0,0,0,0.6)",
-                }}
-              >
-                {dict.home.photoCredit}
-              </p>
             </div>
           </section>
         ) : (
@@ -141,7 +137,7 @@ export default async function HomePage({
             <section className="pt-10 md:pt-12">
               <Link
                 href={`/blog/${featured.slug}`}
-                className="relative block aspect-4/5 overflow-hidden rounded-[20px] sm:aspect-21/9"
+                className="relative block aspect-4/5 overflow-hidden sm:aspect-21/9"
               >
                 <div className="absolute inset-0 bg-[#D8D5C7]">
                   {featured.thumbnail && (

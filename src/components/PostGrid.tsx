@@ -34,7 +34,7 @@ export default function PostGrid({ posts }: { posts: PostCardData[] }) {
           <Link
             key={post.id}
             href={`/blog/${post.slug}`}
-            className="flex flex-col overflow-hidden rounded-2xl border border-[#D5D2C4] bg-[#F3F1E9]"
+            className="flex flex-col overflow-hidden border border-[#D5D2C4] bg-[#F3F1E9]"
           >
             <div className="relative aspect-4/3 w-full overflow-hidden bg-[#D8D5C7]">
               {post.thumbnail && (
