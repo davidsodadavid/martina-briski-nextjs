@@ -49,44 +49,37 @@ export default async function HomePage({
       <div className="mx-auto w-full">
         {/* Hero */}
         {coverImage ? (
-          <section className="relative -mx-6 h-[80vh] md:-mx-10">
-            <Image
-              src={coverImage}
-              alt=""
-              fill
-              priority
-              className="object-cover"
-            />
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  "linear-gradient(to top, rgba(10,9,7,0.35), rgba(10,9,7,0.1) 55%, rgba(10,9,7,0.05))",
-              }}
-            />
-            <div className="absolute inset-x-0 bottom-0 px-6 pb-10 md:px-10 md:pb-14">
-              <div className="inline-block max-w-[560px] rounded-2xl border border-white/10 bg-black/35 p-6 backdrop-blur-md md:p-8">
-                <div
-                  className="mb-4 text-[13px] tracking-[0.28em] text-[var(--nav-highlight)] uppercase"
-                  style={{ fontFamily: "var(--font-jost), sans-serif" }}
-                >
-                  {dict.home.label}
-                </div>
-                <h1
-                  className="max-w-[20ch] text-[clamp(36px,4.6vw,60px)] leading-[1.1] font-normal text-[#F7F5EF]"
-                  style={{ fontFamily: "var(--font-marcellus), serif" }}
-                >
-                  {dict.home.title}
-                </h1>
-                <p
-                  className="mt-4 text-[13px] text-[#F7F5EF]/85"
-                  style={{ fontFamily: "var(--font-jost), sans-serif" }}
-                >
-                  {dict.home.photoCredit}
-                </p>
+          <>
+            <section className="relative -mx-6 h-[80vh] md:-mx-10">
+              <Image
+                src={coverImage}
+                alt=""
+                fill
+                priority
+                className="object-cover"
+              />
+            </section>
+            <section className="pt-10 md:pt-14">
+              <div
+                className="mb-6 text-[13px] tracking-[0.28em] text-[var(--accent-clay)] uppercase"
+                style={{ fontFamily: "var(--font-jost), sans-serif" }}
+              >
+                {dict.home.label}
               </div>
-            </div>
-          </section>
+              <h1
+                className="max-w-[20ch] text-[clamp(36px,4.6vw,60px)] leading-[1.1] font-normal"
+                style={{ fontFamily: "var(--font-marcellus), serif" }}
+              >
+                {dict.home.title}
+              </h1>
+              <p
+                className="mt-4 text-[13px] text-[var(--nav-dark-text)]/60"
+                style={{ fontFamily: "var(--font-jost), sans-serif" }}
+              >
+                {dict.home.photoCredit}
+              </p>
+            </section>
+          </>
         ) : (
           <section className="pt-14 md:pt-20">
             <div
