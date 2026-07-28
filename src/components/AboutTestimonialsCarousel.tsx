@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 type Testimonial = {
   id: string;
@@ -17,13 +17,24 @@ export default function AboutTestimonialsCarousel({
   const [i, setI] = useState(0);
   const total = testimonials.length;
   const current = testimonials[i];
+  const sectionRef = useRef<HTMLElement>(null);
 
   function go(n: number) {
     setI(((n % total) + total) % total);
   }
 
+  // long testimonials can push the arrows below the fold — jump back to
+  // the top of the section so the newly selected one starts in view
+  function goAndScrollTop(n: number) {
+    go(n);
+    sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   return (
-    <section className="bg-[var(--nav-bg)] px-6 py-[clamp(48px,6vw,80px)] text-[var(--nav-overlay-text)] md:px-10">
+    <section
+      ref={sectionRef}
+      className="bg-[var(--nav-bg)] px-6 py-[clamp(48px,6vw,80px)] text-[var(--nav-overlay-text)] md:px-10"
+    >
       <div className="mx-auto max-w-[1267px]">
       <div className="mb-10 flex flex-wrap items-baseline justify-between gap-4">
         <h2
@@ -97,7 +108,7 @@ export default function AboutTestimonialsCarousel({
           <div className="flex gap-2.5">
             <button
               type="button"
-              onClick={() => go(i - 1)}
+              onClick={() => goAndScrollTop(i - 1)}
               aria-label="Prethodno"
               className="flex h-[46px] w-[46px] items-center justify-center rounded-full border border-[var(--nav-overlay-text)]/40 text-lg hover:border-[var(--nav-highlight)] hover:text-[var(--nav-highlight)]"
             >
@@ -105,7 +116,7 @@ export default function AboutTestimonialsCarousel({
             </button>
             <button
               type="button"
-              onClick={() => go(i + 1)}
+              onClick={() => goAndScrollTop(i + 1)}
               aria-label="Sljedeće"
               className="flex h-[46px] w-[46px] items-center justify-center rounded-full border border-[var(--nav-overlay-text)]/40 text-lg hover:border-[var(--nav-highlight)] hover:text-[var(--nav-highlight)]"
             >
