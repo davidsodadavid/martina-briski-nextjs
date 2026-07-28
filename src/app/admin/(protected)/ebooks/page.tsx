@@ -13,12 +13,20 @@ export default async function AdminEbooksPage() {
         <h1 className="text-xl font-semibold text-white">
           Free content
         </h1>
-        <Link
-          href="/admin/ebooks/new"
-          className="rounded-md bg-[var(--brand-yellow)] px-4 py-2 text-sm font-medium text-[var(--brand-text)] hover:bg-[var(--brand-yellow-dark)]"
-        >
-          New book
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/admin/free-content-cover"
+            className="rounded-md border border-neutral-600 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800"
+          >
+            Cover settings
+          </Link>
+          <Link
+            href="/admin/ebooks/new"
+            className="rounded-md bg-[var(--brand-yellow)] px-4 py-2 text-sm font-medium text-[var(--brand-text)] hover:bg-[var(--brand-yellow-dark)]"
+          >
+            New book
+          </Link>
+        </div>
       </div>
 
       {ebooks.length === 0 ? (

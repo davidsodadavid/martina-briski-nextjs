@@ -20,49 +20,49 @@ export default async function ProgramPage({
 
   return (
     <main className="w-full flex-1 bg-[var(--nav-overlay-text)] text-[var(--nav-dark-text)]">
-      <div className="relative mx-auto max-w-[1267px]">
-        {/* ===================== HERO: full-bleed grayscale photo ===================== */}
-        <div className="relative aspect-21/9 w-full overflow-hidden bg-[#D8D5C7]">
-          {program.thumbnail && (
-            <Image
-              src={program.thumbnail}
-              alt={program.name}
-              fill
-              className="object-cover grayscale"
-            />
-          )}
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(to top, rgba(23,20,15,0.82), rgba(23,20,15,0.1) 55%, rgba(23,20,15,0))",
-            }}
+      {/* ===================== HERO: full-bleed photo, fills navbar+screen ===================== */}
+      <section className="relative h-[calc(100vh-72px)] w-full overflow-hidden bg-[#D8D5C7]">
+        {program.thumbnail && (
+          <Image
+            src={program.thumbnail}
+            alt={program.name}
+            fill
+            priority
+            className="object-cover grayscale"
           />
-          <Link
-            href="/"
-            className="absolute top-6 left-6 text-sm text-white/80 hover:text-white md:top-8 md:left-10"
+        )}
+        <Link
+          href="/"
+          className="absolute top-6 right-6 text-sm text-white/80 hover:text-white md:top-8 md:right-10"
+        >
+          ← Natrag na početnu
+        </Link>
+        <div className="absolute top-0 left-6 flex h-full items-center py-12 md:left-10">
+          <span
+            className="text-[15px] font-medium tracking-[0.5em] text-[#F7F5EF] uppercase [writing-mode:vertical-rl]"
+            style={{
+              fontFamily: "var(--font-jost), sans-serif",
+              textShadow: "0 2px 12px rgba(0,0,0,0.5)",
+            }}
           >
-            ← Natrag na početnu
-          </Link>
-          <div className="absolute inset-x-0 bottom-0 flex flex-col gap-3.5 p-6 md:p-12">
-            <div
-              className="text-xs tracking-[0.28em] text-[var(--nav-highlight)] uppercase"
-              style={{ fontFamily: "var(--font-jost), sans-serif" }}
-            >
-              program — {program.name.toLowerCase()}
-            </div>
-            <h1
-              className="max-w-[20ch] text-[clamp(30px,4.4vw,54px)] leading-[1.1] font-normal text-[#F7F5EF]"
-              style={{ fontFamily: "var(--font-marcellus), serif" }}
-            >
-              {program.name}
-            </h1>
-          </div>
+            Program
+          </span>
         </div>
+      </section>
+
+      <div className="relative mx-auto max-w-[1267px]">
+        <section className="px-6 pt-10 md:px-10 md:pt-14">
+          <h1
+            className="max-w-[20ch] text-[clamp(30px,4.4vw,54px)] leading-[1.1] font-normal"
+            style={{ fontFamily: "var(--font-marcellus), serif" }}
+          >
+            {program.name}
+          </h1>
+        </section>
 
         {/* ===================== ABOUT ===================== */}
         {(program.description || program.tags.length > 0) && (
-          <section className="px-6 pt-10 md:px-10 md:pt-14">
+          <section className="px-6 pt-6 md:px-10">
             {program.description && (
               <p className="max-w-[68ch] text-[clamp(16px,1.3vw,18px)] leading-[1.7] text-[#3B443F]">
                 {program.description}

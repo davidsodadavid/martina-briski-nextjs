@@ -183,6 +183,15 @@ model BlogSettings {
   updatedAt   DateTime @updatedAt
 }
 
+// Singleton settings for the public free-content list page — same
+// id-default pattern as BlogSettings.
+model FreeContentSettings {
+  id          String   @id @default("free-content")
+  coverImage  String?
+  description String?
+  updatedAt   DateTime @updatedAt
+}
+
 // Singleton CV page — a simple, unlinked page (no nav/footer entry) meant
 // to be shared directly with clients as a shareable resume link.
 model Cv {

@@ -34,39 +34,63 @@ export default async function AboutPage() {
   return (
     <main className="w-full flex-1 bg-[var(--nav-overlay-text)] text-[var(--nav-dark-text)]">
       {/* Hero */}
-      <section className="px-6 pt-14 md:px-10 md:pt-20">
-        <div className="mx-auto max-w-[1267px]">
-        {intro.title && (
-          <div
-            className="mb-6 text-xs tracking-[0.28em] text-[var(--nav-bg)] uppercase"
-            style={{ fontFamily: "var(--font-jost), sans-serif" }}
-          >
-            (01) &nbsp; {intro.title}
-          </div>
-        )}
-        {intro.subtitle && (
-          <h1
-            className="max-w-[15ch] text-[clamp(34px,5.4vw,76px)] leading-[1.12] font-normal"
-            style={{ fontFamily: "var(--font-marcellus), serif" }}
-          >
-            {intro.subtitle}
-          </h1>
-        )}
-        </div>
-      </section>
-
-      {about.thumbnail && (
-        <section className="px-6 pt-10 md:px-10">
-          <div className="mx-auto max-w-[1267px]">
-          <div className="relative h-[clamp(280px,42vw,560px)] w-full overflow-hidden rounded-2xl bg-[#D8D5C7]">
+      {about.thumbnail ? (
+        <>
+          <section className="relative h-[calc(100vh-72px)] w-full overflow-hidden">
             <Image
               src={about.thumbnail}
               alt=""
               fill
+              priority
               className="object-cover"
               style={{ objectPosition: "center 30%" }}
             />
-          </div>
+            {intro.title && (
+              <div className="absolute top-0 left-6 flex h-full items-center py-12 md:left-10">
+                <span
+                  className="text-[15px] font-medium tracking-[0.5em] text-[#F7F5EF] uppercase [writing-mode:vertical-rl]"
+                  style={{
+                    fontFamily: "var(--font-jost), sans-serif",
+                    textShadow: "0 2px 12px rgba(0,0,0,0.5)",
+                  }}
+                >
+                  {intro.title}
+                </span>
+              </div>
+            )}
+          </section>
+          {intro.subtitle && (
+            <section className="px-6 pt-10 md:px-10">
+              <div className="mx-auto max-w-[1267px]">
+                <h1
+                  className="max-w-[15ch] text-[clamp(34px,5.4vw,76px)] leading-[1.12] font-normal"
+                  style={{ fontFamily: "var(--font-marcellus), serif" }}
+                >
+                  {intro.subtitle}
+                </h1>
+              </div>
+            </section>
+          )}
+        </>
+      ) : (
+        <section className="px-6 pt-14 md:px-10 md:pt-20">
+          <div className="mx-auto max-w-[1267px]">
+          {intro.title && (
+            <div
+              className="mb-6 text-xs tracking-[0.28em] text-[var(--nav-bg)] uppercase"
+              style={{ fontFamily: "var(--font-jost), sans-serif" }}
+            >
+              (01) &nbsp; {intro.title}
+            </div>
+          )}
+          {intro.subtitle && (
+            <h1
+              className="max-w-[15ch] text-[clamp(34px,5.4vw,76px)] leading-[1.12] font-normal"
+              style={{ fontFamily: "var(--font-marcellus), serif" }}
+            >
+              {intro.subtitle}
+            </h1>
+          )}
           </div>
         </section>
       )}

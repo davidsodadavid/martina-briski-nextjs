@@ -1,35 +1,87 @@
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
+import { FREE_CONTENT_SETTINGS_ID } from "@/lib/freeContentSettings";
 
 export default async function FreeContentPage() {
-  const ebooks = await prisma.ebook.findMany({
-    where: { published: true },
-    orderBy: { createdAt: "desc" },
-  });
+  const [ebooks, settings] = await Promise.all([
+    prisma.ebook.findMany({
+      where: { published: true },
+      orderBy: { createdAt: "desc" },
+    }),
+    prisma.freeContentSettings.findUnique({
+      where: { id: FREE_CONTENT_SETTINGS_ID },
+    }),
+  ]);
+  const coverImage = settings?.coverImage ?? null;
+  const description = settings?.description ?? null;
 
   return (
     <main className="w-full flex-1 bg-[var(--nav-overlay-text)] px-6 text-[var(--nav-dark-text)] md:px-10">
-      <div className="mx-auto max-w-[1267px]">
-        {/* Hero */}
-        <section className="pt-14 md:pt-20">
-          <div
-            className="mb-6 text-xs tracking-[0.28em] text-[var(--accent-clay)] uppercase"
-            style={{ fontFamily: "var(--font-jost), sans-serif" }}
-          >
-            Besplatan sadržaj
+      {/* Hero */}
+      {coverImage ? (
+        <>
+          <section className="relative -mx-6 h-[calc(100vh-72px)] md:-mx-10">
+            <Image
+              src={coverImage}
+              alt=""
+              fill
+              priority
+              className="object-cover"
+            />
+            <div className="absolute top-0 left-6 flex h-full items-center py-12 md:left-10">
+              <span
+                className="text-[15px] font-medium tracking-[0.5em] text-[#F7F5EF] uppercase [writing-mode:vertical-rl]"
+                style={{
+                  fontFamily: "var(--font-jost), sans-serif",
+                  textShadow: "0 2px 12px rgba(0,0,0,0.5)",
+                }}
+              >
+                Besplatan sadržaj
+              </span>
+            </div>
+          </section>
+          <div className="mx-auto max-w-[1267px]">
+            <section className="pt-10 md:pt-14">
+              <h1
+                className="max-w-[20ch] text-[clamp(36px,4.6vw,60px)] leading-[1.1] font-normal"
+                style={{ fontFamily: "var(--font-marcellus), serif" }}
+              >
+                Vodiči i materijali za tvoju praksu
+              </h1>
+              <p
+                className="mt-4 max-w-[62ch] text-base leading-relaxed whitespace-pre-wrap text-[var(--nav-dark-text)]/70"
+                style={{ fontFamily: "var(--font-jost), sans-serif" }}
+              >
+                {description ||
+                  "Preuzmi besplatne PDF vodiče — za disanje, praksu kod kuće i početak s jogom."}
+              </p>
+            </section>
           </div>
-          <h1
-            className="max-w-[20ch] text-[clamp(32px,4.6vw,60px)] leading-[1.1] font-normal"
-            style={{ fontFamily: "var(--font-marcellus), serif" }}
-          >
-            Vodiči i materijali za tvoju praksu
-          </h1>
-          <p className="mt-4 max-w-[56ch] text-base leading-relaxed text-[var(--nav-dark-text)]/70">
-            Preuzmi besplatne PDF vodiče — za disanje, praksu kod kuće i
-            početak s jogom.
-          </p>
-        </section>
+        </>
+      ) : (
+        <div className="mx-auto max-w-[1267px]">
+          <section className="pt-14 md:pt-20">
+            <div
+              className="mb-6 text-xs tracking-[0.28em] text-[var(--accent-clay)] uppercase"
+              style={{ fontFamily: "var(--font-jost), sans-serif" }}
+            >
+              Besplatan sadržaj
+            </div>
+            <h1
+              className="max-w-[20ch] text-[clamp(32px,4.6vw,60px)] leading-[1.1] font-normal"
+              style={{ fontFamily: "var(--font-marcellus), serif" }}
+            >
+              Vodiči i materijali za tvoju praksu
+            </h1>
+            <p className="mt-4 max-w-[56ch] text-base leading-relaxed whitespace-pre-wrap text-[var(--nav-dark-text)]/70">
+              {description ||
+                "Preuzmi besplatne PDF vodiče — za disanje, praksu kod kuće i početak s jogom."}
+            </p>
+          </section>
+        </div>
+      )}
 
+      <div className="mx-auto max-w-[1267px]">
         {ebooks.length === 0 ? (
           <div className="py-16 text-center text-[var(--nav-dark-text)]/70">
             Trenutno nema dostupnog sadržaja.
