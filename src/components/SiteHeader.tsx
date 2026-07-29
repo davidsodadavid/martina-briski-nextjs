@@ -293,11 +293,11 @@ export default function SiteHeader({
   // menu is closed; once opened it matches every other page (a dark-green
   // overlay fades in, using the exact same opacity transition as the nav
   // panel below it), then reverts back to light once closed again
-  // these routes render a cream `<main>` background (same as the contact
-  // page) instead of the usual dark-green one, so the header gets the same
-  // light treatment: cream bg, green logo/icon, reverting to dark whenever
-  // the menu opens or the footer is reached
-  const CREAM_PAGES = ["/contact", "/about", "/free-content", "/events", "/blog", "/shop"];
+  // these routes render a cream `<main>` background instead of the usual
+  // dark-green one, so the header gets the same light treatment: cream bg,
+  // green logo/icon, reverting to dark whenever the menu opens or the
+  // footer is reached
+  const CREAM_PAGES = ["/about", "/free-content", "/events", "/blog", "/shop"];
   const isCreamPage =
     CREAM_PAGES.includes(pathname) ||
     pathname.startsWith("/blog/") ||
