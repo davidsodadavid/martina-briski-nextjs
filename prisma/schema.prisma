@@ -156,7 +156,11 @@ model Ebook {
   title       String
   slug        String   @unique
   thumbnail   String?
+  // Short blurb shown on the /free-content card.
   description String?
+  // Longer write-up shown on the PDF's own detail page. Falls back to
+  // `description` when empty.
+  longDescription String?
   pdfUrl      String
   pdfFilename String
   published   Boolean  @default(true)

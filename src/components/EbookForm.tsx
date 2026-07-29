@@ -16,6 +16,7 @@ type EbookFormProps = {
     title: string;
     thumbnail: string | null;
     description: string | null;
+    longDescription: string | null;
     pdfFilename: string;
   };
   mediaLibrary: MediaItem[];
@@ -66,10 +67,29 @@ export default function EbookForm({
         <label className="mb-1 block text-sm font-medium text-neutral-700">
           Description (optional)
         </label>
+        <p className="mb-1 text-xs text-neutral-500">
+          Short blurb shown on the /free-content card.
+        </p>
         <textarea
           name="description"
-          rows={4}
+          rows={3}
           defaultValue={initialEbook?.description ?? ""}
+          className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none"
+        />
+      </div>
+
+      <div>
+        <label className="mb-1 block text-sm font-medium text-neutral-700">
+          Longer description (optional)
+        </label>
+        <p className="mb-1 text-xs text-neutral-500">
+          Shown on the PDF&apos;s own page. Falls back to the short
+          description above when left empty.
+        </p>
+        <textarea
+          name="longDescription"
+          rows={6}
+          defaultValue={initialEbook?.longDescription ?? ""}
           className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none"
         />
       </div>

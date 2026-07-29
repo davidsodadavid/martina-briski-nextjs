@@ -15,6 +15,8 @@ export default async function EbookPage({
     notFound();
   }
 
+  const description = ebook.longDescription || ebook.description;
+
   return (
     <main className="w-full flex-1 bg-[var(--nav-overlay-text)] text-[var(--nav-dark-text)]">
       <div className="mx-auto max-w-[800px] px-6 py-14 md:px-10 md:py-20">
@@ -43,9 +45,9 @@ export default async function EbookPage({
           </div>
         )}
 
-        {ebook.description && (
+        {description && (
           <p className="mt-8 max-w-[65ch] text-[15px] leading-[1.75] whitespace-pre-wrap text-[#3B443F]">
-            {ebook.description}
+            {description}
           </p>
         )}
 

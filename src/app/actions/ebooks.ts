@@ -50,6 +50,7 @@ export async function createEbook(
 
   const thumbnail = String(formData.get("thumbnail") || "").trim();
   const description = String(formData.get("description") || "").trim();
+  const longDescription = String(formData.get("longDescription") || "").trim();
 
   const file = formData.get("pdf");
   if (!(file instanceof File) || file.size === 0) {
@@ -71,6 +72,7 @@ export async function createEbook(
       slug,
       thumbnail: thumbnail || null,
       description: description || null,
+      longDescription: longDescription || null,
       pdfUrl,
       pdfFilename: file.name,
     },
@@ -95,6 +97,7 @@ export async function updateEbook(
 
   const thumbnail = String(formData.get("thumbnail") || "").trim();
   const description = String(formData.get("description") || "").trim();
+  const longDescription = String(formData.get("longDescription") || "").trim();
 
   const existing = await prisma.ebook.findUnique({ where: { id } });
   if (!existing) {
@@ -128,6 +131,7 @@ export async function updateEbook(
       slug,
       thumbnail: thumbnail || null,
       description: description || null,
+      longDescription: longDescription || null,
       pdfUrl,
       pdfFilename,
     },
