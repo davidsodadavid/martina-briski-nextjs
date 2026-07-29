@@ -22,7 +22,7 @@ export default async function EventPage({
       <div className="mx-auto max-w-[800px] px-6 py-14 md:px-10 md:py-20">
         <Link
           href="/events"
-          className="inline-flex items-center gap-2 text-xs font-medium tracking-[0.14em] text-[var(--nav-bg)] uppercase hover:underline"
+          className="inline-flex items-center gap-2 text-xs font-medium tracking-[0.14em] text-[var(--nav-dark-text)]/60 uppercase hover:text-[var(--nav-dark-text)]"
         >
           ← Sva događanja
         </Link>
@@ -40,7 +40,7 @@ export default async function EventPage({
           </p>
           {event.price && (
             <p
-              className="mt-2 text-lg text-[var(--accent-clay)]"
+              className="mt-2 text-lg text-[var(--nav-dark-text)]"
               style={{ fontFamily: "var(--font-marcellus), serif" }}
             >
               {event.price}

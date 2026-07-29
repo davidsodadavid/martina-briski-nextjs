@@ -8,7 +8,7 @@ const initialState: ApplyState = {};
 const inputClassName =
   "border border-[#F8F6EF] bg-[#F8F6EF] px-4 py-3 text-[15px] text-[#2E332F] focus:border-[var(--nav-bg)] focus:outline-none";
 const labelClassName =
-  "mb-1.5 block text-[11px] font-medium tracking-[0.14em] text-[var(--nav-bg)] uppercase";
+  "mb-1.5 block text-[11px] font-medium tracking-[0.14em] text-[var(--nav-dark-text)]/60 uppercase";
 
 export default function EventApplyForm({ eventId }: { eventId: string }) {
   const boundApply = applyToEvent.bind(null, eventId);
@@ -56,7 +56,7 @@ export default function EventApplyForm({ eventId }: { eventId: string }) {
       <button
         type="submit"
         disabled={pending}
-        className="mt-1.5 self-start rounded-full bg-[var(--nav-highlight)] px-[30px] py-[15px] text-xs font-medium tracking-[0.2em] text-[var(--nav-dark-text)] uppercase hover:bg-[var(--nav-highlight-dark)] disabled:opacity-50"
+        className="mt-1.5 self-start rounded-full border border-[var(--nav-dark-text)] px-[30px] py-[15px] text-xs font-medium tracking-[0.2em] text-[var(--nav-dark-text)] uppercase hover:bg-[var(--nav-dark-text)] hover:text-[var(--nav-overlay-text)] disabled:opacity-50"
       >
         {pending ? "Slanje…" : "Prijavi se"}
       </button>
