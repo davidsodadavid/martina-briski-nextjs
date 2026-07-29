@@ -68,15 +68,19 @@ model Program {
 // only ever one, edited in place rather than listed/created/deleted like Posts
 // or Programs.
 model About {
-  id        String   @id @default("about")
-  name      String   @default("O meni")
-  thumbnail String?
+  id          String   @id @default("about")
+  name        String   @default("O meni")
+  thumbnail   String?
   // Always exactly 4 entries: { title: string; subtitle: string; description: string; image: string }
   // (subtitle/description/image may be empty strings — only title is required).
-  steps     Json
-  published Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  steps       Json
+  // Optional PDF (e.g. a longer bio / press kit) linked from the public
+  // about page as "Pročitaj više".
+  pdfUrl      String?
+  pdfFilename String?
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Event {
@@ -150,6 +154,7 @@ model Order {
 model Ebook {
   id          String   @id @default(cuid())
   title       String
+  slug        String   @unique
   thumbnail   String?
   description String?
   pdfUrl      String
@@ -180,6 +185,8 @@ model BlogSettings {
   // Small credit line shown under the description, e.g. crediting the
   // photographer(s) behind the cover photo.
   photoCredit String?
+  // Small bracketed label shown over the hero image, e.g. "Blog".
+  label       String?
   updatedAt   DateTime @updatedAt
 }
 
@@ -189,6 +196,8 @@ model FreeContentSettings {
   id          String   @id @default("free-content")
   coverImage  String?
   description String?
+  // Small bracketed label shown over the hero image, e.g. "Besplatan sadržaj".
+  label       String?
   updatedAt   DateTime @updatedAt
 }
 

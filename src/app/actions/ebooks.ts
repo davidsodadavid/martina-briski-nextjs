@@ -3,12 +3,27 @@
 import path from "path";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import slugify from "slugify";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
 import { ALLOWED_PDF_TYPE, MAX_PDF_BYTES, MAX_PDF_MB } from "@/lib/uploads";
 import { uploadToR2, deleteFromR2 } from "@/lib/r2";
 
 export type EbookFormState = { error?: string };
+
+async function uniqueSlug(title: string, ignoreId?: string) {
+  const base = slugify(title, { lower: true, strict: true }) || "ebook";
+  let slug = base;
+  let counter = 1;
+  while (
+    await prisma.ebook.findFirst({
+      where: { slug, ...(ignoreId ? { NOT: { id: ignoreId } } : {}) },
+    })
+  ) {
+    slug = `${base}-${counter++}`;
+  }
+  return slug;
+}
 
 async function savePdfFile(file: File) {
   const ext = path.extname(file.name) || ".pdf";
@@ -48,10 +63,12 @@ export async function createEbook(
   }
 
   const pdfUrl = await savePdfFile(file);
+  const slug = await uniqueSlug(title);
 
   await prisma.ebook.create({
     data: {
       title,
+      slug,
       thumbnail: thumbnail || null,
       description: description || null,
       pdfUrl,
@@ -101,10 +118,14 @@ export async function updateEbook(
     pdfFilename = file.name;
   }
 
+  const slug =
+    existing.title === title ? existing.slug : await uniqueSlug(title, id);
+
   await prisma.ebook.update({
     where: { id },
     data: {
       title,
+      slug,
       thumbnail: thumbnail || null,
       description: description || null,
       pdfUrl,
@@ -113,6 +134,7 @@ export async function updateEbook(
   });
 
   revalidatePath("/free-content");
+  revalidatePath(`/free-content/${slug}`);
   revalidatePath("/admin/ebooks");
   redirect("/admin/ebooks");
 }

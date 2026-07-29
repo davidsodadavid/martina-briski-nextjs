@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import { FREE_CONTENT_SETTINGS_ID } from "@/lib/freeContentSettings";
@@ -14,6 +15,7 @@ export default async function FreeContentPage() {
   ]);
   const coverImage = settings?.coverImage ?? null;
   const description = settings?.description ?? null;
+  const label = settings?.label || "Besplatan sadržaj";
 
   return (
     <main className="w-full flex-1 bg-[var(--nav-overlay-text)] px-6 text-[var(--nav-dark-text)] md:px-10">
@@ -28,22 +30,24 @@ export default async function FreeContentPage() {
               priority
               className="object-cover"
             />
-            <div className="absolute top-0 left-6 flex h-full items-center py-12 md:left-10">
+            <div
+              className="absolute top-6 left-6 flex items-center gap-2 text-[#F7F5EF] md:top-8 md:left-10"
+              style={{ textShadow: "0 2px 12px rgba(0,0,0,0.5)" }}
+            >
+              <span className="text-[16px] font-light">[</span>
               <span
-                className="text-[15px] font-medium tracking-[0.5em] text-[#F7F5EF] uppercase [writing-mode:vertical-rl]"
-                style={{
-                  fontFamily: "var(--font-jost), sans-serif",
-                  textShadow: "0 2px 12px rgba(0,0,0,0.5)",
-                }}
+                className="text-[13px] font-medium tracking-[0.25em] uppercase"
+                style={{ fontFamily: "var(--font-jost), sans-serif" }}
               >
-                Besplatan sadržaj
+                {label}
               </span>
+              <span className="text-[16px] font-light">]</span>
             </div>
           </section>
           <div className="mx-auto max-w-[1267px]">
             <section className="pt-10 md:pt-14">
               <h1
-                className="max-w-[20ch] text-[clamp(36px,4.6vw,60px)] leading-[1.1] font-normal"
+                className="max-w-[20ch] text-[clamp(32px,4.6vw,60px)] leading-[1.1] font-normal"
                 style={{ fontFamily: "var(--font-marcellus), serif" }}
               >
                 Vodiči i materijali za tvoju praksu
@@ -65,7 +69,7 @@ export default async function FreeContentPage() {
               className="mb-6 text-xs tracking-[0.28em] text-[var(--accent-clay)] uppercase"
               style={{ fontFamily: "var(--font-jost), sans-serif" }}
             >
-              Besplatan sadržaj
+              {label}
             </div>
             <h1
               className="max-w-[20ch] text-[clamp(32px,4.6vw,60px)] leading-[1.1] font-normal"
@@ -89,10 +93,9 @@ export default async function FreeContentPage() {
         ) : (
           <section className="grid grid-cols-1 gap-[18px] py-16 sm:grid-cols-2 md:py-24">
             {ebooks.map((ebook) => (
-              <a
+              <Link
                 key={ebook.id}
-                href={ebook.pdfUrl}
-                download={ebook.pdfFilename}
+                href={`/free-content/${ebook.slug}`}
                 className="group relative block aspect-4/5 overflow-hidden rounded-2xl"
               >
                 {ebook.thumbnail ? (
@@ -115,7 +118,7 @@ export default async function FreeContentPage() {
                 <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3.5 p-[18px] md:p-6">
                   <div>
                     <div
-                      className="text-[clamp(18px,2vw,21px)] leading-[1.25] text-[#F7F5EF]"
+                      className="text-[clamp(19px,2vw,22px)] leading-[1.25] text-[#F7F5EF]"
                       style={{ fontFamily: "var(--font-marcellus), serif" }}
                     >
                       {ebook.title}
@@ -130,10 +133,10 @@ export default async function FreeContentPage() {
                     className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[var(--nav-highlight)] px-[18px] py-3 text-[11.5px] font-medium tracking-[0.14em] text-[var(--nav-dark-text)] uppercase"
                     style={{ fontFamily: "var(--font-jost), sans-serif" }}
                   >
-                    Preuzmi PDF ↓
+                    Saznaj više →
                   </span>
                 </div>
-              </a>
+              </Link>
             ))}
           </section>
         )}

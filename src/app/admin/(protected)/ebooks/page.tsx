@@ -46,7 +46,7 @@ export default async function AdminEbooksPage() {
               </div>
               <div className="flex shrink-0 items-center gap-4">
                 <Link
-                  href="/free-content"
+                  href={`/free-content/${ebook.slug}`}
                   className="text-sm text-neutral-500 hover:underline"
                 >
                   View
