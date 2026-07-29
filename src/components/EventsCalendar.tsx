@@ -237,7 +237,7 @@ export default function EventsCalendar({
   return (
     <div
       style={{
-        fontFamily: "'Jost', system-ui, sans-serif",
+        fontFamily: "var(--font-jost), sans-serif",
         color: "var(--nav-dark-text)",
         background: "var(--nav-overlay-text)",
       }}
@@ -256,7 +256,7 @@ export default function EventsCalendar({
         >
           <h2
             style={{
-              fontFamily: "'Marcellus', serif",
+              fontFamily: "var(--font-marcellus), serif",
               fontWeight: 400,
               fontSize: "clamp(22px,2.6vw,30px)",
               margin: 0,
@@ -323,7 +323,7 @@ export default function EventsCalendar({
               <div>
                 <div
                   style={{
-                    fontFamily: "'Marcellus', serif",
+                    fontFamily: "var(--font-marcellus), serif",
                     fontSize: 30,
                     lineHeight: 1,
                   }}
@@ -364,7 +364,7 @@ export default function EventsCalendar({
                 <a
                   href={ev.href}
                   style={{
-                    fontFamily: "'Marcellus', serif",
+                    fontFamily: "var(--font-marcellus), serif",
                     fontSize: "clamp(19px,2vw,23px)",
                     color: "inherit",
                     textDecoration: "none",
@@ -444,7 +444,7 @@ export default function EventsCalendar({
                 {ev.price && (
                   <span
                     style={{
-                      fontFamily: "'Marcellus', serif",
+                      fontFamily: "var(--font-marcellus), serif",
                       fontSize: 20,
                       color: "var(--accent-clay)",
                     }}
@@ -529,7 +529,7 @@ export default function EventsCalendar({
         >
           <h2
             style={{
-              fontFamily: "'Marcellus', serif",
+              fontFamily: "var(--font-marcellus), serif",
               fontWeight: 400,
               fontSize: "clamp(24px,3vw,34px)",
               margin: 0,

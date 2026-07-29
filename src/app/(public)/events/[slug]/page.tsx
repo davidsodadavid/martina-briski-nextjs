@@ -18,45 +18,61 @@ export default async function EventPage({
   }
 
   return (
-    <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-10 md:py-16">
-      <Link href="/events" className="text-sm text-white/70 hover:underline">
-        ← Natrag na sva događanja
-      </Link>
+    <main className="w-full flex-1 bg-[var(--nav-overlay-text)] text-[var(--nav-dark-text)]">
+      <div className="mx-auto max-w-[800px] px-6 py-14 md:px-10 md:py-20">
+        <Link
+          href="/events"
+          className="inline-flex items-center gap-2 text-xs font-medium tracking-[0.14em] text-[var(--nav-bg)] uppercase hover:underline"
+        >
+          ← Sva događanja
+        </Link>
 
-      <div className="mt-6 rounded-xl bg-[var(--color-stone)] p-6 md:p-8">
-        <h1 className="mb-2 text-3xl font-bold">{event.title}</h1>
-        <div className="mb-6">
-          <p className="text-sm text-neutral-500">
+        <div className="mt-7">
+          <h1
+            className="mb-3 text-[clamp(28px,4vw,46px)] leading-[1.2] font-normal"
+            style={{ fontFamily: "var(--font-marcellus), serif" }}
+          >
+            {event.title}
+          </h1>
+          <p className="text-[13px] text-[#8A8371]">
             {formatEventTiming(event.date, event.endTime)}
             {event.location ? ` · ${event.location}` : ""}
           </p>
           {event.price && (
-            <p className="mt-1 text-lg font-medium text-[var(--accent-clay)]">
+            <p
+              className="mt-2 text-lg text-[var(--accent-clay)]"
+              style={{ fontFamily: "var(--font-marcellus), serif" }}
+            >
               {event.price}
             </p>
           )}
         </div>
 
         {event.thumbnail && (
-          <div className="relative mb-8 h-64 w-full overflow-hidden rounded-lg bg-neutral-100">
+          <div className="relative mt-8 aspect-21/9 w-full overflow-hidden">
             <Image
               src={event.thumbnail}
               alt=""
               fill
-              className="object-cover"
+              className="object-cover grayscale"
             />
           </div>
         )}
 
         <div
-          className="prose prose-neutral max-w-none"
+          className="blog-article prose prose-neutral mt-8 max-w-none"
           dangerouslySetInnerHTML={{ __html: event.description }}
         />
-      </div>
 
-      <div className="mt-6 rounded-xl bg-[var(--color-stone)] p-6 md:p-8">
-        <h2 className="mb-4 text-xl font-semibold">Prijavi se na ovo događanje</h2>
-        <EventApplyForm eventId={event.id} />
+        <div className="mt-14 rounded-2xl border border-[#D5D2C4] bg-[#F3F1E9] p-7 md:p-8">
+          <h2
+            className="mb-5 text-xl"
+            style={{ fontFamily: "var(--font-marcellus), serif" }}
+          >
+            Prijavi se na ovo događanje
+          </h2>
+          <EventApplyForm eventId={event.id} />
+        </div>
       </div>
     </main>
   );
