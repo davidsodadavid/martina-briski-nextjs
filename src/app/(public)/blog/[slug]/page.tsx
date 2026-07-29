@@ -5,6 +5,8 @@ import { prisma } from "@/lib/prisma";
 import { ABOUT_ID } from "@/lib/about";
 import { CATEGORY_LABELS } from "@/lib/postCategory";
 import { estimateReadTime } from "@/lib/text";
+import { BLOG_SETTINGS_ID } from "@/lib/blogSettings";
+import { getLocale, getDictionary } from "@/lib/i18n";
 
 export default async function BlogPostPage({
   params,
@@ -18,7 +20,7 @@ export default async function BlogPostPage({
     notFound();
   }
 
-  const [about, sameType, others] = await Promise.all([
+  const [about, sameType, others, blogSettings, locale] = await Promise.all([
     prisma.about.findUnique({ where: { id: ABOUT_ID } }),
     prisma.post.findMany({
       where: { published: true, type: post.type, id: { not: post.id } },
@@ -30,11 +32,16 @@ export default async function BlogPostPage({
       orderBy: { createdAt: "desc" },
       take: 3,
     }),
+    prisma.blogSettings.findUnique({ where: { id: BLOG_SETTINGS_ID } }),
+    getLocale(),
   ]);
 
   const related = [...sameType, ...others]
     .filter((p, i, arr) => arr.findIndex((x) => x.id === p.id) === i)
     .slice(0, 3);
+
+  const dict = getDictionary(locale);
+  const photoCredit = blogSettings?.photoCredit || dict.home.photoCredit;
 
   return (
     <main className="w-full flex-1 bg-[var(--nav-overlay-text)] text-[var(--nav-dark-text)]">
@@ -95,22 +102,32 @@ export default async function BlogPostPage({
               </div>
             </div>
           </div>
+          {post.thumbnail && (
+            <p
+              className="mt-5 text-[13px] italic text-[var(--accent-clay)]"
+              style={{ fontFamily: "var(--font-jost), sans-serif" }}
+            >
+              {photoCredit}
+            </p>
+          )}
         </section>
+      </div>
 
-        {/* Featured image */}
-        {post.thumbnail && (
-          <section className="pt-8 md:pt-11">
-            <div className="relative aspect-4/5 w-full overflow-hidden sm:aspect-21/9">
-              <Image
-                src={post.thumbnail}
-                alt={post.title}
-                fill
-                className="object-cover grayscale"
-              />
-            </div>
-          </section>
-        )}
+      {/* Featured image — full-bleed, edge to edge of the viewport */}
+      {post.thumbnail && (
+        <section className="pt-8 md:pt-11">
+          <div className="relative aspect-4/5 w-full overflow-hidden sm:aspect-21/9">
+            <Image
+              src={post.thumbnail}
+              alt={post.title}
+              fill
+              className="object-cover grayscale"
+            />
+          </div>
+        </section>
+      )}
 
+      <div className="mx-auto max-w-[1267px] px-6 md:px-10">
         {/* Article body */}
         <section className="grid grid-cols-1 gap-8 pt-10 pb-16 md:grid-cols-[1.7fr_1fr] md:gap-14 md:pt-14 md:pb-20">
           <article className="max-w-[720px]">
