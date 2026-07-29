@@ -9,7 +9,7 @@ import {
 const initialState: ContactFormState = {};
 
 const inputClassName =
-  "border border-[#D5D2C4] bg-[#F8F6EF] px-4 py-3.5 text-[15px] text-[#2E332F] focus:border-[var(--nav-bg)] focus:outline-none";
+  "border border-[#F8F6EF] bg-[#F8F6EF] px-4 py-3.5 text-[15px] text-[#2E332F] focus:border-[var(--nav-bg)] focus:outline-none";
 const labelCapClassName =
   "text-[11px] font-medium tracking-[0.14em] text-[var(--nav-highlight)] uppercase";
 
