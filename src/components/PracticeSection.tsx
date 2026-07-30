@@ -64,7 +64,7 @@ export default function PracticeSection({
               )}
               {active.description && (
                 <div
-                  className="mx-auto mt-4 max-h-[26vh] max-w-[1100px] overflow-y-auto text-left text-[14px] leading-[1.7] text-[var(--nav-overlay-text)]/85 md:columns-2 md:gap-10 md:[column-fill:balance] [&_h3]:mt-3 [&_h3]:mb-1 [&_h3]:font-semibold [&_h3]:break-inside-avoid [&_h3]:text-[var(--nav-highlight)] [&_p]:mb-3 [&_p]:break-inside-avoid [&_ul]:mb-3 [&_ul]:list-disc [&_ul]:pl-5"
+                  className="mx-auto mt-4 max-w-[1100px] text-left text-[14px] leading-[1.7] text-[var(--nav-overlay-text)]/85 md:columns-2 md:gap-10 md:[column-fill:balance] [&_h3]:mt-3 [&_h3]:mb-1 [&_h3]:font-semibold [&_h3]:break-inside-avoid [&_h3]:text-[var(--nav-highlight)] [&_p]:mb-3 [&_p]:break-inside-avoid [&_ul]:mb-3 [&_ul]:list-disc [&_ul]:pl-5"
                   dangerouslySetInnerHTML={{ __html: active.description }}
                 />
               )}
@@ -110,7 +110,10 @@ export default function PracticeSection({
               {items[i] && (items[i].title || items[i].description) && (
                 <button
                   type="button"
-                  onClick={() => setActiveIndex(i)}
+                  onClick={() => {
+                    setActiveIndex(i);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
                   aria-label={`Info o vježbi: ${tool.label}`}
                   className="absolute top-4 right-4 z-20 flex h-7 w-7 items-center justify-center rounded-full border border-[var(--nav-overlay-text)]/40 text-xs text-[var(--nav-overlay-text)] hover:border-[var(--nav-highlight)] hover:text-[var(--nav-highlight)]"
                   style={{ fontFamily: "var(--font-marcellus), serif" }}

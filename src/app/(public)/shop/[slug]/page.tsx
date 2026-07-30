@@ -58,7 +58,7 @@ export default async function ProductPage({
                 Iz trgovine
               </div>
               <h1
-                className="text-[clamp(28px,3.2vw,40px)] leading-[1.15] font-normal"
+                className="text-[clamp(28px,4vw,46px)] leading-[1.15] font-normal"
                 style={{ fontFamily: "var(--font-marcellus), serif" }}
               >
                 {product.name}
@@ -94,7 +94,7 @@ export default async function ProductPage({
         {related.length > 0 && (
           <section className="pt-16 pb-16 md:pt-24 md:pb-24">
             <h2
-              className="mb-6 text-[clamp(22px,2.6vw,28px)] font-normal"
+              className="mb-6 text-[clamp(24px,3vw,34px)] font-normal"
               style={{ fontFamily: "var(--font-marcellus), serif" }}
             >
               Moglo bi ti se svidjeti

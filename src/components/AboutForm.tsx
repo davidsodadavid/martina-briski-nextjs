@@ -2,23 +2,29 @@
 
 import { useActionState } from "react";
 import ThumbnailPicker from "@/components/ThumbnailPicker";
+import PdfPicker from "@/components/PdfPicker";
 import { saveAbout } from "@/app/actions/about";
 import { ABOUT_STEP_COUNT, type AboutStep } from "@/lib/about";
 
 type MediaItem = { id: string; url: string; filename: string };
+type PdfItem = { key: string; url: string; filename: string };
 
 type AboutFormProps = {
   initialAbout: {
     name: string;
     thumbnail: string | null;
     steps: AboutStep[];
+    pdfUrl: string | null;
+    pdfFilename: string | null;
   };
   mediaLibrary: MediaItem[];
+  pdfLibrary: PdfItem[];
 };
 
 export default function AboutForm({
   initialAbout,
   mediaLibrary,
+  pdfLibrary,
 }: AboutFormProps) {
   const [state, formAction, pending] = useActionState(saveAbout, {});
 
@@ -49,6 +55,23 @@ export default function AboutForm({
           initialUrl={initialAbout.thumbnail}
           mediaLibrary={mediaLibrary}
           allowUpload={false}
+        />
+      </div>
+
+      <div>
+        <label className="mb-1 block text-sm font-medium text-neutral-700">
+          PDF (optional)
+        </label>
+        <p className="mb-2 text-xs text-neutral-500">
+          Linked from the public about page as &quot;Pročitaj više&quot; —
+          near the top and again as a section near the bottom.
+        </p>
+        <PdfPicker
+          urlFieldName="pdfUrl"
+          filenameFieldName="pdfFilename"
+          initialUrl={initialAbout.pdfUrl}
+          initialFilename={initialAbout.pdfFilename}
+          pdfLibrary={pdfLibrary}
         />
       </div>
 

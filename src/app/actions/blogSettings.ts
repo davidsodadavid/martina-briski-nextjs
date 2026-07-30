@@ -16,6 +16,7 @@ export async function saveBlogSettings(
   const coverImage = String(formData.get("coverImage") || "").trim();
   const description = String(formData.get("description") || "").trim();
   const photoCredit = String(formData.get("photoCredit") || "").trim();
+  const label = String(formData.get("label") || "").trim();
 
   await prisma.blogSettings.upsert({
     where: { id: BLOG_SETTINGS_ID },
@@ -24,11 +25,13 @@ export async function saveBlogSettings(
       coverImage: coverImage || null,
       description: description || null,
       photoCredit: photoCredit || null,
+      label: label || null,
     },
     update: {
       coverImage: coverImage || null,
       description: description || null,
       photoCredit: photoCredit || null,
+      label: label || null,
     },
   });
 

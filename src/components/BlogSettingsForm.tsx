@@ -10,11 +10,13 @@ export default function BlogSettingsForm({
   initialCoverImage,
   initialDescription,
   initialPhotoCredit,
+  initialLabel,
   mediaLibrary,
 }: {
   initialCoverImage: string | null;
   initialDescription: string | null;
   initialPhotoCredit: string | null;
+  initialLabel: string | null;
   mediaLibrary: MediaItem[];
 }) {
   const [state, formAction, pending] = useActionState(saveBlogSettings, {});
@@ -24,6 +26,22 @@ export default function BlogSettingsForm({
       action={formAction}
       className="flex flex-col gap-6 rounded-md bg-[var(--color-stone)] p-6"
     >
+      <div>
+        <label className="mb-1 block text-sm font-medium text-neutral-700">
+          Hero label (optional)
+        </label>
+        <p className="mb-2 text-xs text-neutral-500">
+          Small bracketed label shown over the top-left of the cover photo,
+          e.g. &quot;Blog&quot;.
+        </p>
+        <input
+          type="text"
+          name="label"
+          defaultValue={initialLabel ?? ""}
+          className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none"
+        />
+      </div>
+
       <div>
         <label className="mb-1 block text-sm font-medium text-neutral-700">
           Cover photo (optional)

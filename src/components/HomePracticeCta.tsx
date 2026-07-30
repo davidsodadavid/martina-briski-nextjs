@@ -19,7 +19,7 @@ export default function HomePracticeCta() {
 
   return (
     <div
-      className="absolute inset-x-0 bottom-10 z-[46] flex flex-wrap items-center justify-between gap-3 px-6 transition-[opacity,transform] duration-700 ease-out md:px-10"
+      className="absolute inset-x-0 bottom-10 z-[46] flex justify-end px-6 transition-[opacity,transform] duration-700 ease-out md:px-10"
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0)" : "translateY(16px)",
@@ -27,26 +27,15 @@ export default function HomePracticeCta() {
       }}
     >
       <Link
-        href="/practice/breathing-circle"
+        href="/practice"
         onClick={(e) => {
           e.preventDefault();
-          navigate("/practice/breathing-circle");
+          navigate("/practice");
         }}
-        className="inline-block rounded-full bg-[var(--nav-highlight)] px-[26px] py-3.5 text-xs font-medium tracking-[0.24em] text-[var(--nav-dark-text)] uppercase transition-colors duration-[250ms] hover:bg-[var(--nav-highlight-dark)]"
+        className="block w-full rounded-full bg-[var(--nav-highlight)] px-[26px] py-3.5 text-center text-xs font-medium tracking-[0.24em] text-[var(--nav-dark-text)] uppercase transition-colors duration-[250ms] hover:bg-[var(--nav-highlight-dark)] md:w-auto"
         style={{ fontFamily: "var(--font-jost), sans-serif" }}
       >
         {dict.homepage.goToPractice}
-      </Link>
-      <Link
-        href="/practice/breath-timer"
-        onClick={(e) => {
-          e.preventDefault();
-          navigate("/practice/breath-timer");
-        }}
-        className="inline-block rounded-full border border-[var(--nav-overlay-text)]/55 px-[26px] py-3.5 text-xs font-medium tracking-[0.24em] text-[var(--nav-overlay-text)] uppercase transition-colors duration-[250ms] hover:bg-[var(--nav-overlay-text)]/10"
-        style={{ fontFamily: "var(--font-jost), sans-serif" }}
-      >
-        {dict.homepage.nextPractice}
       </Link>
     </div>
   );

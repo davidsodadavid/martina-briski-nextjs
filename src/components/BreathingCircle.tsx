@@ -262,6 +262,20 @@ export default function BreathingCircle({
             transition: "opacity 700ms ease-out, transform 700ms ease-out",
           }}
         >
+          <a
+            href="/practice"
+            style={{
+              pointerEvents: "auto",
+              fontWeight: 500,
+              fontSize: 12,
+              letterSpacing: "0.34em",
+              textTransform: "uppercase",
+              color: ink,
+              textDecoration: "underline",
+            }}
+          >
+            vježbe
+          </a>
           <span
             style={{
               fontWeight: 500,
@@ -271,7 +285,8 @@ export default function BreathingCircle({
               color: ink,
             }}
           >
-            {label}
+            {" "}
+            &middot; {label}
           </span>
           <span
             style={{

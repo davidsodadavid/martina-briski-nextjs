@@ -5,6 +5,7 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 import FooterReveal from "@/components/FooterReveal";
 import PracticeCardsGrid from "@/components/PracticeCardsGrid";
 import InstagramIcon from "@/components/InstagramIcon";
+import ContactLink from "@/components/ContactLink";
 import type { Dictionary } from "@/lib/i18n/shared";
 
 const INSTAGRAM_URL = "https://www.instagram.com/martinabriski/";
@@ -95,12 +96,6 @@ export default async function SiteFooter({ dict }: { dict: Dictionary }) {
           <div className="relative grid w-full grid-cols-1 gap-10 md:grid-cols-[1.4fr_1fr_1fr] md:gap-8">
             <div>
               <Logo className="mb-6 h-8 w-auto" />
-              <a
-                href="mailto:info@martina-briski.com"
-                className="block text-[15px] opacity-85 hover:opacity-100"
-              >
-                info@martina-briski.com
-              </a>
             </div>
 
             <div>
@@ -159,6 +154,7 @@ export default async function SiteFooter({ dict }: { dict: Dictionary }) {
             >
               <InstagramIcon className="h-[18px] w-[18px]" />
             </a>
+            <ContactLink className="hover:opacity-70" />
             <LanguageSwitcher />
           </div>
           <div className="flex items-center gap-5 text-xs tracking-[0.06em] opacity-70">

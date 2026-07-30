@@ -34,6 +34,7 @@ export default async function HomePage({
   const description = blogSettings?.description ?? null;
   const dict = getDictionary(locale);
   const photoCredit = blogSettings?.photoCredit || dict.home.photoCredit;
+  const label = blogSettings?.label || dict.home.label;
   const dateLocale = locale === "en" ? "en-GB" : "hr-HR";
 
   const FILTERS: { value: PostType | "ALL"; label: string }[] = [
@@ -60,21 +61,23 @@ export default async function HomePage({
                 priority
                 className="object-cover"
               />
-              <div className="absolute top-0 left-6 flex h-full items-center py-12 md:left-10">
+              <div
+                className="absolute top-6 left-6 flex items-center gap-2 text-[#F7F5EF] md:top-8 md:left-10"
+                style={{ textShadow: "0 2px 12px rgba(0,0,0,0.5)" }}
+              >
+                <span className="text-[16px] font-light">[</span>
                 <span
-                  className="text-[15px] font-medium tracking-[0.5em] text-[#F7F5EF] uppercase [writing-mode:vertical-rl]"
-                  style={{
-                    fontFamily: "var(--font-jost), sans-serif",
-                    textShadow: "0 2px 12px rgba(0,0,0,0.5)",
-                  }}
+                  className="text-[13px] font-medium tracking-[0.25em] uppercase"
+                  style={{ fontFamily: "var(--font-jost), sans-serif" }}
                 >
-                  {dict.home.label}
+                  {label}
                 </span>
+                <span className="text-[16px] font-light">]</span>
               </div>
             </section>
             <section className="pt-10 md:pt-14">
               <h1
-                className="max-w-[20ch] text-[clamp(36px,4.6vw,60px)] leading-[1.1] font-normal"
+                className="max-w-[20ch] text-[clamp(32px,4.6vw,60px)] leading-[1.1] font-normal"
                 style={{ fontFamily: "var(--font-marcellus), serif" }}
               >
                 {dict.home.title}
@@ -101,7 +104,7 @@ export default async function HomePage({
               className="mb-6 text-xs tracking-[0.28em] text-[var(--accent-clay)] uppercase"
               style={{ fontFamily: "var(--font-jost), sans-serif" }}
             >
-              {dict.home.label}
+              {label}
             </div>
             <h1
               className="max-w-[20ch] text-[clamp(32px,4.6vw,60px)] leading-[1.1] font-normal"
@@ -185,7 +188,7 @@ export default async function HomePage({
                     </span>
                   </div>
                   <div
-                    className="max-w-[32ch] text-[clamp(24px,3.4vw,38px)] leading-[1.15] text-[#F7F5EF]"
+                    className="max-w-[32ch] text-[clamp(24px,3vw,34px)] leading-[1.15] text-[#F7F5EF]"
                     style={{ fontFamily: "var(--font-marcellus), serif" }}
                   >
                     {featured.title}

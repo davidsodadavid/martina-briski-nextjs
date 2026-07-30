@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
 import { ABOUT_ID, ABOUT_STEP_COUNT, type AboutStep } from "@/lib/about";
+import { deleteFromR2 } from "@/lib/r2";
 
 export type AboutFormState = { error?: string; success?: boolean };
 
@@ -33,11 +34,31 @@ export async function saveAbout(
   }
 
   const thumbnail = String(formData.get("thumbnail") || "").trim();
+  const pdfUrl = String(formData.get("pdfUrl") || "").trim();
+  const pdfFilename = String(formData.get("pdfFilename") || "").trim();
+
+  const existing = await prisma.about.findUnique({ where: { id: ABOUT_ID } });
+  if (existing?.pdfUrl && existing.pdfUrl !== pdfUrl) {
+    await deleteFromR2(existing.pdfUrl);
+  }
 
   await prisma.about.upsert({
     where: { id: ABOUT_ID },
-    create: { id: ABOUT_ID, name, thumbnail: thumbnail || null, steps },
-    update: { name, thumbnail: thumbnail || null, steps },
+    create: {
+      id: ABOUT_ID,
+      name,
+      thumbnail: thumbnail || null,
+      steps,
+      pdfUrl: pdfUrl || null,
+      pdfFilename: pdfFilename || null,
+    },
+    update: {
+      name,
+      thumbnail: thumbnail || null,
+      steps,
+      pdfUrl: pdfUrl || null,
+      pdfFilename: pdfFilename || null,
+    },
   });
 
   revalidatePath("/admin/about");

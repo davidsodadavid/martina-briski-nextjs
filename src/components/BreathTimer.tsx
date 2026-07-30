@@ -183,8 +183,23 @@ export default function BreathTimer({
       <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', display: 'block' }} />
 
       <div style={{ position: 'absolute', top: 34, left: 0, right: 0, textAlign: 'center', pointerEvents: 'none', zIndex: 3 }}>
+        <a
+          href="/practice"
+          style={{
+            pointerEvents: 'auto',
+            fontWeight: 500,
+            fontSize: 12,
+            letterSpacing: '0.34em',
+            textTransform: 'uppercase',
+            color: '#FFFFFF',
+            textDecoration: 'underline',
+          }}
+        >
+          vježbe
+        </a>
         <span style={{ fontWeight: 500, fontSize: 12, letterSpacing: '0.34em', textTransform: 'uppercase', color: '#FFFFFF' }}>
-          {label}
+          {' '}
+          &middot; {label}
         </span>
         <span style={{ fontWeight: 500, fontSize: 12, letterSpacing: '0.34em', textTransform: 'uppercase', color: '#CDF0B1' }}>
           {' '}

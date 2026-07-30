@@ -52,8 +52,7 @@ const en: Dictionary = {
     invalidEmail: "Enter a valid email address",
   },
   homepage: {
-    goToPractice: "Go to practice",
-    nextPractice: "Next practice",
+    goToPractice: "Go to exercises",
   },
 };
 

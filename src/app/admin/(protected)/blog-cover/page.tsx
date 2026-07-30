@@ -23,6 +23,7 @@ export default async function AdminBlogSettingsPage() {
         initialCoverImage={settings?.coverImage ?? null}
         initialDescription={settings?.description ?? null}
         initialPhotoCredit={settings?.photoCredit ?? null}
+        initialLabel={settings?.label ?? null}
         mediaLibrary={mediaLibrary}
       />
     </>

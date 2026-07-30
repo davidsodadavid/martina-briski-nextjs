@@ -37,23 +37,25 @@ export default async function ProgramPage({
         >
           ← Natrag na početnu
         </Link>
-        <div className="absolute top-0 left-6 flex h-full items-center py-12 md:left-10">
+        <div
+          className="absolute top-6 left-6 flex items-center gap-2 text-[#F7F5EF] md:top-8 md:left-10"
+          style={{ textShadow: "0 2px 12px rgba(0,0,0,0.5)" }}
+        >
+          <span className="text-[16px] font-light">[</span>
           <span
-            className="text-[15px] font-medium tracking-[0.5em] text-[#F7F5EF] uppercase [writing-mode:vertical-rl]"
-            style={{
-              fontFamily: "var(--font-jost), sans-serif",
-              textShadow: "0 2px 12px rgba(0,0,0,0.5)",
-            }}
+            className="text-[13px] font-medium tracking-[0.25em] uppercase"
+            style={{ fontFamily: "var(--font-jost), sans-serif" }}
           >
             Program
           </span>
+          <span className="text-[16px] font-light">]</span>
         </div>
       </section>
 
       <div className="relative mx-auto max-w-[1267px]">
         <section className="px-6 pt-10 md:px-10 md:pt-14">
           <h1
-            className="max-w-[20ch] text-[clamp(30px,4.4vw,54px)] leading-[1.1] font-normal"
+            className="max-w-[20ch] text-[clamp(28px,4vw,46px)] leading-[1.1] font-normal"
             style={{ fontFamily: "var(--font-marcellus), serif" }}
           >
             {program.name}
@@ -87,7 +89,7 @@ export default async function ProgramPage({
         {steps.length > 0 && (
           <section className="px-6 pt-14 md:px-10 md:pt-20">
             <h2
-              className="mb-[30px] text-[clamp(22px,2.6vw,30px)] font-normal"
+              className="mb-[30px] text-[clamp(24px,3vw,34px)] font-normal"
               style={{ fontFamily: "var(--font-marcellus), serif" }}
             >
               Kako izgleda program
@@ -122,7 +124,7 @@ export default async function ProgramPage({
         {program.galleryImage && (
           <section className="pt-14 md:pt-20">
             <h2
-              className="mb-6 px-6 text-[clamp(22px,2.6vw,30px)] font-normal md:px-10"
+              className="mb-6 px-6 text-[clamp(24px,3vw,34px)] font-normal md:px-10"
               style={{ fontFamily: "var(--font-marcellus), serif" }}
             >
               Iz prakse

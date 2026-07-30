@@ -50,8 +50,7 @@ const hr = {
     invalidEmail: "Unesite ispravnu email adresu",
   },
   homepage: {
-    goToPractice: "Idi na vježbu",
-    nextPractice: "Sljedeća vježba",
+    goToPractice: "Idi na vježbe",
   },
 };
 

@@ -46,16 +46,18 @@ export default async function AboutPage() {
               style={{ objectPosition: "center 30%" }}
             />
             {intro.title && (
-              <div className="absolute top-0 left-6 flex h-full items-center py-12 md:left-10">
+              <div
+                className="absolute top-6 left-6 flex items-center gap-2 text-[#F7F5EF] md:top-8 md:left-10"
+                style={{ textShadow: "0 2px 12px rgba(0,0,0,0.5)" }}
+              >
+                <span className="text-[16px] font-light">[</span>
                 <span
-                  className="text-[15px] font-medium tracking-[0.5em] text-[#F7F5EF] uppercase [writing-mode:vertical-rl]"
-                  style={{
-                    fontFamily: "var(--font-jost), sans-serif",
-                    textShadow: "0 2px 12px rgba(0,0,0,0.5)",
-                  }}
+                  className="text-[13px] font-medium tracking-[0.25em] uppercase"
+                  style={{ fontFamily: "var(--font-jost), sans-serif" }}
                 >
                   {intro.title}
                 </span>
+                <span className="text-[16px] font-light">]</span>
               </div>
             )}
           </section>
@@ -63,7 +65,7 @@ export default async function AboutPage() {
             <section className="px-6 pt-10 md:px-10">
               <div className="mx-auto max-w-[1267px]">
                 <h1
-                  className="max-w-[15ch] text-[clamp(34px,5.4vw,76px)] leading-[1.12] font-normal"
+                  className="max-w-[15ch] text-[clamp(32px,4.6vw,60px)] leading-[1.12] font-normal"
                   style={{ fontFamily: "var(--font-marcellus), serif" }}
                 >
                   {intro.subtitle}
@@ -85,7 +87,7 @@ export default async function AboutPage() {
           )}
           {intro.subtitle && (
             <h1
-              className="max-w-[15ch] text-[clamp(34px,5.4vw,76px)] leading-[1.12] font-normal"
+              className="max-w-[15ch] text-[clamp(32px,4.6vw,60px)] leading-[1.12] font-normal"
               style={{ fontFamily: "var(--font-marcellus), serif" }}
             >
               {intro.subtitle}
@@ -136,6 +138,17 @@ export default async function AboutPage() {
                 {intro.description}
               </p>
             )}
+            {about.pdfUrl && (
+              <a
+                href={about.pdfUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-5 inline-block text-sm font-medium tracking-[0.06em] text-[var(--nav-bg)] underline underline-offset-4 hover:opacity-70"
+                style={{ fontFamily: "var(--font-jost), sans-serif" }}
+              >
+                Pročitaj više
+              </a>
+            )}
           </div>
         </div>
         </section>
@@ -160,7 +173,7 @@ export default async function AboutPage() {
                   </div>
                   {step.title && (
                     <h2
-                      className="mt-3 text-[clamp(30px,4vw,52px)] leading-[1.1] font-normal"
+                      className="mt-3 text-[clamp(24px,3vw,34px)] leading-[1.1] font-normal"
                       style={{ fontFamily: "var(--font-marcellus), serif" }}
                     >
                       {step.title}
@@ -206,7 +219,7 @@ export default async function AboutPage() {
               Istraži programe
             </div>
             <h2
-              className="max-w-[16ch] text-[clamp(30px,4.4vw,58px)] leading-[1.1] font-normal"
+              className="max-w-[16ch] text-[clamp(24px,3vw,34px)] leading-[1.1] font-normal"
               style={{ fontFamily: "var(--font-marcellus), serif" }}
             >
               Saznaj više o programima i odaberi ono što ti najviše odgovara.
@@ -227,7 +240,7 @@ export default async function AboutPage() {
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span
-                  className="text-[clamp(22px,2.4vw,30px)] leading-[1.2]"
+                  className="text-[clamp(19px,2vw,22px)] leading-[1.2]"
                   style={{ fontFamily: "var(--font-marcellus), serif" }}
                 >
                   {program.name}
@@ -236,6 +249,35 @@ export default async function AboutPage() {
             ))}
           </div>
         </div>
+        </section>
+      )}
+
+      {/* PDF CTA */}
+      {about.pdfUrl && (
+        <section className="bg-[var(--nav-bg)] px-6 py-[clamp(60px,8vw,110px)] text-center text-[var(--nav-overlay-text)] md:px-10">
+          <div className="mx-auto max-w-[720px]">
+            <div
+              className="mb-4 text-xs tracking-[0.28em] uppercase opacity-70"
+              style={{ fontFamily: "var(--font-jost), sans-serif" }}
+            >
+              Želiš znati više?
+            </div>
+            <h2
+              className="mb-8 text-[clamp(24px,3vw,34px)] leading-[1.2] font-normal"
+              style={{ fontFamily: "var(--font-marcellus), serif" }}
+            >
+              Pročitaj cijelu priču i saznaj što stoji iza prakse.
+            </h2>
+            <a
+              href={about.pdfUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block rounded-full bg-[var(--nav-highlight)] px-[26px] py-3.5 text-xs font-medium tracking-[0.24em] text-[var(--nav-dark-text)] uppercase transition-colors duration-[250ms] hover:bg-[var(--nav-highlight-dark)]"
+              style={{ fontFamily: "var(--font-jost), sans-serif" }}
+            >
+              Pročitaj više
+            </a>
+          </div>
         </section>
       )}
     </main>

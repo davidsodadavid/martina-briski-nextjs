@@ -15,6 +15,7 @@ export async function saveFreeContentSettings(
 
   const coverImage = String(formData.get("coverImage") || "").trim();
   const description = String(formData.get("description") || "").trim();
+  const label = String(formData.get("label") || "").trim();
 
   await prisma.freeContentSettings.upsert({
     where: { id: FREE_CONTENT_SETTINGS_ID },
@@ -22,8 +23,13 @@ export async function saveFreeContentSettings(
       id: FREE_CONTENT_SETTINGS_ID,
       coverImage: coverImage || null,
       description: description || null,
+      label: label || null,
     },
-    update: { coverImage: coverImage || null, description: description || null },
+    update: {
+      coverImage: coverImage || null,
+      description: description || null,
+      label: label || null,
+    },
   });
 
   revalidatePath("/admin/free-content-cover");

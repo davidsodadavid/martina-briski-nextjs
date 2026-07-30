@@ -27,6 +27,7 @@ export default async function AdminFreeContentSettingsPage() {
       <FreeContentSettingsForm
         initialCoverImage={settings?.coverImage ?? null}
         initialDescription={settings?.description ?? null}
+        initialLabel={settings?.label ?? null}
         mediaLibrary={mediaLibrary}
       />
     </>
