@@ -37,7 +37,7 @@ export default async function ShopPage() {
             {products.map((product) => (
               <div
                 key={product.id}
-                className="flex flex-col overflow-hidden border border-[#D5D2C4] bg-[#F3F1E9]"
+                className="flex flex-col overflow-hidden bg-[#F3F1E9]"
               >
                 <Link
                   href={`/shop/${product.slug}`}

@@ -8,8 +8,47 @@ import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
 import { ALLOWED_PDF_TYPE, MAX_PDF_BYTES, MAX_PDF_MB } from "@/lib/uploads";
 import { uploadToR2, deleteFromR2 } from "@/lib/r2";
+import { addMailerliteSubscriber } from "@/lib/mailerlite";
 
 export type EbookFormState = { error?: string };
+
+export type EbookDownloadState = {
+  error?: string;
+  success?: boolean;
+  pdfUrl?: string;
+  pdfFilename?: string;
+};
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+export async function requestEbookDownload(
+  ebookId: string,
+  _prevState: EbookDownloadState,
+  formData: FormData
+): Promise<EbookDownloadState> {
+  const email = String(formData.get("email") || "")
+    .trim()
+    .toLowerCase();
+
+  if (!EMAIL_RE.test(email)) {
+    return { error: "Unesite ispravnu email adresu" };
+  }
+
+  const ebook = await prisma.ebook.findUnique({ where: { id: ebookId } });
+  if (!ebook || !ebook.published) {
+    return { error: "Sadržaj više nije dostupan" };
+  }
+
+  try {
+    await prisma.subscriber.create({ data: { email } });
+  } catch {
+    // Unique constraint (already subscribed) — fine, continue to unlock.
+  }
+
+  await addMailerliteSubscriber(email);
+
+  return { success: true, pdfUrl: ebook.pdfUrl, pdfFilename: ebook.pdfFilename };
+}
 
 async function uniqueSlug(title: string, ignoreId?: string) {
   const base = slugify(title, { lower: true, strict: true }) || "ebook";

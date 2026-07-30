@@ -96,7 +96,7 @@ export default async function FreeContentPage() {
               <Link
                 key={ebook.id}
                 href={`/free-content/${ebook.slug}`}
-                className="group relative block aspect-4/5 overflow-hidden rounded-2xl"
+                className="group relative block aspect-4/5 overflow-hidden"
               >
                 {ebook.thumbnail ? (
                   <Image

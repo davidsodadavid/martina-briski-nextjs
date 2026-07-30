@@ -3,7 +3,6 @@ import { prisma } from "@/lib/prisma";
 import Logo from "@/components/Logo";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import FooterReveal from "@/components/FooterReveal";
-import PracticeCardsGrid from "@/components/PracticeCardsGrid";
 import InstagramIcon from "@/components/InstagramIcon";
 import ContactLink from "@/components/ContactLink";
 import type { Dictionary } from "@/lib/i18n/shared";
@@ -51,27 +50,16 @@ const WAVE_TILE_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="400" heigh
 const WAVE_TILE_DATA_URL = `data:image/svg+xml;base64,${Buffer.from(WAVE_TILE_SVG).toString("base64")}`;
 
 export default async function SiteFooter({ dict }: { dict: Dictionary }) {
-  const programs = await prisma.program.findMany({
-    where: { published: true },
-    orderBy: { createdAt: "desc" },
-  });
-
-  const otherLinks = [
-    { label: dict.nav.events, href: "/events" },
-    { label: dict.nav.blog, href: "/blog" },
-    { label: dict.nav.contact, href: "/contact" },
-  ];
-
-  const PRACTICE_CARDS = [
-    {
-      label: dict.nav.practiceItems.breathingCircle,
-      href: "/practice/breathing-circle",
-    },
-    {
-      label: dict.nav.practiceItems.breathTimer,
-      href: "/practice/breath-timer",
-    },
-  ];
+  const [programs, ebooks] = await Promise.all([
+    prisma.program.findMany({
+      where: { published: true },
+      orderBy: { createdAt: "desc" },
+    }),
+    prisma.ebook.findMany({
+      where: { published: true },
+      orderBy: { createdAt: "desc" },
+    }),
+  ]);
 
   return (
     <footer
@@ -117,29 +105,20 @@ export default async function SiteFooter({ dict }: { dict: Dictionary }) {
 
             <div>
               <h3 className="mb-3 text-xs font-medium tracking-[0.22em] text-[var(--nav-overlay-text)]/65 uppercase">
-                {dict.footer.pages}
+                {dict.nav.freeContent}
               </h3>
               <ul className="flex flex-col gap-1">
-                {otherLinks.map((link, i) => (
-                  <li key={link.href}>
+                {ebooks.map((ebook, i) => (
+                  <li key={ebook.id}>
                     <FooterNavLink
                       number={String(i + 1).padStart(2, "0")}
-                      label={link.label}
-                      href={link.href}
+                      label={ebook.title}
+                      href={`/free-content/${ebook.slug}`}
                     />
                   </li>
                 ))}
               </ul>
             </div>
-          </div>
-
-          <div className="mt-14">
-            <FooterNavLink number="01" label={dict.nav.practice} href="/practice" />
-            <PracticeCardsGrid
-              practiceCards={PRACTICE_CARDS}
-              cardsClassName="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3"
-              uniformHeight
-            />
           </div>
         </div>
 
