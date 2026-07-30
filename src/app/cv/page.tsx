@@ -2,6 +2,12 @@ import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import { CV_ID } from "@/lib/cv";
 
+// Reads from the database — render per-request. Unlike the (public) and
+// (practice-tools) route groups, this page has no shared layout to set
+// this on, so it needs its own (otherwise `next build` tries to prerender
+// it statically and fails with no DB available at build time).
+export const dynamic = "force-dynamic";
+
 // Not linked from anywhere on the site (no nav/footer entry) — this is a
 // standalone page meant to be shared directly with clients, so it's kept
 // out of search results too.
