@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
 import { getLocale, getDictionary } from "@/lib/i18n";
+import { addMailerliteSubscriber } from "@/lib/mailerlite";
 
 export type SubscribeState = { error?: string; success?: boolean };
 
@@ -28,6 +29,8 @@ export async function subscribe(
     // Unique constraint (already subscribed) — treat as success so we
     // don't leak which emails are already in the list.
   }
+
+  await addMailerliteSubscriber(email);
 
   revalidatePath("/admin/subscribers");
   return { success: true };
