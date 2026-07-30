@@ -56,6 +56,14 @@ jobs:
           ssh -f -N -L 5433:localhost:5432 \
             -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 \
             "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}"
+
+          # One-time recovery: a previous deploy failed partway through making
+          # Ebook.slug required, because existing rows had no slug yet.
+          # Backfill them, then tell Prisma to retry that migration.
+          # TODO: remove these two lines once the next deploy succeeds.
+          echo "UPDATE \"Ebook\" SET slug = lower(regexp_replace(trim(title), '[^a-zA-Z0-9]+', '-', 'g')) || '-' || substr(id, 1, 6) WHERE slug IS NULL;" | pnpm exec prisma db execute --stdin
+          pnpm exec prisma migrate resolve --rolled-back 20260729165626_make_ebook_slug_required || true
+
           pnpm exec prisma migrate deploy
 
       - name: Activate release
