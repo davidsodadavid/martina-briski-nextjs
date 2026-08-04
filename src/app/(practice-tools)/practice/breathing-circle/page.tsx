@@ -6,7 +6,10 @@ export default function BreathingCirclePage() {
       <BreathingCircle
         inhaleSeconds={4}
         exhaleSeconds={4}
-        sizeScale={1.2}
+        showLabel
+        labelRevealDelayMs={5000}
+        sizeScale={1.5}
+        phaseFontSize={16}
         phaseFade
         holdSeconds={3}
         restSeconds={3}
