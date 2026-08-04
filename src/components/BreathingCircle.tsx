@@ -2,6 +2,42 @@
 
 import { useEffect, useRef, useState } from "react";
 
+const INTRO_LINES = ["TVOJ DAH", "TVOJ RITAM", "TVOJ PROSTOR"];
+
+const INTRO_LINE_FADE_MS = 1200;
+const INTRO_LINE_STAGGER_MS = 850;
+
+/** Replaces an SVG <text> element's content with several vertically centered
+ * <tspan> lines — plain textContent can't wrap/stack inside SVG text — and
+ * fades each line in one after another. Returns the setTimeout ids used for
+ * the staggered reveal so the caller can clear them on cleanup/unmount. */
+function showIntroLines(
+  el: SVGTextElement,
+  lines: string[],
+  lineHeight: number
+): ReturnType<typeof setTimeout>[] {
+  el.style.transition = "none";
+  el.style.opacity = "1";
+  el.textContent = "";
+  const startDy = -((lines.length - 1) / 2) * lineHeight;
+  const timeouts: ReturnType<typeof setTimeout>[] = [];
+  lines.forEach((line, i) => {
+    const tspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+    tspan.setAttribute("x", "0");
+    tspan.setAttribute("dy", String(i === 0 ? startDy : lineHeight));
+    tspan.textContent = line;
+    tspan.style.opacity = "0";
+    el.appendChild(tspan);
+    timeouts.push(
+      setTimeout(() => {
+        tspan.style.transition = `opacity ${INTRO_LINE_FADE_MS}ms ease-in-out`;
+        tspan.style.opacity = "1";
+      }, i * INTRO_LINE_STAGGER_MS)
+    );
+  });
+  return timeouts;
+}
+
 export interface BreathingCircleProps {
   /** Seconds spent breathing in. Default 6. */
   inhaleSeconds?: number;
@@ -19,9 +55,9 @@ export interface BreathingCircleProps {
   labelRevealDelayMs?: number;
   /** Scales the rendered circle's size (and its container) up or down. Default 1. */
   sizeScale?: number;
-  /** Font size (px) of the centered "udahni"/"izdahni" text. Default 20. */
+  /** Font size (px) of the centered "udah"/"izdah" text. Default 20. */
   phaseFontSize?: number;
-  /** Cross-fade the "udahni"/"izdahni" text instead of swapping it instantly. Default false. */
+  /** Cross-fade the "udah"/"izdah" text instead of swapping it instantly. Default false. */
   phaseFade?: boolean;
   /** Seconds to hold the circle at full expansion after inhaling, before it
    * starts to shrink. No text is shown during the hold. Default 0 (no hold). */
@@ -53,6 +89,7 @@ export default function BreathingCircle({
   );
   const preFadeStartedRef = useRef(false);
   const preColorFadeStartedRef = useRef(false);
+  const introTimeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const [labelVisible, setLabelVisible] = useState(labelRevealDelayMs === 0);
 
   useEffect(() => {
@@ -75,19 +112,12 @@ export default function BreathingCircle({
     const restMs = restSeconds * 1000;
     const cycleMs = inhaleMs + holdMs + exhaleMs + restMs;
 
-    function getRadius() {
-      const w = window.innerWidth;
-      if (w <= 480) return 100;
-      if (w <= 768) return 120;
-      return 140;
-    }
-
-    let baseRadius = getRadius();
-
-    const handleResize = () => {
-      baseRadius = getRadius();
-    };
-    window.addEventListener("resize", handleResize);
+    // The circle's on-screen size is entirely driven by the SVG container's
+    // CSS width/height (see .breathing-circle-svg in globals.css) — the
+    // radius here just needs to fill the fixed 400x400 viewBox well, so it
+    // stays constant rather than re-deriving a second, redundant responsive
+    // scale from window width.
+    const baseRadius = 140;
 
     startRef.current = performance.now();
 
@@ -135,9 +165,9 @@ export default function BreathingCircle({
 
         const nextText =
           phase === "inhale"
-            ? "udahni"
+            ? "udah"
             : phase === "exhale"
-              ? "izdahni"
+              ? "izdah"
               : "";
         const el = phaseRef.current;
         if (el) {
@@ -150,16 +180,14 @@ export default function BreathingCircle({
               el.textContent = "";
               el.style.opacity = "0";
             } else if (prevPhase === null) {
-              // very first frame on mount — one slow, smooth fade in
-              el.textContent = nextText;
-              el.style.transition = "none";
-              el.style.opacity = "0";
-              requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                  el.style.transition = "opacity 2800ms ease-in-out";
-                  el.style.opacity = "1";
-                });
-              });
+              // very first frame on mount — the opening cue ("your breath,
+              // your rhythm, your space") instead of the regular one-word
+              // phase label, each line fading in one after another
+              introTimeoutsRef.current = showIntroLines(
+                el,
+                INTRO_LINES,
+                phaseFontSize * 1.3
+              );
             } else {
               // leaving a pause (hold/rest) — start fading in right away,
               // finishing partway into the new inhale/exhale phase
@@ -211,12 +239,17 @@ export default function BreathingCircle({
         }
       }
 
+      // A bit narrower when fully shrunk (breath 0) than at full inhale
+      // (breath 1), where the width stays at the original 0.8.
+      const xScale = 0.78 + breath * 0.02;
+      const yScale = 1.1;
+
       const points: [number, number][] = [];
       for (let i = 0; i <= NUM_POINTS; i++) {
         const angle = (Math.PI * 2 * i) / NUM_POINTS;
         const wave = Math.sin(angle * 4 + elapsed);
         const r = baseRadius + wave * 8 + breath * 40;
-        points.push([r * Math.cos(angle) * 0.8, r * Math.sin(angle) * 1.1]);
+        points.push([r * Math.cos(angle) * xScale, r * Math.sin(angle) * yScale]);
       }
 
       let d = `M${points[0][0]},${points[0][1]}`;
@@ -232,9 +265,17 @@ export default function BreathingCircle({
 
     return () => {
       cancelAnimationFrame(raf);
-      window.removeEventListener("resize", handleResize);
+      introTimeoutsRef.current.forEach(clearTimeout);
     };
-  }, [inhaleSeconds, exhaleSeconds, phaseFade, holdSeconds, restSeconds, ink]);
+  }, [
+    inhaleSeconds,
+    exhaleSeconds,
+    phaseFade,
+    holdSeconds,
+    restSeconds,
+    ink,
+    phaseFontSize,
+  ]);
 
   return (
     <div
@@ -314,11 +355,14 @@ export default function BreathingCircle({
       >
         <svg
           viewBox="0 0 400 400"
-          style={{
-            width: `min(${80 * sizeScale}vw, ${420 * sizeScale}px)`,
-            height: `min(${80 * sizeScale}vw, ${420 * sizeScale}px)`,
-            overflow: "visible",
-          }}
+          className="breathing-circle-svg"
+          style={
+            {
+              overflow: "visible",
+              "--circle-vw": 80 * sizeScale,
+              "--circle-px": 420 * sizeScale,
+            } as React.CSSProperties
+          }
         >
           <g transform="translate(200, 200)">
             <path
@@ -338,9 +382,7 @@ export default function BreathingCircle({
               fill={ink}
               fontFamily="'Marcellus', serif"
               fontSize={phaseFontSize}
-            >
-              udahni
-            </text>
+            />
           </g>
         </svg>
       </div>

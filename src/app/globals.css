@@ -114,3 +114,22 @@ button:disabled {
   color: #3b443f;
   line-height: 1.8;
 }
+
+.breathing-circle-svg {
+  width: min(calc(var(--circle-vw) * 1vw), calc(var(--circle-px) * 1px));
+  height: min(calc(var(--circle-vw) * 1vw), calc(var(--circle-px) * 1px));
+}
+
+@media (max-width: 1023px) {
+  .breathing-circle-svg {
+    width: 90vw;
+    height: 90vw;
+  }
+}
+
+@media (max-width: 640px) {
+  .breathing-circle-svg {
+    width: 120vw;
+    height: 120vw;
+  }
+}

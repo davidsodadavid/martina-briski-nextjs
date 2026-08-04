@@ -7,15 +7,15 @@ export default function HomePage() {
     <main className="relative w-full flex-1">
       <HomeCursor className="absolute inset-0">
         <BreathingCircle
-          inhaleSeconds={6}
-          exhaleSeconds={6}
+          inhaleSeconds={4}
+          exhaleSeconds={4}
           showLabel
           labelRevealDelayMs={5000}
           sizeScale={1.5}
           phaseFontSize={16}
           phaseFade
-          holdSeconds={0.7}
-          restSeconds={0.7}
+          holdSeconds={3}
+          restSeconds={3}
         />
       </HomeCursor>
       <HomePracticeCta />
