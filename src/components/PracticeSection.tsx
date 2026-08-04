@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import BreathingCirclePreview from "@/components/BreathingCirclePreview";
-import BreathTimerPreview from "@/components/BreathTimerPreview";
 
 type PracticeItem = {
   title: string;
@@ -15,12 +13,10 @@ const TOOLS = [
   {
     label: "Ritam disanja za smireni um",
     href: "/practice/breathing-circle",
-    Preview: BreathingCirclePreview,
   },
   {
     label: "Plank",
     href: "/practice/breath-timer",
-    Preview: BreathTimerPreview,
   },
 ];
 
@@ -105,8 +101,6 @@ export default function PracticeSection({
                 aria-label={tool.label}
                 className="absolute inset-0 z-0"
               />
-              <tool.Preview className="pointer-events-none absolute inset-0 h-full w-full" />
-
               {items[i] && (items[i].title || items[i].description) && (
                 <button
                   type="button"
