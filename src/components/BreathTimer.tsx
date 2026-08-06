@@ -46,7 +46,7 @@ export default function BreathTimer({
   const RESTING = 0.08;
   const fillRgb = hexToRgb(fillTo);
   const LINE_WHITE: [number, number, number] = [255, 255, 255];
-  const LINE_PULSE: [number, number, number] = [205, 240, 177]; // #CDF0B1
+  const LINE_PULSE: [number, number, number] = [211, 249, 181]; // #D3F9B5
   const PULSE_PERIOD_MS = 3500;
 
   const onStart = () => {
@@ -201,7 +201,7 @@ export default function BreathTimer({
           {' '}
           &middot; {label}
         </span>
-        <span style={{ fontWeight: 500, fontSize: 12, letterSpacing: '0.34em', textTransform: 'uppercase', color: '#CDF0B1' }}>
+        <span style={{ fontWeight: 500, fontSize: 12, letterSpacing: '0.34em', textTransform: 'uppercase', color: '#D3F9B5' }}>
           {' '}
           &middot; {duration} sekundi
         </span>
@@ -225,7 +225,7 @@ export default function BreathTimer({
           style={{
             fontFamily: "'Marcellus', serif",
             fontSize: 20,
-            color: '#EDEBE3',
+            color: '#F1F1F1',
             lineHeight: 1,
           }}
         >
@@ -244,7 +244,7 @@ export default function BreathTimer({
               letterSpacing: '0.24em',
               textTransform: 'uppercase',
               color: '#2C3A2C',
-              background: '#CDF0B1',
+              background: '#D3F9B5',
               border: 'none',
               padding: '15px 34px',
               borderRadius: 100,
@@ -264,7 +264,7 @@ export default function BreathTimer({
               fontSize: 12,
               letterSpacing: '0.24em',
               textTransform: 'uppercase',
-              color: '#EDEBE3',
+              color: '#F1F1F1',
               background: 'none',
               border: '1px solid rgba(237,235,227,0.55)',
               padding: done ? '15px 34px' : '0px',

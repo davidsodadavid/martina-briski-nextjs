@@ -43,6 +43,17 @@ function readTags(formData: FormData): string[] {
     .filter(Boolean);
 }
 
+function readGalleryImages(formData: FormData): string[] {
+  const raw = String(formData.get("galleryImages") || "[]");
+  try {
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter((item): item is string => typeof item === "string");
+  } catch {
+    return [];
+  }
+}
+
 async function savePdfFile(file: File) {
   const ext = path.extname(file.name) || ".pdf";
   const filename = `${crypto.randomUUID()}${ext}`;
@@ -74,7 +85,7 @@ export async function createProgram(
   const thumbnail = String(formData.get("thumbnail") || "").trim();
   const description = String(formData.get("description") || "").trim();
   const tags = readTags(formData);
-  const galleryImage = String(formData.get("galleryImage") || "").trim();
+  const galleryImages = readGalleryImages(formData);
 
   let pdfUrl: string | null = null;
   let pdfFilename: string | null = null;
@@ -99,7 +110,7 @@ export async function createProgram(
       thumbnail: thumbnail || null,
       description: description || null,
       tags,
-      galleryImage: galleryImage || null,
+      galleryImages,
       pdfUrl,
       pdfFilename,
       steps,
@@ -130,7 +141,7 @@ export async function updateProgram(
   const thumbnail = String(formData.get("thumbnail") || "").trim();
   const description = String(formData.get("description") || "").trim();
   const tags = readTags(formData);
-  const galleryImage = String(formData.get("galleryImage") || "").trim();
+  const galleryImages = readGalleryImages(formData);
 
   const existing = await prisma.program.findUnique({ where: { id } });
   if (!existing) {
@@ -164,7 +175,7 @@ export async function updateProgram(
       thumbnail: thumbnail || null,
       description: description || null,
       tags,
-      galleryImage: galleryImage || null,
+      galleryImages,
       pdfUrl,
       pdfFilename,
       steps,

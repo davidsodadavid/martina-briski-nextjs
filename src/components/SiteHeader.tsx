@@ -480,7 +480,7 @@ export default function SiteHeader({
             <NavCta
               closeMenu={closeMenu}
               dict={dict}
-              className="block w-full rounded-full bg-[var(--nav-highlight)] px-[26px] py-3.5 text-center text-xs font-medium tracking-[0.24em] text-[var(--nav-dark-text)] uppercase transition-colors duration-[250ms] hover:bg-[var(--nav-highlight-dark)]"
+              className="block w-full rounded-lg bg-[var(--nav-highlight)] px-[26px] py-3.5 text-center text-xs font-medium tracking-[0.24em] text-[var(--nav-dark-text)] uppercase transition-colors duration-[250ms] hover:bg-[var(--nav-highlight-dark)]"
             />
           </div>
         </div>
@@ -499,7 +499,7 @@ export default function SiteHeader({
             <NavCta
               closeMenu={closeMenu}
               dict={dict}
-              className="inline-block w-fit self-start rounded-full bg-[var(--nav-highlight)] px-[26px] py-3.5 text-xs font-medium tracking-[0.24em] text-[var(--nav-dark-text)] uppercase transition-colors duration-[250ms] hover:bg-[var(--nav-highlight-dark)]"
+              className="inline-block w-fit self-start rounded-lg bg-[var(--nav-highlight)] px-[26px] py-3.5 text-xs font-medium tracking-[0.24em] text-[var(--nav-dark-text)] uppercase transition-colors duration-[250ms] hover:bg-[var(--nav-highlight-dark)]"
             />
           </div>
 

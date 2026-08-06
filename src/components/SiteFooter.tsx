@@ -63,7 +63,7 @@ export default async function SiteFooter({ dict }: { dict: Dictionary }) {
 
   return (
     <footer
-      className="relative overflow-hidden px-6 pt-24 pb-8 text-[var(--nav-overlay-text)] md:px-10"
+      className="relative overflow-hidden px-6 pt-14 pb-12 text-[var(--nav-overlay-text)] md:px-10 md:pt-16"
       style={{ fontFamily: "var(--font-jost), sans-serif" }}
     >
       {/* drifting wavy-line motif, positioned above the bottom edge — a
@@ -122,7 +122,7 @@ export default async function SiteFooter({ dict }: { dict: Dictionary }) {
           </div>
         </div>
 
-        <div className="relative mx-auto mt-10 flex w-full flex-wrap items-center justify-between gap-4 pb-2">
+        <div className="relative mx-auto mt-20 flex w-full flex-wrap items-center justify-between gap-4 pb-2 md:mt-28">
           <div className="flex items-center gap-5 text-xs tracking-[0.16em] uppercase">
             <a
               href={INSTAGRAM_URL}

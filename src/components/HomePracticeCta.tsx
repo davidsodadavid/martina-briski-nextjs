@@ -32,7 +32,7 @@ export default function HomePracticeCta() {
           e.preventDefault();
           navigate("/practice");
         }}
-        className="block w-full rounded-full bg-[var(--nav-highlight)] px-[26px] py-3.5 text-center text-xs font-medium tracking-[0.24em] text-[var(--nav-dark-text)] uppercase transition-colors duration-[250ms] hover:bg-[var(--nav-highlight-dark)] md:w-auto"
+        className="block w-full rounded-lg bg-[var(--nav-highlight)] px-[26px] py-3.5 text-center text-xs font-medium tracking-[0.24em] text-[var(--nav-dark-text)] uppercase transition-colors duration-[250ms] hover:bg-[var(--nav-highlight-dark)] md:w-auto"
         style={{ fontFamily: "var(--font-jost), sans-serif" }}
       >
         {dict.homepage.goToPractice}

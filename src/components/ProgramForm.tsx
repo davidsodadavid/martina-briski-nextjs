@@ -2,6 +2,7 @@
 
 import { useActionState, useRef, useState } from "react";
 import ThumbnailPicker from "@/components/ThumbnailPicker";
+import GalleryPicker from "@/components/GalleryPicker";
 import type { ProgramFormState } from "@/app/actions/programs";
 import { PROGRAM_STEP_COUNT, type ProgramStep } from "@/lib/program";
 
@@ -18,7 +19,7 @@ type ProgramFormProps = {
     thumbnail: string | null;
     description: string | null;
     tags: string[];
-    galleryImage: string | null;
+    galleryImages: string[];
     pdfFilename: string | null;
     steps: ProgramStep[];
   };
@@ -98,13 +99,17 @@ export default function ProgramForm({
 
       <div>
         <label className="mb-1 block text-sm font-medium text-neutral-700">
-          Gallery photo (optional)
+          Gallery photos (optional)
         </label>
-        <ThumbnailPicker
-          name="galleryImage"
-          initialUrl={initialProgram?.galleryImage}
+        <p className="mb-2 text-xs text-neutral-500">
+          Shown as a full-width auto-advancing slideshow on the program page.
+          Add two or more to make it slide; a single photo just displays
+          statically.
+        </p>
+        <GalleryPicker
+          name="galleryImages"
+          initialUrls={initialProgram?.galleryImages ?? []}
           mediaLibrary={mediaLibrary}
-          allowUpload={false}
         />
       </div>
 

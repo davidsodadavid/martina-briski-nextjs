@@ -52,7 +52,7 @@ export default async function ProductPage({
           <div className="flex flex-col gap-5">
             <div>
               <div
-                className="mb-3 text-xs tracking-[0.24em] text-[var(--accent-clay)] uppercase"
+                className="mb-3 text-xs tracking-[0.24em] text-[var(--nav-dark-text)] uppercase"
                 style={{ fontFamily: "var(--font-jost), sans-serif" }}
               >
                 Iz trgovine
@@ -66,7 +66,7 @@ export default async function ProductPage({
             </div>
 
             <div
-              className="text-[26px] text-[var(--accent-clay)]"
+              className="text-[26px] text-[var(--nav-dark-text)]"
               style={{ fontFamily: "var(--font-marcellus), serif" }}
             >
               {product.discountPrice != null ? (
@@ -104,7 +104,7 @@ export default async function ProductPage({
                 <Link
                   key={prod.id}
                   href={`/shop/${prod.slug}`}
-                  className="flex flex-col overflow-hidden rounded-2xl border border-[#D5D2C4] bg-[#F3F1E9]"
+                  className="flex flex-col overflow-hidden border border-[#D5D2C4] bg-[var(--nav-overlay-text)]"
                 >
                   <div className="relative aspect-4/5 w-full overflow-hidden bg-[#D8D5C7]">
                     {prod.thumbnail && (
@@ -124,7 +124,7 @@ export default async function ProductPage({
                       {prod.name}
                     </div>
                     <div
-                      className="text-[15px] text-[var(--accent-clay)]"
+                      className="text-[15px] text-[var(--nav-dark-text)]"
                       style={{ fontFamily: "var(--font-marcellus), serif" }}
                     >
                       {prod.discountPrice != null

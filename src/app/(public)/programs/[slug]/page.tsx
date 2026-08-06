@@ -3,6 +3,8 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { parseSteps } from "@/lib/program";
+import ProgramPathSteps from "@/components/ProgramPathSteps";
+import ProgramGallerySlider from "@/components/ProgramGallerySlider";
 
 export default async function ProgramPage({
   params,
@@ -66,7 +68,10 @@ export default async function ProgramPage({
         {(program.description || program.tags.length > 0) && (
           <section className="px-6 pt-6 md:px-10">
             {program.description && (
-              <p className="max-w-[68ch] text-[clamp(16px,1.3vw,18px)] leading-[1.7] text-[#3B443F]">
+              <p
+                className="mt-4 max-w-[62ch] text-base leading-relaxed whitespace-pre-wrap text-[var(--nav-dark-text)]/70"
+                style={{ fontFamily: "var(--font-jost), sans-serif" }}
+              >
                 {program.description}
               </p>
             )}
@@ -75,7 +80,7 @@ export default async function ProgramPage({
                 {program.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full bg-[#E7E3D4] px-3.5 py-1.5 text-xs text-[#3B443F]"
+                    className="bg-[#E7E3D4] px-3.5 py-1.5 text-xs text-[#3B443F]"
                   >
                     {tag}
                   </span>
@@ -88,62 +93,24 @@ export default async function ProgramPage({
         {/* ===================== STEPS ===================== */}
         {steps.length > 0 && (
           <section className="px-6 pt-14 md:px-10 md:pt-20">
-            <h2
-              className="mb-[30px] text-[clamp(24px,3vw,34px)] font-normal"
-              style={{ fontFamily: "var(--font-marcellus), serif" }}
-            >
-              Kako izgleda program
-            </h2>
-            <div className="grid grid-cols-1 gap-[clamp(20px,2.4vw,28px)] sm:grid-cols-2 lg:grid-cols-4">
-              {steps.map((step, i) => (
-                <div key={i} className="flex flex-col gap-3">
-                  <div
-                    className="text-[34px] text-[var(--accent-clay)]"
-                    style={{ fontFamily: "var(--font-marcellus), serif" }}
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </div>
-                  <div
-                    className="text-[19px]"
-                    style={{ fontFamily: "var(--font-marcellus), serif" }}
-                  >
-                    {step.title}
-                  </div>
-                  {(step.description || step.subtitle) && (
-                    <div className="text-sm leading-[1.6] text-[#55605B]">
-                      {step.description || step.subtitle}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
+            <ProgramPathSteps steps={steps} />
           </section>
         )}
 
-        {/* ===================== GALLERY: single full-bleed grayscale photo ===================== */}
-        {program.galleryImage && (
+        {/* ===================== GALLERY: full-bleed auto-advancing slideshow ===================== */}
+        {program.galleryImages.length > 0 && (
           <section className="pt-14 md:pt-20">
-            <h2
-              className="mb-6 px-6 text-[clamp(24px,3vw,34px)] font-normal md:px-10"
-              style={{ fontFamily: "var(--font-marcellus), serif" }}
-            >
-              Iz prakse
-            </h2>
-            <div className="relative aspect-21/9 w-full overflow-hidden">
-              <Image
-                src={program.galleryImage}
-                alt=""
-                fill
-                className="object-cover grayscale"
-              />
-            </div>
+            <ProgramGallerySlider
+              images={program.galleryImages}
+              alt={program.name}
+            />
           </section>
         )}
 
         {/* ===================== PDF DOWNLOAD ===================== */}
         {program.pdfUrl && (
           <section className="px-6 pt-14 md:px-10 md:pt-20">
-            <div className="flex flex-wrap items-center justify-between gap-5 rounded-2xl border border-[#D5D2C4] bg-[#F3F1E9] p-6 md:p-8">
+            <div className="flex flex-wrap items-center justify-between gap-5 border border-[#D5D2C4] bg-[var(--nav-overlay-text)] p-6 md:p-8">
               <div>
                 <div
                   className="text-[clamp(19px,2vw,22px)]"
@@ -159,7 +126,7 @@ export default async function ProgramPage({
               <a
                 href={program.pdfUrl}
                 download={program.pdfFilename ?? undefined}
-                className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[var(--nav-highlight)] px-6 py-3.5 text-xs font-medium tracking-[0.18em] text-[var(--nav-dark-text)] uppercase hover:bg-[var(--nav-highlight-dark)]"
+                className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-[var(--nav-highlight)] px-6 py-3.5 text-xs font-medium tracking-[0.18em] text-[var(--nav-dark-text)] uppercase hover:bg-[var(--nav-highlight-dark)]"
               >
                 Preuzmi PDF ↓
               </a>
@@ -177,7 +144,7 @@ export default async function ProgramPage({
           </h2>
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 rounded-full bg-[var(--nav-highlight)] px-[30px] py-[15px] text-xs font-medium tracking-[0.2em] text-[var(--nav-dark-text)] uppercase hover:bg-[var(--nav-highlight-dark)]"
+            className="inline-flex items-center gap-2 rounded-lg bg-[var(--nav-highlight)] px-[30px] py-[15px] text-xs font-medium tracking-[0.2em] text-[var(--nav-dark-text)] uppercase hover:bg-[var(--nav-highlight-dark)]"
           >
             Javi se
           </Link>

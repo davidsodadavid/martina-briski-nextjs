@@ -178,7 +178,7 @@ export default async function HomePage({
                 <div className="absolute inset-x-0 bottom-0 flex flex-col gap-3 p-6 md:p-11">
                   <div className="flex items-center gap-3">
                     <span
-                      className="rounded-full bg-[var(--nav-highlight)]/15 px-3 py-1.5 text-[11px] font-medium tracking-[0.16em] text-[var(--nav-highlight)] uppercase"
+                      className="bg-[var(--nav-highlight)]/15 px-3 py-1.5 text-[11px] font-medium tracking-[0.16em] text-[var(--nav-highlight)] uppercase"
                       style={{ fontFamily: "var(--font-jost), sans-serif" }}
                     >
                       {dict.categories[featured.type]}

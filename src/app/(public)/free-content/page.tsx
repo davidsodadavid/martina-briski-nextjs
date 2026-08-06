@@ -130,7 +130,7 @@ export default async function FreeContentPage() {
                     )}
                   </div>
                   <span
-                    className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[var(--nav-highlight)] px-[18px] py-3 text-[11.5px] font-medium tracking-[0.14em] text-[var(--nav-dark-text)] uppercase"
+                    className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-[var(--nav-highlight)] px-[18px] py-3 text-[11.5px] font-medium tracking-[0.14em] text-[var(--nav-dark-text)] uppercase"
                     style={{ fontFamily: "var(--font-jost), sans-serif" }}
                   >
                     Saznaj više →

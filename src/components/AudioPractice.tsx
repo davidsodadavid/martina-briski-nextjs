@@ -53,7 +53,7 @@ export default function AudioPractice({
   subtitle = '9 min · vođena praksa',
   background = '#243027',
   ink = '#FFFFFF',
-  accent = '#CDF0B1',
+  accent = '#D3F9B5',
   fullScreen = false,
 }: AudioPracticeProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -291,7 +291,7 @@ export default function AudioPractice({
             transition: 'opacity .5s ease',
           }}
         >
-          <div style={{ fontFamily: "'Marcellus', serif", fontSize: 20, color: '#EDEBE3' }}>{title}</div>
+          <div style={{ fontFamily: "'Marcellus', serif", fontSize: 20, color: '#F1F1F1' }}>{title}</div>
         </div>
 
         <button
@@ -302,7 +302,7 @@ export default function AudioPractice({
             borderRadius: '50%',
             border: '1px solid rgba(237,235,227,0.45)',
             background: 'none',
-            color: '#EDEBE3',
+            color: '#F1F1F1',
             cursor: 'pointer',
             fontSize: 17,
             display: 'flex',

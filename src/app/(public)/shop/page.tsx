@@ -2,12 +2,18 @@ import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import { stripHtml, truncate } from "@/lib/text";
+import { SHOP_SETTINGS_ID } from "@/lib/shopSettings";
 
 export default async function ShopPage() {
-  const products = await prisma.product.findMany({
-    where: { published: true },
-    orderBy: { createdAt: "desc" },
-  });
+  const [products, settings] = await Promise.all([
+    prisma.product.findMany({
+      where: { published: true },
+      orderBy: { createdAt: "desc" },
+    }),
+    prisma.shopSettings.findUnique({ where: { id: SHOP_SETTINGS_ID } }),
+  ]);
+  const title = settings?.title || "Oprema za tvoju praksu";
+  const description = settings?.description;
 
   return (
     <main className="w-full flex-1 bg-[var(--nav-overlay-text)] px-6 text-[var(--nav-dark-text)] md:px-10">
@@ -15,7 +21,7 @@ export default async function ShopPage() {
         {/* Hero */}
         <section className="pt-14 md:pt-20">
           <div
-            className="mb-6 text-xs tracking-[0.28em] text-[var(--accent-clay)] uppercase"
+            className="mb-6 text-xs tracking-[0.28em] text-[var(--nav-dark-text)] uppercase"
             style={{ fontFamily: "var(--font-jost), sans-serif" }}
           >
             Trgovina
@@ -24,8 +30,13 @@ export default async function ShopPage() {
             className="max-w-[20ch] text-[clamp(32px,4.6vw,60px)] leading-[1.1] font-normal"
             style={{ fontFamily: "var(--font-marcellus), serif" }}
           >
-            Oprema za tvoju praksu
+            {title}
           </h1>
+          {description && (
+            <p className="mt-[18px] max-w-[56ch] text-base leading-relaxed text-[var(--nav-dark-text)]/70">
+              {description}
+            </p>
+          )}
         </section>
 
         {products.length === 0 ? (
@@ -37,7 +48,7 @@ export default async function ShopPage() {
             {products.map((product) => (
               <div
                 key={product.id}
-                className="flex flex-col overflow-hidden bg-[#F3F1E9]"
+                className="flex flex-col overflow-hidden border border-[#D5D2C4] bg-[var(--nav-overlay-text)]"
               >
                 <Link
                   href={`/shop/${product.slug}`}
@@ -65,7 +76,7 @@ export default async function ShopPage() {
                   </div>
                   <div className="mt-auto flex items-center justify-between pt-2.5">
                     <span
-                      className="text-lg text-[var(--accent-clay)]"
+                      className="text-lg text-[var(--nav-dark-text)]"
                       style={{ fontFamily: "var(--font-marcellus), serif" }}
                     >
                       {product.discountPrice != null ? (
@@ -81,7 +92,7 @@ export default async function ShopPage() {
                     </span>
                     <Link
                       href={`/shop/${product.slug}`}
-                      className="inline-flex items-center rounded-full bg-[var(--nav-highlight)] px-4 py-2.5 text-[11px] font-medium tracking-[0.14em] text-[var(--nav-dark-text)] uppercase hover:bg-[var(--nav-highlight-dark)]"
+                      className="inline-flex items-center rounded-lg bg-[var(--nav-highlight)] px-4 py-2.5 text-[11px] font-medium tracking-[0.14em] text-[var(--nav-dark-text)] uppercase hover:bg-[var(--nav-highlight-dark)]"
                     >
                       Pogledaj
                     </Link>

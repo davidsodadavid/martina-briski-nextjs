@@ -26,7 +26,7 @@ export default function BuyButton({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="mt-1.5 inline-flex w-fit items-center justify-center rounded-full bg-[var(--nav-highlight)] px-[34px] py-4 text-[13px] font-medium tracking-[0.2em] text-[var(--nav-dark-text)] uppercase hover:bg-[var(--nav-highlight-dark)]"
+        className="mt-1.5 inline-flex w-fit items-center justify-center rounded-lg bg-[var(--nav-highlight)] px-[34px] py-4 text-[13px] font-medium tracking-[0.2em] text-[var(--nav-dark-text)] uppercase hover:bg-[var(--nav-highlight-dark)]"
       >
         Kupi
       </button>
@@ -37,7 +37,7 @@ export default function BuyButton({
           onClick={() => setOpen(false)}
         >
           <div
-            className="relative w-full max-w-lg rounded-2xl bg-[var(--nav-overlay-text)] p-6 text-[var(--nav-dark-text)] shadow-xl"
+            className="relative w-full max-w-lg bg-[var(--nav-overlay-text)] p-6 text-[var(--nav-dark-text)] shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
             <button

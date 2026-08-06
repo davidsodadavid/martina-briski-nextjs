@@ -94,7 +94,7 @@ export default function PracticeSection({
           {TOOLS.map((tool, i) => (
             <div
               key={tool.href}
-              className="group relative flex h-[260px] flex-col overflow-hidden rounded-2xl border border-[var(--nav-overlay-text)]/25 bg-[var(--nav-bg)] transition-colors hover:border-[var(--nav-highlight)]"
+              className="group relative flex h-[260px] flex-col overflow-hidden border border-[var(--nav-overlay-text)]/25 bg-[var(--nav-bg)] transition-colors hover:border-[var(--nav-highlight)]"
             >
               <Link
                 href={tool.href}

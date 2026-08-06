@@ -64,7 +64,7 @@ export default async function EventPage({
           dangerouslySetInnerHTML={{ __html: event.description }}
         />
 
-        <div className="mt-14 rounded-2xl border border-[#D5D2C4] bg-[#F3F1E9] p-7 md:p-8">
+        <div className="mt-14 border border-[#D5D2C4] bg-[var(--nav-overlay-text)] p-7 md:p-8">
           <h2
             className="mb-5 text-xl"
             style={{ fontFamily: "var(--font-marcellus), serif" }}

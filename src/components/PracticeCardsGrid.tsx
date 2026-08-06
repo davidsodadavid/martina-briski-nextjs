@@ -21,7 +21,7 @@ export default function PracticeCardsGrid({
             key={item.href}
             href={item.href}
             onClick={onNavigate}
-            className={`relative flex flex-col gap-2 overflow-hidden rounded-2xl border border-[var(--nav-overlay-text)]/25 transition-colors hover:border-[var(--nav-highlight)] ${
+            className={`relative flex flex-col gap-2 overflow-hidden border border-[var(--nav-overlay-text)]/25 transition-colors hover:border-[var(--nav-highlight)] ${
               uniformHeight ? "h-[184px]" : ""
             }`}
           >

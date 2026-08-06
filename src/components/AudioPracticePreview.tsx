@@ -60,7 +60,7 @@ export default function AudioPracticePreview({
 
       ctx.clearRect(0, 0, W, H);
       ctx.lineWidth = 1 * dpr;
-      ctx.strokeStyle = "#EDEBE3";
+      ctx.strokeStyle = "#F1F1F1";
 
       const NUM_POINTS = 96;
 

@@ -6,7 +6,7 @@ import { submitOrder, type OrderFormState } from "@/app/actions/orders";
 const initialState: OrderFormState = {};
 
 const inputClassName =
-  "border border-[#D5D2C4] bg-[#F8F6EF] px-3 py-2 text-sm text-[#2E332F] focus:border-[var(--nav-bg)] focus:outline-none";
+  "border border-[#D5D2C4] bg-[var(--nav-overlay-text)] px-3 py-2 text-sm text-[#2E332F] focus:border-[var(--nav-bg)] focus:outline-none";
 const labelClassName = "mb-1 block text-sm font-medium text-[#3B443F]";
 
 export default function OrderForm({
@@ -24,7 +24,7 @@ export default function OrderForm({
 
   if (state.success) {
     return (
-      <div className="flex flex-col gap-2 rounded-2xl border border-[var(--nav-highlight)] bg-[var(--nav-highlight)]/25 p-6">
+      <div className="flex flex-col gap-2 border border-[var(--nav-highlight)] bg-[var(--nav-highlight)]/25 p-6">
         <div
           className="text-lg text-[#2C3A2C]"
           style={{ fontFamily: "var(--font-marcellus), serif" }}
@@ -154,7 +154,7 @@ export default function OrderForm({
       <button
         type="submit"
         disabled={pending}
-        className="self-start rounded-full bg-[var(--nav-highlight)] px-[34px] py-4 text-[13px] font-medium tracking-[0.2em] text-[var(--nav-dark-text)] uppercase hover:bg-[var(--nav-highlight-dark)] disabled:opacity-50"
+        className="self-start rounded-lg bg-[var(--nav-highlight)] px-[34px] py-4 text-[13px] font-medium tracking-[0.2em] text-[var(--nav-dark-text)] uppercase hover:bg-[var(--nav-highlight-dark)] disabled:opacity-50"
       >
         {pending ? "Slanje…" : "Naruči"}
       </button>

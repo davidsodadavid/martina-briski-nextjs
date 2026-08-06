@@ -51,8 +51,9 @@ model Program {
   description   String?
   // Short pill labels, e.g. "grupni sat", "studio", "srednja razina".
   tags          String[] @default([])
-  // Single full-bleed photo for the detail page's gallery section.
-  galleryImage  String?
+  // Full-bleed auto-advancing photo slideshow for the detail page's gallery
+  // section.
+  galleryImages String[] @default([])
   // Optional downloadable program guide PDF.
   pdfUrl        String?
   pdfFilename   String?
@@ -202,6 +203,15 @@ model FreeContentSettings {
   description String?
   // Small bracketed label shown over the hero image, e.g. "Besplatan sadržaj".
   label       String?
+  updatedAt   DateTime @updatedAt
+}
+
+// Singleton settings for the public shop list page — same id-default
+// pattern as FreeContentSettings/BlogSettings.
+model ShopSettings {
+  id          String   @id @default("shop")
+  title       String?
+  description String?
   updatedAt   DateTime @updatedAt
 }
 

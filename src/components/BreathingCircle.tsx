@@ -71,7 +71,7 @@ export default function BreathingCircle({
   inhaleSeconds = 6,
   exhaleSeconds = 6,
   background = "#5F6D6A",
-  ink = "#EDEBE3",
+  ink = "#F1F1F1",
   label = "disanje",
   showLabel = true,
   labelRevealDelayMs = 0,
@@ -105,7 +105,7 @@ export default function BreathingCircle({
     const NUM_POINTS = 128;
     const TEXT_FADE_MS = 1400;
     const COLOR_FADE_MS = 400;
-    const PAUSE_COLOR = "#CDF0B1";
+    const PAUSE_COLOR = "#D3F9B5";
     const inhaleMs = inhaleSeconds * 1000;
     const holdMs = holdSeconds * 1000;
     const exhaleMs = exhaleSeconds * 1000;
@@ -335,7 +335,7 @@ export default function BreathingCircle({
               fontSize: 12,
               letterSpacing: "0.34em",
               textTransform: "uppercase",
-              color: "#CDF0B1",
+              color: "#D3F9B5",
             }}
           >
             {" "}

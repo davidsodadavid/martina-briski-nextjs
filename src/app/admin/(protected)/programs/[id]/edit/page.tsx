@@ -32,7 +32,7 @@ export default async function EditProgramPage({
           thumbnail: program.thumbnail,
           description: program.description,
           tags: program.tags,
-          galleryImage: program.galleryImage,
+          galleryImages: program.galleryImages,
           pdfFilename: program.pdfFilename,
           steps: parseSteps(program.steps),
         }}

@@ -13,9 +13,9 @@
 
   /* Nav overlay palette (from design handoff) */
   --nav-bg: #5f6d6a;
-  --nav-highlight: #cdf0b1;
-  --nav-highlight-dark: #b9e296;
-  --nav-overlay-text: #edebe3;
+  --nav-highlight: #d3f9b5;
+  --nav-highlight-dark: #beeb99;
+  --nav-overlay-text: #f1f1f1;
   --nav-dark-text: #2c3a2c;
   --accent-clay: #b4643e;
 }
@@ -93,6 +93,37 @@ button:disabled {
   }
   50% {
     d: path("M4,24 Q11,19 18,24 T32,24");
+  }
+}
+
+@keyframes programLineFloat {
+  0%,
+  100% {
+    d: path("M20,14 Q500,14 980,14");
+  }
+  50% {
+    d: path("M20,14 Q500,7 980,14");
+  }
+}
+
+@keyframes programLineFloatVertical {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+}
+
+@keyframes programStepFade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

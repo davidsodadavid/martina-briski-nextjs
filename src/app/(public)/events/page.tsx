@@ -43,7 +43,7 @@ export default async function EventsPage() {
         {/* Hero */}
         <section className="pt-14 md:pt-20">
           <div
-            className="mb-6 text-xs tracking-[0.28em] text-[var(--accent-clay)] uppercase"
+            className="mb-6 text-xs tracking-[0.28em] text-[var(--nav-dark-text)] uppercase"
             style={{ fontFamily: "var(--font-jost), sans-serif" }}
           >
             Događanja i termini

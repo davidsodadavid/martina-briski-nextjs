@@ -34,7 +34,7 @@ export default function PostGrid({ posts }: { posts: PostCardData[] }) {
           <Link
             key={post.id}
             href={`/blog/${post.slug}`}
-            className="flex flex-col overflow-hidden border border-[#D5D2C4] bg-[#F3F1E9]"
+            className="flex flex-col overflow-hidden border border-[#D5D2C4] bg-[var(--nav-overlay-text)]"
           >
             <div className="relative aspect-4/3 w-full overflow-hidden bg-[#D8D5C7]">
               {post.thumbnail && (
@@ -84,7 +84,7 @@ export default function PostGrid({ posts }: { posts: PostCardData[] }) {
           <button
             type="button"
             onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
-            className="rounded-full bg-[var(--nav-highlight)] px-8 py-3.5 text-xs font-medium tracking-[0.18em] text-[var(--nav-dark-text)] uppercase hover:bg-[var(--nav-highlight-dark)]"
+            className="rounded-lg bg-[var(--nav-highlight)] px-8 py-3.5 text-xs font-medium tracking-[0.18em] text-[var(--nav-dark-text)] uppercase hover:bg-[var(--nav-highlight-dark)]"
           >
             {dict.home.loadMore}
           </button>

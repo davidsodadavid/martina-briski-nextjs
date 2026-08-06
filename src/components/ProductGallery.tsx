@@ -14,13 +14,13 @@ export default function ProductGallery({
 
   if (images.length === 0) {
     return (
-      <div className="aspect-4/5 w-full rounded-2xl bg-[#F3F1E9]" />
+      <div className="aspect-4/5 w-full bg-[var(--nav-overlay-text)]" />
     );
   }
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="relative aspect-4/5 w-full overflow-hidden rounded-2xl bg-[#F3F1E9]">
+      <div className="relative aspect-4/5 w-full overflow-hidden bg-[var(--nav-overlay-text)]">
         <Image
           src={images[activeIdx]}
           alt={alt}
@@ -35,7 +35,7 @@ export default function ProductGallery({
               key={img}
               type="button"
               onClick={() => setActiveIdx(i)}
-              className="relative h-[68px] w-[68px] shrink-0 overflow-hidden rounded-[10px]"
+              className="relative h-[68px] w-[68px] shrink-0 overflow-hidden"
               style={{
                 border: `2px solid ${i === activeIdx ? "var(--accent-clay)" : "transparent"}`,
               }}

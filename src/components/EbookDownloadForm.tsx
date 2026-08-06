@@ -20,7 +20,7 @@ export default function EbookDownloadForm({ ebookId }: { ebookId: string }) {
       <a
         href={state.pdfUrl}
         download={state.pdfFilename}
-        className="mt-10 inline-flex items-center gap-2 rounded-full bg-[var(--nav-highlight)] px-[30px] py-[15px] text-xs font-medium tracking-[0.2em] text-[var(--nav-dark-text)] uppercase hover:bg-[var(--nav-highlight-dark)]"
+        className="mt-10 inline-flex items-center gap-2 rounded-lg bg-[var(--nav-highlight)] px-[30px] py-[15px] text-xs font-medium tracking-[0.2em] text-[var(--nav-dark-text)] uppercase hover:bg-[var(--nav-highlight-dark)]"
       >
         Preuzmi PDF ↓
       </a>
@@ -37,12 +37,12 @@ export default function EbookDownloadForm({ ebookId }: { ebookId: string }) {
         name="email"
         type="email"
         placeholder="tvoj@email.com"
-        className="border border-[#D5D2C4] bg-[#F8F6EF] px-[18px] py-3.5 text-[14.5px] text-[#2E332F] focus:border-[var(--nav-bg)] focus:outline-none"
+        className="border border-[#D5D2C4] bg-[var(--nav-overlay-text)] px-[18px] py-3.5 text-[14.5px] text-[#2E332F] focus:border-[var(--nav-bg)] focus:outline-none"
       />
       <button
         type="submit"
         disabled={pending}
-        className="rounded-full bg-[var(--nav-highlight)] p-3.5 text-xs font-medium tracking-[0.18em] text-[var(--nav-dark-text)] uppercase hover:bg-[var(--nav-highlight-dark)] disabled:opacity-50"
+        className="rounded-lg bg-[var(--nav-highlight)] p-3.5 text-xs font-medium tracking-[0.18em] text-[var(--nav-dark-text)] uppercase hover:bg-[var(--nav-highlight-dark)] disabled:opacity-50"
       >
         {pending ? "Slanje…" : "Otključaj preuzimanje"}
       </button>

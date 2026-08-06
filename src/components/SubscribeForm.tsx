@@ -29,7 +29,7 @@ export default function SubscribeForm() {
       </div>
       <div className="flex flex-col justify-center gap-4 rounded-b-[20px] bg-[var(--nav-overlay-text)] p-8 md:rounded-b-none md:rounded-r-[20px] md:p-16">
         <div
-          className="text-[11px] font-medium tracking-[0.24em] text-[var(--accent-clay)] uppercase"
+          className="text-xs tracking-[0.28em] text-[var(--nav-dark-text)] uppercase"
           style={{ fontFamily: "var(--font-jost), sans-serif" }}
         >
           {dict.home.newsletterLabel}
@@ -45,7 +45,7 @@ export default function SubscribeForm() {
         </p>
 
         {state.success ? (
-          <div className="mt-2 flex max-w-[420px] items-center gap-2.5 rounded-[10px] border border-[var(--nav-highlight)] bg-[var(--nav-highlight)]/25 px-[18px] py-3.5">
+          <div className="mt-2 flex max-w-[420px] items-center gap-2.5 border border-[var(--nav-highlight)] bg-[var(--nav-highlight)]/25 px-[18px] py-3.5">
             <span className="text-[15px] text-[#2C3A2C]">✓</span>
             <span className="text-[13.5px] text-[#2C3A2C]">
               {dict.home.subscribed}
@@ -61,12 +61,12 @@ export default function SubscribeForm() {
               name="email"
               type="email"
               placeholder={dict.home.emailPlaceholder}
-              className="border border-[#D5D2C4] bg-[#F8F6EF] px-[18px] py-3.5 text-[14.5px] text-[#2E332F] focus:border-[var(--nav-bg)] focus:outline-none"
+              className="border border-[#D5D2C4] bg-[var(--nav-overlay-text)] px-[18px] py-3.5 text-[14.5px] text-[#2E332F] focus:border-[var(--nav-bg)] focus:outline-none"
             />
             <button
               type="submit"
               disabled={pending}
-              className="rounded-full bg-[var(--nav-highlight)] p-3.5 text-xs font-medium tracking-[0.18em] text-[var(--nav-dark-text)] uppercase hover:bg-[var(--nav-highlight-dark)] disabled:opacity-50"
+              className="rounded-lg bg-[var(--nav-highlight)] p-3.5 text-xs font-medium tracking-[0.18em] text-[var(--nav-dark-text)] uppercase hover:bg-[var(--nav-highlight-dark)] disabled:opacity-50"
             >
               {pending ? dict.home.subscribing : dict.home.subscribe}
             </button>

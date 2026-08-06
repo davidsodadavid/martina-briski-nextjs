@@ -196,7 +196,9 @@ export default function EventsCalendar({
       const isStart = dayIdx === 0;
       const isEnd = dayIdx === days.length - 1;
       const isRowStart = isStart || colIndex === 0;
-      const accent = idx % 2 === 0 ? "var(--accent-clay)" : "var(--nav-bg)";
+      const accent = idx % 2 === 0 ? "var(--nav-bg)" : "var(--nav-highlight)";
+      const accentText =
+        idx % 2 === 0 ? "#FFFFFF" : "var(--nav-dark-text)";
       const bottom = 8 + idx * 22;
       const daysLeftInRange = days.length - dayIdx;
       const daysLeftInRow = 7 - colIndex;
@@ -207,6 +209,7 @@ export default function EventsCalendar({
         isEnd,
         isRowStart,
         accent,
+        accentText,
         bottom,
         span,
         z: zForRange(ev.id),
@@ -217,7 +220,8 @@ export default function EventsCalendar({
     const topZ = ranges.length > 0 ? Math.max(...ranges.map((r) => r.z)) : 1;
     const chips = singleEvs.slice(0, 2).map((ev, idx) => ({
       ev,
-      accent: idx % 2 === 0 ? "var(--accent-clay)" : "var(--nav-bg)",
+      accent: idx % 2 === 0 ? "var(--nav-bg)" : "var(--nav-highlight)",
+      accentText: idx % 2 === 0 ? "#FFFFFF" : "var(--nav-dark-text)",
     }));
 
     dayCells.push({
@@ -277,7 +281,7 @@ export default function EventsCalendar({
                   fontSize: 12,
                   letterSpacing: "0.18em",
                   textTransform: "uppercase",
-                  color: "var(--accent-clay)",
+                  color: "var(--nav-dark-text)",
                 }}
               >
                 Prikaži sve ×
@@ -297,7 +301,6 @@ export default function EventsCalendar({
                 color: "var(--nav-dark-text)",
                 border: "1px solid #D5D2C4",
                 padding: "10px 18px",
-                borderRadius: 100,
               }}
             >
               Pogledaj kalendar ↓
@@ -315,9 +318,8 @@ export default function EventsCalendar({
                 gap: "clamp(14px,2.4vw,28px)",
                 alignItems: "center",
                 padding: "clamp(20px,2.6vw,28px)",
-                borderRadius: 14,
                 border: "1px solid #D5D2C4",
-                background: "#F3F1E9",
+                background: "var(--nav-overlay-text)",
               }}
             >
               <div>
@@ -348,7 +350,7 @@ export default function EventsCalendar({
                       fontWeight: 500,
                       fontSize: 10,
                       letterSpacing: "0.06em",
-                      color: "#6B6458",
+                      color: "#55605B",
                       marginTop: 4,
                       whiteSpace: "nowrap",
                     }}
@@ -398,7 +400,6 @@ export default function EventsCalendar({
                       color: "#3B443F",
                       background: "#E7E3D4",
                       padding: "5px 12px",
-                      borderRadius: 100,
                     }}
                   >
                     {ev.time}
@@ -411,7 +412,6 @@ export default function EventsCalendar({
                         color: "#3B443F",
                         background: "#E7E3D4",
                         padding: "5px 12px",
-                        borderRadius: 100,
                       }}
                     >
                       {ev.location}
@@ -425,7 +425,6 @@ export default function EventsCalendar({
                         color: "var(--nav-dark-text)",
                         background: "var(--nav-highlight)",
                         padding: "5px 12px",
-                        borderRadius: 100,
                       }}
                     >
                       {ev.durationLabel}
@@ -446,7 +445,7 @@ export default function EventsCalendar({
                     style={{
                       fontFamily: "var(--font-marcellus), serif",
                       fontSize: 20,
-                      color: "var(--accent-clay)",
+                      color: "var(--nav-dark-text)",
                     }}
                   >
                     {ev.price}
@@ -462,7 +461,6 @@ export default function EventsCalendar({
                     background: "var(--nav-highlight)",
                     color: "var(--nav-dark-text)",
                     padding: "12px 22px",
-                    borderRadius: 100,
                     whiteSpace: "nowrap",
                     textDecoration: "none",
                   }}
@@ -478,9 +476,8 @@ export default function EventsCalendar({
               style={{
                 padding: 40,
                 textAlign: "center",
-                borderRadius: 14,
                 border: "1px dashed #D5D2C4",
-                color: "#6B6458",
+                color: "#55605B",
                 fontSize: 15,
               }}
             >
@@ -502,7 +499,6 @@ export default function EventsCalendar({
                 background: "none",
                 border: "1px solid #D5D2C4",
                 padding: "13px 28px",
-                borderRadius: 100,
                 cursor: "pointer",
               }}
             >
@@ -531,7 +527,7 @@ export default function EventsCalendar({
             style={{
               fontFamily: "var(--font-marcellus), serif",
               fontWeight: 400,
-              fontSize: "clamp(24px,3vw,34px)",
+              fontSize: "clamp(22px,2.6vw,30px)",
               margin: 0,
             }}
           >
@@ -544,7 +540,6 @@ export default function EventsCalendar({
               style={{
                 width: 44,
                 height: 44,
-                borderRadius: "50%",
                 border: "1px solid #D5D2C4",
                 background: "none",
                 color: "var(--nav-dark-text)",
@@ -563,7 +558,6 @@ export default function EventsCalendar({
               style={{
                 width: 44,
                 height: 44,
-                borderRadius: "50%",
                 border: "1px solid #D5D2C4",
                 background: "none",
                 color: "var(--nav-dark-text)",
@@ -586,7 +580,6 @@ export default function EventsCalendar({
             gap: 1,
             background: "#D5D2C4",
             border: "1px solid #D5D2C4",
-            borderRadius: 14,
             overflow: "hidden",
           }}
         >
@@ -601,7 +594,7 @@ export default function EventsCalendar({
                 fontSize: 11,
                 letterSpacing: "0.14em",
                 textTransform: "uppercase",
-                color: "#6B6458",
+                color: "#55605B",
               }}
             >
               {wd}
@@ -615,7 +608,7 @@ export default function EventsCalendar({
               title={cell.tooltip}
               style={{
                 minHeight: isMobile ? 58 : 112,
-                background: cell.isSelected ? "var(--nav-highlight)" : "#F8F6EF",
+                background: cell.isSelected ? "var(--nav-highlight)" : "var(--nav-overlay-text)",
                 position: "relative",
                 display: "flex",
                 flexDirection: "column",
@@ -639,7 +632,6 @@ export default function EventsCalendar({
                       bottom: r.bottom,
                       height: 18,
                       background: r.accent,
-                      borderRadius: `${r.isStart ? 9 : 0}px ${r.isEnd ? 9 : 0}px ${r.isEnd ? 9 : 0}px ${r.isStart ? 9 : 0}px`,
                       display: "flex",
                       alignItems: "center",
                       zIndex: 3,
@@ -657,7 +649,7 @@ export default function EventsCalendar({
                         fontSize: 9.5,
                         fontWeight: 500,
                         letterSpacing: "0.02em",
-                        color: "#FFFFFF",
+                        color: r.accentText,
                         whiteSpace: "nowrap",
                         overflow: "hidden",
                         textOverflow: "ellipsis",
@@ -677,23 +669,15 @@ export default function EventsCalendar({
                   zIndex: 1,
                   width: 24,
                   height: 24,
-                  borderRadius: "50%",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  background:
-                    (cell.ranges.length > 0 || cell.chips.length > 0) &&
-                    !cell.isSelected
-                      ? "#FFFFFF"
-                      : "transparent",
                 }}
               >
                 <span
                   style={{
                     fontSize: 14,
-                    color: cell.isSelected
-                      ? "var(--nav-dark-text)"
-                      : "var(--nav-dark-text)",
+                    color: "var(--nav-dark-text)",
                   }}
                 >
                   {cell.inMonth ? cell.dayNum : ""}
@@ -718,9 +702,8 @@ export default function EventsCalendar({
                       style={{
                         maxWidth: "100%",
                         padding: "2px 8px",
-                        borderRadius: 100,
                         background: c.accent,
-                        color: "#FFFFFF",
+                        color: c.accentText,
                         fontSize: 9,
                         fontWeight: 500,
                         letterSpacing: "0.01em",

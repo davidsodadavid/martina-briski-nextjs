@@ -31,7 +31,7 @@ export default function FooterReveal({
   }, []);
 
   return (
-    <div ref={rootRef} className="relative flex min-h-screen flex-col">
+    <div ref={rootRef} className="relative flex flex-col">
       <div
         className="relative flex flex-1 flex-col transition-[opacity,transform] duration-[900ms] ease-out"
         style={{

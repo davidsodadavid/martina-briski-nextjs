@@ -119,16 +119,16 @@ export default async function AboutPage() {
         <section className="px-6 pb-4 md:px-10">
         <div className="mx-auto grid max-w-[1267px] grid-cols-1 items-center gap-8 md:grid-cols-[0.85fr_1.15fr] md:gap-16">
           {intro.image && (
-            <div className="relative aspect-4/5 overflow-hidden rounded-2xl bg-[#D8D5C7]">
+            <div className="relative aspect-4/5 overflow-hidden bg-[#D8D5C7]">
               <Image src={intro.image} alt="" fill className="object-cover" />
             </div>
           )}
           <div>
             <div
-              className="mb-6 inline-flex rounded-full bg-[var(--nav-bg)] px-3 py-1.5 text-xs font-medium tracking-[0.14em] text-[var(--nav-overlay-text)]"
+              className="mb-6 text-sm tracking-[0.2em] text-[var(--nav-bg)]"
               style={{ fontFamily: "var(--font-jost), sans-serif" }}
             >
-              01
+              (01)
             </div>
             {intro.description && (
               <p
@@ -190,7 +190,10 @@ export default async function AboutPage() {
                     </p>
                   )}
                   {step.description && (
-                    <p className="max-w-[60ch] text-[17px] leading-[1.75] whitespace-pre-wrap opacity-90">
+                    <p
+                      className="mt-4 max-w-[62ch] text-base leading-relaxed whitespace-pre-wrap text-[var(--nav-dark-text)]/70"
+                      style={{ fontFamily: "var(--font-jost), sans-serif" }}
+                    >
                       {step.description}
                     </p>
                   )}
@@ -231,7 +234,7 @@ export default async function AboutPage() {
               <Link
                 key={program.id}
                 href={`/programs/${program.slug}`}
-                className="flex min-h-[200px] flex-col justify-between rounded-2xl border border-[#D5D2C4] bg-[#F3F1E9] p-[26px] transition-colors hover:border-[var(--nav-bg)]"
+                className="flex min-h-[200px] flex-col justify-between border border-[#D5D2C4] bg-[var(--nav-overlay-text)] p-[26px] transition-colors hover:border-[var(--nav-bg)]"
               >
                 <span
                   className="text-xs tracking-[0.2em] text-[var(--nav-bg)] uppercase"
@@ -272,7 +275,7 @@ export default async function AboutPage() {
               href={about.pdfUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block rounded-full bg-[var(--nav-highlight)] px-[26px] py-3.5 text-xs font-medium tracking-[0.24em] text-[var(--nav-dark-text)] uppercase transition-colors duration-[250ms] hover:bg-[var(--nav-highlight-dark)]"
+              className="inline-block rounded-lg bg-[var(--nav-highlight)] px-[26px] py-3.5 text-xs font-medium tracking-[0.24em] text-[var(--nav-dark-text)] uppercase transition-colors duration-[250ms] hover:bg-[var(--nav-highlight-dark)]"
               style={{ fontFamily: "var(--font-jost), sans-serif" }}
             >
               Pročitaj više
