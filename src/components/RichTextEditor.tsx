@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import Link from "@tiptap/extension-link";
 
 type RichTextEditorProps = {
   name: string;
@@ -17,7 +18,17 @@ export default function RichTextEditor({
 
   const editor = useEditor({
     immediatelyRender: false,
-    extensions: [StarterKit],
+    extensions: [
+      StarterKit,
+      Link.configure({
+        openOnClick: false,
+        autolink: true,
+        // Default extension behavior forces target="_blank" on every link,
+        // which is wrong for internal blog links (e.g. /blog/other-post) —
+        // those should navigate in the same tab like any normal link.
+        HTMLAttributes: { target: null, rel: "noopener noreferrer" },
+      }),
+    ],
     content: initialContent,
     onUpdate: ({ editor }) => setHtml(editor.getHTML()),
     editorProps: {
@@ -46,6 +57,27 @@ export default function RichTextEditor({
             active={editor.isActive("strike")}
             onClick={() => editor.chain().focus().toggleStrike().run()}
             label="Strike"
+          />
+          <ToolbarButton
+            active={editor.isActive("link")}
+            onClick={() => {
+              if (editor.isActive("link")) {
+                editor.chain().focus().extendMarkRange("link").unsetLink().run();
+                return;
+              }
+              const url = window.prompt(
+                "Link URL (e.g. https://... or /blog/naslov-objave za interni link):",
+                "https://"
+              );
+              if (!url) return;
+              editor
+                .chain()
+                .focus()
+                .extendMarkRange("link")
+                .setLink({ href: url })
+                .run();
+            }}
+            label="Link"
           />
           <ToolbarButton
             active={editor.isActive("heading", { level: 2 })}

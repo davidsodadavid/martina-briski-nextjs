@@ -5,6 +5,7 @@ import {
   submitContactMessage,
   type ContactFormState,
 } from "@/app/actions/contact";
+import TurnstileWidget from "@/components/TurnstileWidget";
 
 const initialState: ContactFormState = {};
 
@@ -80,6 +81,8 @@ export default function ContactForm() {
           className={`${inputClassName} resize-y`}
         />
       </label>
+
+      <TurnstileWidget resetKey={state} />
 
       {state.error && <p className="text-sm text-red-600">{state.error}</p>}
 

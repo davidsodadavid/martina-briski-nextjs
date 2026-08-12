@@ -234,16 +234,31 @@ export default async function AboutPage() {
               <Link
                 key={program.id}
                 href={`/programs/${program.slug}`}
-                className="flex min-h-[200px] flex-col justify-between border border-[#D5D2C4] bg-[var(--nav-overlay-text)] p-[26px] transition-colors hover:border-[var(--nav-bg)]"
+                className="relative flex min-h-[200px] flex-col justify-between overflow-hidden border border-[#D5D2C4] bg-[#D8D5C7] p-[26px] transition-colors hover:border-[var(--nav-bg)]"
               >
+                {program.thumbnail && (
+                  <Image
+                    src={program.thumbnail}
+                    alt=""
+                    fill
+                    className="object-cover grayscale"
+                  />
+                )}
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      "linear-gradient(to top, rgba(23,20,15,0.75), rgba(23,20,15,0.15) 55%, rgba(23,20,15,0.35))",
+                  }}
+                />
                 <span
-                  className="text-xs tracking-[0.2em] text-[var(--nav-bg)] uppercase"
+                  className="relative z-10 text-xs tracking-[0.2em] text-[var(--nav-highlight)] uppercase"
                   style={{ fontFamily: "var(--font-jost), sans-serif" }}
                 >
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span
-                  className="text-[clamp(19px,2vw,22px)] leading-[1.2]"
+                  className="relative z-10 text-[clamp(19px,2vw,22px)] leading-[1.2] text-[#F7F5EF]"
                   style={{ fontFamily: "var(--font-marcellus), serif" }}
                 >
                   {program.name}

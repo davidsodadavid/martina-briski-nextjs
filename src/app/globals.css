@@ -146,6 +146,16 @@ button:disabled {
   line-height: 1.8;
 }
 
+.blog-article a {
+  color: var(--nav-bg);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.blog-article a:hover {
+  opacity: 0.7;
+}
+
 .breathing-circle-svg {
   width: min(calc(var(--circle-vw) * 1vw), calc(var(--circle-px) * 1px));
   height: min(calc(var(--circle-vw) * 1vw), calc(var(--circle-px) * 1px));

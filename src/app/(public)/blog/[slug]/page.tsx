@@ -1,12 +1,42 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { ABOUT_ID } from "@/lib/about";
 import { CATEGORY_LABELS } from "@/lib/postCategory";
-import { estimateReadTime } from "@/lib/text";
+import { estimateReadTime, stripHtml, truncate } from "@/lib/text";
 import { BLOG_SETTINGS_ID } from "@/lib/blogSettings";
 import { getLocale, getDictionary } from "@/lib/i18n";
+
+const META_DESCRIPTION_MAX = 160;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await prisma.post.findUnique({ where: { slug } });
+
+  if (!post || !post.published) {
+    return {};
+  }
+
+  const description =
+    post.metaDescription ||
+    truncate(stripHtml(post.content), META_DESCRIPTION_MAX);
+
+  return {
+    title: `${post.title} — Martina Briški`,
+    description,
+    openGraph: {
+      title: post.title,
+      description,
+      images: post.thumbnail ? [post.thumbnail] : undefined,
+    },
+  };
+}
 
 export default async function BlogPostPage({
   params,
@@ -60,7 +90,7 @@ export default async function BlogPostPage({
         <section className="max-w-[800px] pt-7">
           <div className="mb-[18px] flex flex-wrap items-center gap-3">
             <span
-              className="rounded-full bg-[#E7E3D4] px-3 py-1.5 text-[11px] font-medium tracking-[0.16em] text-[var(--accent-clay)] uppercase"
+              className="bg-[#E7E3D4] px-3 py-1.5 text-[11px] font-medium tracking-[0.16em] text-[var(--nav-dark-text)] uppercase"
               style={{ fontFamily: "var(--font-jost), sans-serif" }}
             >
               {CATEGORY_LABELS[post.type]}
@@ -104,7 +134,7 @@ export default async function BlogPostPage({
           </div>
           {post.thumbnail && (
             <p
-              className="mt-5 text-[13px] italic text-[var(--accent-clay)]"
+              className="mt-5 text-[13px] italic text-[#8A8371]"
               style={{ fontFamily: "var(--font-jost), sans-serif" }}
             >
               {photoCredit}

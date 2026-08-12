@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useActionState } from "react";
 import { subscribe, type SubscribeState } from "@/app/actions/subscribe";
 import { useDict } from "@/components/LocaleProvider";
+import TurnstileWidget from "@/components/TurnstileWidget";
 
 const initialState: SubscribeState = {};
 
@@ -63,6 +64,7 @@ export default function SubscribeForm() {
               placeholder={dict.home.emailPlaceholder}
               className="border border-[#D5D2C4] bg-[var(--nav-overlay-text)] px-[18px] py-3.5 text-[14.5px] text-[#2E332F] focus:border-[var(--nav-bg)] focus:outline-none"
             />
+            <TurnstileWidget resetKey={state} />
             <button
               type="submit"
               disabled={pending}

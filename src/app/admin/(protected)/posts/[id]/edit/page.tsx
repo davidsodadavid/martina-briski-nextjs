@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import PostForm from "@/components/PostForm";
 import { prisma } from "@/lib/prisma";
@@ -22,7 +23,17 @@ export default async function EditPostPage({
 
   return (
     <>
-      <h1 className="mb-6 text-xl font-semibold text-white">Edit post</h1>
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className="text-xl font-semibold text-white">Edit post</h1>
+        <Link
+          href={`/blog/${post.slug}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-md border border-neutral-600 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800"
+        >
+          View post
+        </Link>
+      </div>
       <PostForm
         action={boundUpdatePost}
         submitLabel="Save changes"

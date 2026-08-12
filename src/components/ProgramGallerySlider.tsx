@@ -25,7 +25,7 @@ export default function ProgramGallerySlider({
   }, [images.length]);
 
   return (
-    <div className="relative aspect-21/9 ml-[calc(50%-50vw)] w-screen overflow-hidden">
+    <div className="relative ml-[calc(50%-50vw)] h-[80vh] w-screen overflow-hidden md:aspect-21/9 md:h-auto">
       {images.map((src, i) => (
         <Image
           key={src}

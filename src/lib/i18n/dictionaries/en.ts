@@ -50,6 +50,7 @@ const en: Dictionary = {
   },
   forms: {
     invalidEmail: "Enter a valid email address",
+    botCheckFailed: "Verification failed. Please try again.",
   },
   homepage: {
     goToPractice: "Go to exercises",

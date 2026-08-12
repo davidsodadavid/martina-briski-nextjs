@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
+import { verifyTurnstile } from "@/lib/turnstile";
 
 export type ContactFormState = { error?: string; success?: boolean };
 
@@ -27,6 +28,9 @@ export async function submitContactMessage(
   }
   if (!message) {
     return { error: "Unesite poruku" };
+  }
+  if (!(await verifyTurnstile(formData.get("cf-turnstile-response")))) {
+    return { error: "Provjera nije uspjela. Pokušajte ponovno." };
   }
 
   await prisma.contactMessage.create({

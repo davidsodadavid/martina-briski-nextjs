@@ -65,7 +65,7 @@ export default async function ContactPage() {
 
           {/* Map */}
           <section className="pb-16 md:pb-24">
-            <div className="relative ml-[calc(-1*(24px+max(0px,50vw_-_633.5px)))] h-[360px] w-[calc(100%+48px+2*max(0px,50vw_-_633.5px))] overflow-hidden md:ml-[calc(-1*(40px+max(0px,50vw_-_633.5px)))] md:h-[440px] md:w-[calc(100%+80px+2*max(0px,50vw_-_633.5px))]">
+            <div className="relative ml-[calc(-1*(24px+max(0px,50vw_-_633.5px)))] h-[80vh] w-[calc(100%+48px+2*max(0px,50vw_-_633.5px))] overflow-hidden md:ml-[calc(-1*(40px+max(0px,50vw_-_633.5px)))] md:h-[440px] md:w-[calc(100%+80px+2*max(0px,50vw_-_633.5px))]">
               <iframe
                 src="https://www.google.com/maps?q=Ilica+42,+Zagreb&output=embed"
                 title="Lokacija studija — Ilica 42, Zagreb"

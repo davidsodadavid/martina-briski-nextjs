@@ -24,6 +24,9 @@ model Post {
   thumbnail String?
   content   String
   type      PostType
+  // SEO meta description (~160 chars), used as the <meta name="description">
+  // on the post's page. Falls back to a truncated excerpt of content when empty.
+  metaDescription String?
   published Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

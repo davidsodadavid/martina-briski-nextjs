@@ -16,6 +16,10 @@ jobs:
     env:
       # Dummy — the build must not touch a database (all DB pages are force-dynamic)
       DATABASE_URL: postgresql://build:build@localhost:5432/build
+      # NEXT_PUBLIC_* vars are inlined into the client bundle at build time,
+      # so this has to be set here — setting it only in the server's runtime
+      # env (like the other secrets) would leave it undefined in production.
+      NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ secrets.TURNSTILE_SITE_KEY }}
     steps:
       - uses: actions/checkout@v4
 

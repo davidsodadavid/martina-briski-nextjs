@@ -9,26 +9,28 @@ import { PostType } from "@/generated/prisma/enums";
 
 export type PostFormState = { error?: string };
 
-async function uniqueSlug(title: string, ignoreId?: string) {
-  const base = slugify(title, { lower: true, strict: true }) || "post";
-  let slug = base;
+async function uniqueSlug(base: string, ignoreId?: string) {
+  const normalized = slugify(base, { lower: true, strict: true }) || "post";
+  let slug = normalized;
   let counter = 1;
   while (
     await prisma.post.findFirst({
       where: { slug, ...(ignoreId ? { NOT: { id: ignoreId } } : {}) },
     })
   ) {
-    slug = `${base}-${counter++}`;
+    slug = `${normalized}-${counter++}`;
   }
   return slug;
 }
 
 function readPostFields(formData: FormData) {
   const title = String(formData.get("title") || "").trim();
+  const slug = String(formData.get("slug") || "").trim();
   const thumbnail = String(formData.get("thumbnail") || "").trim();
   const content = String(formData.get("content") || "").trim();
   const type = String(formData.get("type") || "OTHER") as PostType;
-  return { title, thumbnail, content, type };
+  const metaDescription = String(formData.get("metaDescription") || "").trim();
+  return { title, slug, thumbnail, content, type, metaDescription };
 }
 
 export async function createPost(
@@ -37,7 +39,8 @@ export async function createPost(
 ): Promise<PostFormState> {
   await requireAdmin();
 
-  const { title, thumbnail, content, type } = readPostFields(formData);
+  const { title, slug: customSlug, thumbnail, content, type, metaDescription } =
+    readPostFields(formData);
   if (!title || !content) {
     return { error: "Title and content are required" };
   }
@@ -45,10 +48,17 @@ export async function createPost(
     return { error: "Invalid post type" };
   }
 
-  const slug = await uniqueSlug(title);
+  const slug = await uniqueSlug(customSlug || title);
 
   await prisma.post.create({
-    data: { title, slug, thumbnail: thumbnail || null, content, type },
+    data: {
+      title,
+      slug,
+      thumbnail: thumbnail || null,
+      content,
+      type,
+      metaDescription: metaDescription || null,
+    },
   });
 
   revalidatePath("/");
@@ -63,7 +73,8 @@ export async function updatePost(
 ): Promise<PostFormState> {
   await requireAdmin();
 
-  const { title, thumbnail, content, type } = readPostFields(formData);
+  const { title, slug: customSlug, thumbnail, content, type, metaDescription } =
+    readPostFields(formData);
   if (!title || !content) {
     return { error: "Title and content are required" };
   }
@@ -76,12 +87,18 @@ export async function updatePost(
     return { error: "Post not found" };
   }
 
-  const slug =
-    existing.title === title ? existing.slug : await uniqueSlug(title, id);
+  const slug = await uniqueSlug(customSlug || title, id);
 
   await prisma.post.update({
     where: { id },
-    data: { title, slug, thumbnail: thumbnail || null, content, type },
+    data: {
+      title,
+      slug,
+      thumbnail: thumbnail || null,
+      content,
+      type,
+      metaDescription: metaDescription || null,
+    },
   });
 
   revalidatePath("/");

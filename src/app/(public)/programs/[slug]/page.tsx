@@ -33,12 +33,6 @@ export default async function ProgramPage({
             className="object-cover grayscale"
           />
         )}
-        <Link
-          href="/"
-          className="absolute top-6 right-6 text-sm text-white/80 hover:text-white md:top-8 md:right-10"
-        >
-          ← Natrag na početnu
-        </Link>
         <div
           className="absolute top-6 left-6 flex items-center gap-2 text-[#F7F5EF] md:top-8 md:left-10"
           style={{ textShadow: "0 2px 12px rgba(0,0,0,0.5)" }}
@@ -48,7 +42,7 @@ export default async function ProgramPage({
             className="text-[13px] font-medium tracking-[0.25em] uppercase"
             style={{ fontFamily: "var(--font-jost), sans-serif" }}
           >
-            Program
+            {program.name}
           </span>
           <span className="text-[16px] font-light">]</span>
         </div>

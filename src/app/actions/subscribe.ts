@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
 import { getLocale, getDictionary } from "@/lib/i18n";
 import { addMailerliteSubscriber } from "@/lib/mailerlite";
+import { verifyTurnstile } from "@/lib/turnstile";
 
 export type SubscribeState = { error?: string; success?: boolean };
 
@@ -21,6 +22,10 @@ export async function subscribe(
   if (!EMAIL_RE.test(email)) {
     const dict = getDictionary(await getLocale());
     return { error: dict.forms.invalidEmail };
+  }
+  if (!(await verifyTurnstile(formData.get("cf-turnstile-response")))) {
+    const dict = getDictionary(await getLocale());
+    return { error: dict.forms.botCheckFailed };
   }
 
   try {

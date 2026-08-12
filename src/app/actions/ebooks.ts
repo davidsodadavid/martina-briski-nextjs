@@ -189,3 +189,18 @@ export async function deleteEbook(id: string) {
   revalidatePath("/free-content");
   revalidatePath("/admin/ebooks");
 }
+
+export async function toggleEbookPublished(id: string) {
+  await requireAdmin();
+  const ebook = await prisma.ebook.findUnique({ where: { id } });
+  if (!ebook) return;
+
+  const updated = await prisma.ebook.update({
+    where: { id },
+    data: { published: !ebook.published },
+  });
+
+  revalidatePath("/free-content");
+  revalidatePath(`/free-content/${updated.slug}`);
+  revalidatePath("/admin/ebooks");
+}

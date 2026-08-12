@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import DeleteEbookButton from "@/components/DeleteEbookButton";
+import EbookPublishToggle from "@/components/EbookPublishToggle";
 
 export default async function AdminEbooksPage() {
   const ebooks = await prisma.ebook.findMany({
@@ -45,6 +46,7 @@ export default async function AdminEbooksPage() {
                 </span>
               </div>
               <div className="flex shrink-0 items-center gap-4">
+                <EbookPublishToggle id={ebook.id} published={ebook.published} />
                 <Link
                   href={`/free-content/${ebook.slug}`}
                   className="text-sm text-neutral-500 hover:underline"

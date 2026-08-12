@@ -1,10 +1,12 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import RichTextEditor from "@/components/RichTextEditor";
 import ThumbnailPicker from "@/components/ThumbnailPicker";
 import type { PostFormState } from "@/app/actions/posts";
 import { PostType } from "@/generated/prisma/enums";
+
+const META_DESCRIPTION_MAX = 160;
 
 type MediaItem = { id: string; url: string; filename: string };
 
@@ -23,9 +25,11 @@ type PostFormProps = {
   submitLabel: string;
   initialPost?: {
     title: string;
+    slug: string;
     thumbnail: string | null;
     content: string;
     type: PostType;
+    metaDescription: string | null;
   };
   mediaLibrary: MediaItem[];
 };
@@ -37,6 +41,9 @@ export default function PostForm({
   mediaLibrary,
 }: PostFormProps) {
   const [state, formAction, pending] = useActionState(action, {});
+  const [metaDescription, setMetaDescription] = useState(
+    initialPost?.metaDescription ?? ""
+  );
 
   return (
     <form
@@ -54,6 +61,50 @@ export default function PostForm({
           defaultValue={initialPost?.title}
           className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none"
         />
+      </div>
+
+      <div>
+        <label className="mb-1 block text-sm font-medium text-neutral-700">
+          URL slug (optional)
+        </label>
+        <p className="mb-2 text-xs text-neutral-500">
+          The post&apos;s URL is /blog/&lt;slug&gt;. Leave blank to
+          auto-generate from the title.
+        </p>
+        <input
+          type="text"
+          name="slug"
+          defaultValue={initialPost?.slug}
+          placeholder="npr. kako-ostati-dosljedan-u-praksi"
+          className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none"
+        />
+      </div>
+
+      <div>
+        <label className="mb-1 block text-sm font-medium text-neutral-700">
+          Meta description (optional)
+        </label>
+        <p className="mb-2 text-xs text-neutral-500">
+          Shown in Google search results and social previews. Aim for under{" "}
+          {META_DESCRIPTION_MAX} characters.
+        </p>
+        <textarea
+          name="metaDescription"
+          rows={2}
+          value={metaDescription}
+          onChange={(e) => setMetaDescription(e.target.value)}
+          maxLength={META_DESCRIPTION_MAX}
+          className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none"
+        />
+        <p
+          className={`mt-1 text-right text-xs ${
+            metaDescription.length >= META_DESCRIPTION_MAX
+              ? "text-red-600"
+              : "text-neutral-400"
+          }`}
+        >
+          {metaDescription.length} / {META_DESCRIPTION_MAX}
+        </p>
       </div>
 
       <div>

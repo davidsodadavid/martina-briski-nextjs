@@ -48,6 +48,7 @@ const hr = {
   },
   forms: {
     invalidEmail: "Unesite ispravnu email adresu",
+    botCheckFailed: "Provjera nije uspjela. Pokušajte ponovno.",
   },
   homepage: {
     goToPractice: "Idi na vježbe",

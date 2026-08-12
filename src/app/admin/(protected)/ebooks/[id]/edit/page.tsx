@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import EbookForm from "@/components/EbookForm";
+import EbookPublishToggle from "@/components/EbookPublishToggle";
 import { prisma } from "@/lib/prisma";
 import { updateEbook } from "@/app/actions/ebooks";
 
@@ -22,7 +23,14 @@ export default async function EditEbookPage({
 
   return (
     <>
-      <h1 className="mb-6 text-xl font-semibold text-white">Edit book</h1>
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className="text-xl font-semibold text-white">Edit book</h1>
+        <EbookPublishToggle
+          id={ebook.id}
+          published={ebook.published}
+          className="text-neutral-300"
+        />
+      </div>
       <EbookForm
         action={boundUpdateEbook}
         submitLabel="Save changes"

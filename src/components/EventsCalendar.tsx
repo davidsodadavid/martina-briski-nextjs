@@ -217,7 +217,18 @@ export default function EventsCalendar({
     });
 
     const tooltip = matches.map((ev) => ev.title).join(", ");
-    const topZ = ranges.length > 0 ? Math.max(...ranges.map((r) => r.z)) : 1;
+    // A row-start label spanning >1 day visually bleeds into the cells to
+    // its right within the same row. Those cells share the same z (it's
+    // keyed only by event id), so at equal z the later-DOM sibling would
+    // normally paint its own background on top and clip the label right at
+    // the first cell's edge — boost the label's cell well above any
+    // possible sibling z so the full title always stays visible.
+    const hasSpanningLabel = ranges.some((r) => r.isRowStart && r.span > 1);
+    const topZ = hasSpanningLabel
+      ? 1000
+      : ranges.length > 0
+        ? Math.max(...ranges.map((r) => r.z))
+        : 1;
     const chips = singleEvs.slice(0, 2).map((ev, idx) => ({
       ev,
       accent: idx % 2 === 0 ? "var(--nav-bg)" : "var(--nav-highlight)",
@@ -433,12 +444,23 @@ export default function EventsCalendar({
                 </div>
               </div>
               <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "flex-end",
-                  gap: 12,
-                }}
+                style={
+                  isMobile
+                    ? {
+                        gridColumn: "1 / -1",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: ev.price ? "space-between" : "flex-end",
+                        gap: 12,
+                        marginTop: 4,
+                      }
+                    : {
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-end",
+                        gap: 12,
+                      }
+                }
               >
                 {ev.price && (
                   <span
