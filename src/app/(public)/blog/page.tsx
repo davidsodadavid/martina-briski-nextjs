@@ -93,7 +93,7 @@ export default async function HomePage({
                 </p>
               )}
               <p
-                className="mt-4 text-[13px] italic text-[var(--accent-clay)]"
+                className="mt-4 text-[13px] italic text-[#8A8371]"
                 style={{ fontFamily: "var(--font-jost), sans-serif" }}
               >
                 {photoCredit}
@@ -123,7 +123,7 @@ export default async function HomePage({
               </p>
             )}
             <p
-              className="mt-4 text-[13px] italic text-[var(--accent-clay)]"
+              className="mt-4 text-[13px] italic text-[#8A8371]"
               style={{ fontFamily: "var(--font-jost), sans-serif" }}
             >
               {photoCredit}
