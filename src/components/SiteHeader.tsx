@@ -89,19 +89,10 @@ function NavLinksList({
 }) {
   return (
     <ul className="flex flex-col gap-1">
-      {links.map((link, i) => {
-        const number = String(i + 1).padStart(2, "0");
+      {links.map((link) => {
         const hasChildren = !!link.children?.length;
         const isExpanded = !!expanded[link.label];
 
-        const numberEl = (
-          <span
-            className="w-[26px] text-xs tracking-[0.1em] text-[var(--nav-highlight)]"
-            style={{ fontFamily: "var(--font-jost), sans-serif" }}
-          >
-            {number}
-          </span>
-        );
         const labelEl = (
           <span
             className="text-[clamp(28px,4vw,39px)] leading-[1.26] text-[var(--nav-overlay-text)] transition-colors duration-[250ms] group-hover:text-[var(--nav-highlight)]"
@@ -125,7 +116,6 @@ function NavLinksList({
                   onClick={closeMenu}
                   className="group flex w-fit items-baseline gap-[18px] py-1"
                 >
-                  {numberEl}
                   {labelEl}
                 </Link>
               ) : (
@@ -134,7 +124,6 @@ function NavLinksList({
                   onClick={toggle}
                   className="group flex w-fit cursor-pointer items-baseline gap-[18px] py-1 text-left"
                 >
-                  {numberEl}
                   {labelEl}
                 </button>
               )}
@@ -163,21 +152,13 @@ function NavLinksList({
                 style={{ gridTemplateRows: isExpanded ? "1fr" : "0fr" }}
               >
                 <ul className="flex min-h-0 flex-col gap-1 overflow-hidden">
-                  {link.children!.map((child, ci) => (
+                  {link.children!.map((child) => (
                     <li key={child.href} className="pl-[24px]">
                       <Link
                         href={child.href}
                         onClick={closeMenu}
                         className="group flex w-fit items-baseline gap-[18px] py-1"
                       >
-                        <span
-                          className="w-[26px] text-xs tracking-[0.1em] text-[var(--nav-highlight)]"
-                          style={{
-                            fontFamily: "var(--font-jost), sans-serif",
-                          }}
-                        >
-                          {number}.{ci + 1}
-                        </span>
                         <span
                           className="text-[clamp(18px,2.6vw,22px)] leading-[1.3] text-[var(--nav-overlay-text)] opacity-80 transition-colors duration-[250ms] group-hover:text-[var(--nav-highlight)] group-hover:opacity-100"
                           style={{
@@ -201,11 +182,9 @@ function NavLinksList({
 }
 
 function NavPracticeLink({
-  links,
   dict,
   closeMenu,
 }: {
-  links: NavLink[];
   dict: Dict;
   closeMenu: () => void;
 }) {
@@ -215,12 +194,6 @@ function NavPracticeLink({
       onClick={closeMenu}
       className="group flex w-fit items-baseline gap-[18px] py-1"
     >
-      <span
-        className="w-[26px] text-xs tracking-[0.1em] text-[var(--nav-highlight)]"
-        style={{ fontFamily: "var(--font-jost), sans-serif" }}
-      >
-        {String(links.length + 1).padStart(2, "0")}
-      </span>
       <span
         className="text-[clamp(28px,4vw,39px)] leading-[1.26] text-[var(--nav-overlay-text)] transition-colors duration-[250ms] group-hover:text-[var(--nav-highlight)]"
         style={{ fontFamily: "var(--font-marcellus), serif" }}
@@ -232,13 +205,11 @@ function NavPracticeLink({
 }
 
 function NavPracticeSection({
-  links,
   dict,
   closeMenu,
   practiceCards,
   cardsClassName,
 }: {
-  links: NavLink[];
   dict: Dict;
   closeMenu: () => void;
   practiceCards: { label: string; href: string }[];
@@ -246,7 +217,7 @@ function NavPracticeSection({
 }) {
   return (
     <>
-      <NavPracticeLink links={links} dict={dict} closeMenu={closeMenu} />
+      <NavPracticeLink dict={dict} closeMenu={closeMenu} />
       <PracticeCardsGrid
         onNavigate={closeMenu}
         practiceCards={practiceCards}
@@ -463,7 +434,7 @@ export default function SiteHeader({
               dict={dict}
               trailing={
                 <li>
-                  <NavPracticeLink links={links} dict={dict} closeMenu={closeMenu} />
+                  <NavPracticeLink dict={dict} closeMenu={closeMenu} />
                 </li>
               }
             />
@@ -505,7 +476,6 @@ export default function SiteHeader({
 
           <div className="flex w-[340px] shrink-0 flex-col gap-5">
             <NavPracticeSection
-              links={links}
               dict={dict}
               closeMenu={closeMenu}
               practiceCards={PRACTICE_CARDS}

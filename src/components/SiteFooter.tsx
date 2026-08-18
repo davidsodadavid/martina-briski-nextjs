@@ -9,28 +9,11 @@ import type { Dictionary } from "@/lib/i18n/shared";
 
 const INSTAGRAM_URL = "https://www.instagram.com/martinabriski/";
 
-function FooterNavLink({
-  number,
-  label,
-  href,
-}: {
-  number: string;
-  label: string;
-  href: string;
-}) {
+function FooterNavLink({ label, href }: { label: string; href: string }) {
   return (
-    <Link
-      href={href}
-      className="group flex w-fit items-baseline gap-[14px] py-1"
-    >
+    <Link href={href} className="group flex w-fit items-baseline py-1">
       <span
-        className="w-[22px] text-xs tracking-[0.1em] text-[var(--nav-highlight)]"
-        style={{ fontFamily: "var(--font-jost), sans-serif" }}
-      >
-        {number}
-      </span>
-      <span
-        className="text-[clamp(18px,2vw,26px)] leading-[1.25] text-[var(--nav-overlay-text)] transition-colors duration-[250ms] group-hover:text-[var(--nav-highlight)]"
+        className="text-[clamp(15px,1.6vw,20px)] leading-[1.25] text-[var(--nav-overlay-text)] transition-colors duration-[250ms] group-hover:text-[var(--nav-highlight)]"
         style={{ fontFamily: "var(--font-marcellus), serif" }}
       >
         {label}
@@ -91,10 +74,9 @@ export default async function SiteFooter({ dict }: { dict: Dictionary }) {
                 {dict.footer.programs}
               </h3>
               <ul className="flex flex-col gap-1">
-                {programs.map((program, i) => (
+                {programs.map((program) => (
                   <li key={program.id}>
                     <FooterNavLink
-                      number={String(i + 1).padStart(2, "0")}
                       label={program.name}
                       href={`/programs/${program.slug}`}
                     />
@@ -108,10 +90,9 @@ export default async function SiteFooter({ dict }: { dict: Dictionary }) {
                 {dict.nav.freeContent}
               </h3>
               <ul className="flex flex-col gap-1">
-                {ebooks.map((ebook, i) => (
+                {ebooks.map((ebook) => (
                   <li key={ebook.id}>
                     <FooterNavLink
-                      number={String(i + 1).padStart(2, "0")}
                       label={ebook.title}
                       href={`/free-content/${ebook.slug}`}
                     />
@@ -131,9 +112,9 @@ export default async function SiteFooter({ dict }: { dict: Dictionary }) {
               aria-label="Instagram"
               className="hover:opacity-70"
             >
-              <InstagramIcon className="h-[18px] w-[18px]" />
+              <InstagramIcon className="h-[24px] w-[24px]" />
             </a>
-            <ContactLink className="hover:opacity-70" />
+            <ContactLink className="hover:opacity-70" iconClassName="h-[24px] w-[24px]" />
             <LanguageSwitcher />
           </div>
           <div className="flex items-center gap-5 text-xs tracking-[0.06em] opacity-70">
