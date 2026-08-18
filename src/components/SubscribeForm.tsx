@@ -46,7 +46,7 @@ export default function SubscribeForm() {
         </p>
 
         {state.success ? (
-          <div className="mt-2 flex max-w-[420px] items-center gap-2.5 border border-[var(--nav-highlight)] bg-[var(--nav-highlight)]/25 px-[18px] py-3.5">
+          <div className="mt-2 flex w-full items-center gap-2.5 border border-[var(--nav-highlight)] bg-[var(--nav-highlight)]/25 px-[18px] py-3.5">
             <span className="text-[15px] text-[#2C3A2C]">✓</span>
             <span className="text-[13.5px] text-[#2C3A2C]">
               {dict.home.subscribed}
@@ -55,7 +55,7 @@ export default function SubscribeForm() {
         ) : (
           <form
             action={formAction}
-            className="mt-2 flex max-w-[420px] flex-col gap-2.5"
+            className="mt-2 flex w-full flex-col gap-2.5"
           >
             <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
               <input
