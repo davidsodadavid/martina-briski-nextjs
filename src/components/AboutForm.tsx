@@ -104,6 +104,14 @@ export default function AboutForm({
                 <label className="mb-1 block text-xs font-medium text-neutral-600">
                   Subtitle (optional)
                 </label>
+                {i === 0 && (
+                  <p className="mb-2 text-xs text-neutral-500">
+                    Shown as the large heading at the top of the page, and
+                    also split by commas into the scrolling marquee text
+                    below it — e.g. &quot;prisutnost, dah, tjelesna
+                    svijest&quot;.
+                  </p>
+                )}
                 <input
                   type="text"
                   name={`step-${i}-subtitle`}
