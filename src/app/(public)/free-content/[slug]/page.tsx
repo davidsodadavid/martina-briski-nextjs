@@ -30,7 +30,7 @@ export default async function EbookPage({
             alt={altMap[ebook.thumbnail] ?? ebook.title}
             fill
             priority
-            className="object-cover grayscale"
+            className="object-cover"
           />
         )}
         <Link
