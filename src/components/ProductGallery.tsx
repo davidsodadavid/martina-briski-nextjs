@@ -5,10 +5,12 @@ import Image from "next/image";
 
 export default function ProductGallery({
   images,
-  alt,
+  altMap,
+  fallbackAlt,
 }: {
   images: string[];
-  alt: string;
+  altMap: Record<string, string>;
+  fallbackAlt: string;
 }) {
   const [activeIdx, setActiveIdx] = useState(0);
 
@@ -23,7 +25,7 @@ export default function ProductGallery({
       <div className="relative aspect-4/5 w-full overflow-hidden bg-[var(--nav-overlay-text)]">
         <Image
           src={images[activeIdx]}
-          alt={alt}
+          alt={altMap[images[activeIdx]] ?? fallbackAlt}
           fill
           className="object-cover"
         />

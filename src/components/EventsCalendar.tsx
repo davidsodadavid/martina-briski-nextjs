@@ -127,6 +127,13 @@ export default function EventsCalendar({
     window.scrollTo({ top, behavior: "smooth" });
   };
 
+  const scrollToList = () => {
+    const el = document.getElementById("eventsListSection");
+    if (!el) return;
+    const top = el.getBoundingClientRect().top + window.pageYOffset - 20;
+    window.scrollTo({ top, behavior: "smooth" });
+  };
+
   // ---- list ----
   let filtered = events
     .slice()
@@ -158,9 +165,6 @@ export default function EventsCalendar({
     };
   });
   const hasMore = filtered.length > visibleCount;
-  const listTitle = selectedDate
-    ? `Događanja — ${selectedDate.split("-").reverse().join(".")}.`
-    : "Nadolazeća događanja";
 
   // ---- calendar ----
   const first = new Date(viewYear, viewMonth, 1);
@@ -258,27 +262,17 @@ export default function EventsCalendar({
       }}
     >
       {/* ===================== EVENT LIST ===================== */}
-      <section style={{ padding: "clamp(40px,5vw,64px) 0 0" }}>
+      <section id="eventsListSection" style={{ padding: "clamp(40px,5vw,64px) 0 0" }}>
         <div
           style={{
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "flex-end",
             alignItems: "baseline",
             flexWrap: "wrap",
             gap: 14,
             marginBottom: 26,
           }}
         >
-          <h2
-            style={{
-              fontFamily: "var(--font-marcellus), serif",
-              fontWeight: 400,
-              fontSize: "clamp(22px,2.6vw,30px)",
-              margin: 0,
-            }}
-          >
-            {listTitle}
-          </h2>
           <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
             {selectedDate && (
               <a
@@ -433,8 +427,8 @@ export default function EventsCalendar({
                       style={{
                         fontSize: 12,
                         letterSpacing: "0.06em",
-                        color: "var(--nav-dark-text)",
-                        background: "var(--nav-highlight)",
+                        color: "#3B443F",
+                        background: "#E7E3D4",
                         padding: "5px 12px",
                       }}
                     >
@@ -450,7 +444,7 @@ export default function EventsCalendar({
                         gridColumn: "1 / -1",
                         display: "flex",
                         alignItems: "center",
-                        justifyContent: ev.price ? "space-between" : "flex-end",
+                        justifyContent: "flex-end",
                         gap: 12,
                         marginTop: 4,
                       }
@@ -462,17 +456,6 @@ export default function EventsCalendar({
                       }
                 }
               >
-                {ev.price && (
-                  <span
-                    style={{
-                      fontFamily: "var(--font-marcellus), serif",
-                      fontSize: 20,
-                      color: "var(--nav-dark-text)",
-                    }}
-                  >
-                    {ev.price}
-                  </span>
-                )}
                 <a
                   href={ev.href}
                   style={{
@@ -626,7 +609,11 @@ export default function EventsCalendar({
           {dayCells.map((cell, i) => (
             <div
               key={i}
-              onClick={() => cell.inMonth && cell.dateStr && selectDate(cell.dateStr)}
+              onClick={() => {
+                if (!cell.inMonth || !cell.dateStr) return;
+                selectDate(cell.dateStr);
+                scrollToList();
+              }}
               title={cell.tooltip}
               style={{
                 minHeight: isMobile ? 58 : 112,

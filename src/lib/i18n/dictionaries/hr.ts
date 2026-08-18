@@ -23,12 +23,6 @@ const hr = {
     pages: "Stranice",
     backToTop: "Povratak na vrh",
   },
-  categories: {
-    OTHER: "Ostalo",
-    ADAPTATION: "Prilagodba",
-    PRANAYAMA: "Pranayama",
-    CALMING: "Umirujuća praksa",
-  },
   home: {
     label: "Blog",
     title: "Zapisi o disanju i praksi",
@@ -41,6 +35,8 @@ const hr = {
     newsletterTitle: "Ostani u vezi s praksom",
     newsletterText:
       "Novosti, nadolazeći termini i besplatni vodiči — jednom mjesečno.",
+    firstNamePlaceholder: "Ime",
+    lastNamePlaceholder: "Prezime",
     emailPlaceholder: "tvoj@email.com",
     subscribe: "Prijavi se",
     subscribing: "Prijava u tijeku…",
@@ -48,6 +44,7 @@ const hr = {
   },
   forms: {
     invalidEmail: "Unesite ispravnu email adresu",
+    nameRequired: "Unesite ime i prezime",
     botCheckFailed: "Provjera nije uspjela. Pokušajte ponovno.",
   },
   homepage: {

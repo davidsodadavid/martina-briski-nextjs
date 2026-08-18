@@ -1,35 +1,36 @@
 import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
-import { PostType } from "@/generated/prisma/enums";
 import { stripHtml, truncate } from "@/lib/text";
 import SubscribeForm from "@/components/SubscribeForm";
 import PostGrid from "@/components/PostGrid";
 import { getLocale, getDictionary } from "@/lib/i18n";
 import { BLOG_SETTINGS_ID } from "@/lib/blogSettings";
+import { getAltMap } from "@/lib/mediaAlt";
 
 export default async function HomePage({
   searchParams,
 }: {
-  searchParams: Promise<{ type?: string }>;
+  searchParams: Promise<{ category?: string }>;
 }) {
-  const { type } = await searchParams;
-  const activeType =
-    type && Object.values(PostType).includes(type as PostType)
-      ? (type as PostType)
-      : "ALL";
+  const { category } = await searchParams;
 
-  const [posts, locale, blogSettings] = await Promise.all([
-    prisma.post.findMany({
-      where: {
-        published: true,
-        ...(activeType === "ALL" ? {} : { type: activeType }),
-      },
-      orderBy: { createdAt: "desc" },
-    }),
+  const [categories, locale, blogSettings] = await Promise.all([
+    prisma.category.findMany({ orderBy: [{ createdAt: "asc" }, { id: "asc" }] }),
     getLocale(),
     prisma.blogSettings.findUnique({ where: { id: BLOG_SETTINGS_ID } }),
   ]);
+  const activeCategory =
+    category && categories.some((c) => c.id === category) ? category : "ALL";
+
+  const posts = await prisma.post.findMany({
+    where: {
+      published: true,
+      ...(activeCategory === "ALL" ? {} : { categoryId: activeCategory }),
+    },
+    orderBy: { createdAt: "desc" },
+    include: { category: true },
+  });
   const coverImage = blogSettings?.coverImage ?? null;
   const description = blogSettings?.description ?? null;
   const dict = getDictionary(locale);
@@ -37,15 +38,16 @@ export default async function HomePage({
   const label = blogSettings?.label || dict.home.label;
   const dateLocale = locale === "en" ? "en-GB" : "hr-HR";
 
-  const FILTERS: { value: PostType | "ALL"; label: string }[] = [
+  const FILTERS: { value: string; label: string }[] = [
     { value: "ALL", label: dict.home.filterAll },
-    { value: PostType.ADAPTATION, label: dict.categories.ADAPTATION },
-    { value: PostType.PRANAYAMA, label: dict.categories.PRANAYAMA },
-    { value: PostType.CALMING, label: dict.categories.CALMING },
-    { value: PostType.OTHER, label: dict.categories.OTHER },
+    ...categories.map((c) => ({ value: c.id, label: c.label })),
   ];
 
   const [featured, ...rest] = posts;
+  const altMap = await getAltMap([
+    coverImage,
+    ...posts.map((p) => p.thumbnail),
+  ]);
 
   return (
     <main className="w-full flex-1 bg-[var(--nav-overlay-text)] px-6 text-[var(--nav-dark-text)] md:px-10">
@@ -56,7 +58,7 @@ export default async function HomePage({
             <section className="relative -mx-6 h-[calc(100vh-72px)] md:-mx-10">
               <Image
                 src={coverImage}
-                alt=""
+                alt={altMap[coverImage] ?? ""}
                 fill
                 priority
                 className="object-cover"
@@ -134,9 +136,9 @@ export default async function HomePage({
           {FILTERS.map((f) => (
             <Link
               key={f.value}
-              href={f.value === "ALL" ? "/blog" : `/blog?type=${f.value}`}
+              href={f.value === "ALL" ? "/blog" : `/blog?category=${f.value}`}
               className={`px-3.5 py-1.5 text-sm font-medium ${
-                activeType === f.value
+                activeCategory === f.value
                   ? "bg-[var(--nav-highlight)] text-[var(--nav-dark-text)]"
                   : "bg-[#E7E3D4] text-[#3B443F] hover:bg-[#DCD8C6]"
               }`}
@@ -162,7 +164,7 @@ export default async function HomePage({
                   {featured.thumbnail && (
                     <Image
                       src={featured.thumbnail}
-                      alt={featured.title}
+                      alt={altMap[featured.thumbnail] ?? featured.title}
                       fill
                       className="object-cover grayscale"
                     />
@@ -181,7 +183,7 @@ export default async function HomePage({
                       className="bg-[var(--nav-highlight)]/15 px-3 py-1.5 text-[11px] font-medium tracking-[0.16em] text-[var(--nav-highlight)] uppercase"
                       style={{ fontFamily: "var(--font-jost), sans-serif" }}
                     >
-                      {dict.categories[featured.type]}
+                      {featured.category?.label ?? "Ostalo"}
                     </span>
                     <span className="text-xs text-[#F7F5EF]/70">
                       {featured.createdAt.toLocaleDateString(dateLocale)}
@@ -201,7 +203,7 @@ export default async function HomePage({
             </section>
 
             {/* Post grid */}
-            {rest.length > 0 && <PostGrid posts={rest} />}
+            {rest.length > 0 && <PostGrid posts={rest} altMap={altMap} />}
 
             {/* Newsletter — stays within the same content grid as the rest
                 of the page, just taller/more prominent */}

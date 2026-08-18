@@ -4,18 +4,11 @@ import { useActionState, useState } from "react";
 import RichTextEditor from "@/components/RichTextEditor";
 import ThumbnailPicker from "@/components/ThumbnailPicker";
 import type { PostFormState } from "@/app/actions/posts";
-import { PostType } from "@/generated/prisma/enums";
 
 const META_DESCRIPTION_MAX = 160;
 
-type MediaItem = { id: string; url: string; filename: string };
-
-const POST_TYPES: { value: PostType; label: string }[] = [
-  { value: PostType.OTHER, label: "Other" },
-  { value: PostType.ADAPTATION, label: "Adaptation" },
-  { value: PostType.PRANAYAMA, label: "Pranayama" },
-  { value: PostType.CALMING, label: "Calming practice" },
-];
+type MediaItem = { id: string; url: string; filename: string; alt: string | null };
+type CategoryItem = { id: string; label: string };
 
 type PostFormProps = {
   action: (
@@ -28,10 +21,11 @@ type PostFormProps = {
     slug: string;
     thumbnail: string | null;
     content: string;
-    type: PostType;
+    categoryId: string | null;
     metaDescription: string | null;
   };
   mediaLibrary: MediaItem[];
+  categories: CategoryItem[];
 };
 
 export default function PostForm({
@@ -39,6 +33,7 @@ export default function PostForm({
   submitLabel,
   initialPost,
   mediaLibrary,
+  categories,
 }: PostFormProps) {
   const [state, formAction, pending] = useActionState(action, {});
   const [metaDescription, setMetaDescription] = useState(
@@ -120,16 +115,17 @@ export default function PostForm({
 
       <div>
         <label className="mb-1 block text-sm font-medium text-neutral-700">
-          Type
+          Category
         </label>
         <select
-          name="type"
-          defaultValue={initialPost?.type ?? PostType.OTHER}
+          name="categoryId"
+          defaultValue={initialPost?.categoryId ?? ""}
           className="rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none"
         >
-          {POST_TYPES.map((t) => (
-            <option key={t.value} value={t.value}>
-              {t.label}
+          <option value="">— None —</option>
+          {categories.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.label}
             </option>
           ))}
         </select>

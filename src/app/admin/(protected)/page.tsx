@@ -1,31 +1,26 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { PostType } from "@/generated/prisma/enums";
-import PostTypeBadge from "@/components/PostTypeBadge";
 import DeletePostButton from "@/components/DeletePostButton";
-
-const FILTERS: { value: PostType | "ALL"; label: string }[] = [
-  { value: "ALL", label: "All" },
-  { value: PostType.OTHER, label: "Other" },
-  { value: PostType.ADAPTATION, label: "Adaptation" },
-  { value: PostType.PRANAYAMA, label: "Pranayama" },
-  { value: PostType.CALMING, label: "Calming practice" },
-];
+import PublishToggle from "@/components/PublishToggle";
+import { togglePostPublished } from "@/app/actions/posts";
 
 export default async function AdminDashboardPage({
   searchParams,
 }: {
-  searchParams: Promise<{ type?: string }>;
+  searchParams: Promise<{ category?: string }>;
 }) {
-  const { type } = await searchParams;
-  const activeType =
-    type && Object.values(PostType).includes(type as PostType)
-      ? (type as PostType)
-      : "ALL";
+  const { category } = await searchParams;
+
+  const categories = await prisma.category.findMany({
+    orderBy: [{ createdAt: "asc" }, { id: "asc" }],
+  });
+  const activeCategory =
+    category && categories.some((c) => c.id === category) ? category : "ALL";
 
   const posts = await prisma.post.findMany({
-    where: activeType === "ALL" ? {} : { type: activeType },
+    where: activeCategory === "ALL" ? {} : { categoryId: activeCategory },
     orderBy: { createdAt: "desc" },
+    include: { category: true },
   });
 
   return (
@@ -33,6 +28,12 @@ export default async function AdminDashboardPage({
       <div className="mb-4 flex items-center justify-between">
         <h1 className="text-xl font-semibold text-white">Blog</h1>
         <div className="flex items-center gap-3">
+          <Link
+            href="/admin/categories"
+            className="rounded-md border border-neutral-600 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800"
+          >
+            Categories
+          </Link>
           <Link
             href="/admin/blog-cover"
             className="rounded-md border border-neutral-600 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800"
@@ -48,18 +49,28 @@ export default async function AdminDashboardPage({
         </div>
       </div>
 
-      <div className="mb-6 flex gap-2">
-        {FILTERS.map((f) => (
+      <div className="mb-6 flex flex-wrap gap-2">
+        <Link
+          href="/admin"
+          className={`rounded-full px-3 py-1 text-sm font-medium ${
+            activeCategory === "ALL"
+              ? "bg-[var(--brand-yellow)] text-[var(--brand-text)]"
+              : "bg-[var(--color-stone)] text-neutral-700 hover:bg-neutral-200"
+          }`}
+        >
+          All
+        </Link>
+        {categories.map((c) => (
           <Link
-            key={f.value}
-            href={f.value === "ALL" ? "/admin" : `/admin?type=${f.value}`}
+            key={c.id}
+            href={`/admin?category=${c.id}`}
             className={`rounded-full px-3 py-1 text-sm font-medium ${
-              activeType === f.value
+              activeCategory === c.id
                 ? "bg-[var(--brand-yellow)] text-[var(--brand-text)]"
                 : "bg-[var(--color-stone)] text-neutral-700 hover:bg-neutral-200"
             }`}
           >
-            {f.label}
+            {c.label}
           </Link>
         ))}
       </div>
@@ -75,7 +86,9 @@ export default async function AdminDashboardPage({
             >
               <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-2">
-                  <PostTypeBadge type={post.type} />
+                  <span className="inline-block rounded-full bg-neutral-100 px-2.5 py-0.5 text-xs font-medium text-neutral-800">
+                    {post.category?.label ?? "Ostalo"}
+                  </span>
                   <span className="font-medium">{post.title}</span>
                 </div>
                 <span className="text-xs text-neutral-400">
@@ -83,6 +96,10 @@ export default async function AdminDashboardPage({
                 </span>
               </div>
               <div className="flex shrink-0 items-center gap-4">
+                <PublishToggle
+                  published={post.published}
+                  onToggle={togglePostPublished.bind(null, post.id)}
+                />
                 <Link
                   href={`/blog/${post.slug}`}
                   className="text-sm text-neutral-500 hover:underline"

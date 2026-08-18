@@ -1,15 +1,14 @@
 "use client";
 
 import { useTransition } from "react";
-import { toggleEbookPublished } from "@/app/actions/ebooks";
 
-export default function EbookPublishToggle({
-  id,
+export default function PublishToggle({
   published,
+  onToggle,
   className = "text-neutral-600",
 }: {
-  id: string;
   published: boolean;
+  onToggle: () => Promise<void>;
   className?: string;
 }) {
   const [isPending, startTransition] = useTransition();
@@ -17,7 +16,7 @@ export default function EbookPublishToggle({
   return (
     <button
       type="button"
-      onClick={() => startTransition(() => toggleEbookPublished(id))}
+      onClick={() => startTransition(() => onToggle())}
       disabled={isPending}
       aria-pressed={published}
       title={published ? "Published — click to unpublish" : "Unpublished — click to publish"}

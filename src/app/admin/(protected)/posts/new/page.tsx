@@ -3,9 +3,10 @@ import { createPost } from "@/app/actions/posts";
 import { prisma } from "@/lib/prisma";
 
 export default async function NewPostPage() {
-  const mediaLibrary = await prisma.media.findMany({
-    orderBy: { createdAt: "desc" },
-  });
+  const [mediaLibrary, categories] = await Promise.all([
+    prisma.media.findMany({ orderBy: { createdAt: "desc" } }),
+    prisma.category.findMany({ orderBy: [{ createdAt: "asc" }, { id: "asc" }] }),
+  ]);
 
   return (
     <>
@@ -14,6 +15,7 @@ export default async function NewPostPage() {
         action={createPost}
         submitLabel="Publish"
         mediaLibrary={mediaLibrary}
+        categories={categories}
       />
     </>
   );

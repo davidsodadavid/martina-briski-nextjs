@@ -2,10 +2,10 @@
 
 import { useRef, useState, useTransition } from "react";
 import Image from "next/image";
-import { uploadMedia } from "@/app/actions/media";
+import { uploadMedia, updateMediaAlt } from "@/app/actions/media";
 import { MAX_UPLOAD_BYTES, MAX_UPLOAD_MB } from "@/lib/uploads";
 
-type MediaItem = { id: string; url: string; filename: string };
+type MediaItem = { id: string; url: string; filename: string; alt: string | null };
 
 export default function ThumbnailPicker({
   name,
@@ -19,9 +19,16 @@ export default function ThumbnailPicker({
   allowUpload?: boolean;
 }) {
   const [url, setUrl] = useState(initialUrl ?? "");
+  const [mediaId, setMediaId] = useState<string | null>(
+    mediaLibrary.find((m) => m.url === initialUrl)?.id ?? null
+  );
+  const [alt, setAlt] = useState(
+    mediaLibrary.find((m) => m.url === initialUrl)?.alt ?? ""
+  );
   const [error, setError] = useState<string | undefined>();
   const [libraryOpen, setLibraryOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const [isSavingAlt, startAltTransition] = useTransition();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -45,15 +52,24 @@ export default function ThumbnailPicker({
         setError(result.error);
       } else if (result.url) {
         setUrl(result.url);
+        setMediaId(result.id ?? null);
+        setAlt("");
       }
       e.target.value = "";
     });
   }
 
-  function selectFromLibrary(mediaUrl: string) {
-    setUrl(mediaUrl);
+  function selectFromLibrary(media: MediaItem) {
+    setUrl(media.url);
+    setMediaId(media.id);
+    setAlt(media.alt ?? "");
     setError(undefined);
     setLibraryOpen(false);
+  }
+
+  function handleAltBlur() {
+    if (!mediaId) return;
+    startAltTransition(() => updateMediaAlt(mediaId, alt));
   }
 
   return (
@@ -102,7 +118,11 @@ export default function ThumbnailPicker({
             {url && (
               <button
                 type="button"
-                onClick={() => setUrl("")}
+                onClick={() => {
+                  setUrl("");
+                  setMediaId(null);
+                  setAlt("");
+                }}
                 className="text-sm text-neutral-500 hover:text-red-600"
               >
                 Remove
@@ -110,6 +130,25 @@ export default function ThumbnailPicker({
             )}
           </div>
           {error && <p className="text-sm text-red-600">{error}</p>}
+          {url && (
+            <div className="w-56">
+              <label className="mb-1 block text-xs font-medium text-neutral-600">
+                Alt text
+              </label>
+              <input
+                type="text"
+                value={alt}
+                onChange={(e) => setAlt(e.target.value)}
+                onBlur={handleAltBlur}
+                placeholder="Describe this image"
+                disabled={!mediaId}
+                className="w-full rounded-md border border-neutral-300 px-2 py-1 text-xs focus:border-neutral-500 focus:outline-none disabled:opacity-50"
+              />
+              {isSavingAlt && (
+                <p className="mt-0.5 text-[11px] text-neutral-400">Saving…</p>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
@@ -125,7 +164,7 @@ export default function ThumbnailPicker({
                 <button
                   key={m.id}
                   type="button"
-                  onClick={() => selectFromLibrary(m.url)}
+                  onClick={() => selectFromLibrary(m)}
                   title={m.filename}
                   className={`relative h-16 w-16 shrink-0 cursor-pointer overflow-hidden rounded-md border-2 ${
                     url === m.url

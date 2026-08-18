@@ -155,3 +155,18 @@ export async function deleteProduct(id: string) {
   revalidatePath("/admin/shop");
   revalidatePath(`/shop/${product.slug}`);
 }
+
+export async function toggleProductPublished(id: string) {
+  await requireAdmin();
+  const product = await prisma.product.findUnique({ where: { id } });
+  if (!product) return;
+
+  const updated = await prisma.product.update({
+    where: { id },
+    data: { published: !product.published },
+  });
+
+  revalidatePath("/shop");
+  revalidatePath("/admin/shop");
+  revalidatePath(`/shop/${updated.slug}`);
+}

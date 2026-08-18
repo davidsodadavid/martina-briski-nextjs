@@ -129,3 +129,18 @@ export async function deleteEvent(id: string) {
   revalidatePath("/admin/events");
   revalidatePath(`/events/${event.slug}`);
 }
+
+export async function toggleEventPublished(id: string) {
+  await requireAdmin();
+  const event = await prisma.event.findUnique({ where: { id } });
+  if (!event) return;
+
+  const updated = await prisma.event.update({
+    where: { id },
+    data: { published: !event.published },
+  });
+
+  revalidatePath("/events");
+  revalidatePath("/admin/events");
+  revalidatePath(`/events/${updated.slug}`);
+}

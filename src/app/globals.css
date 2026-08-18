@@ -174,3 +174,18 @@ button:disabled {
     height: 120vw;
   }
 }
+
+.breathing-circle-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 640px) {
+  .breathing-circle-wrap--top {
+    align-items: flex-start;
+    padding-top: 6vh;
+  }
+}

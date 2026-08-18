@@ -10,9 +10,10 @@ export default async function EditPostPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const [post, mediaLibrary] = await Promise.all([
+  const [post, mediaLibrary, categories] = await Promise.all([
     prisma.post.findUnique({ where: { id } }),
     prisma.media.findMany({ orderBy: { createdAt: "desc" } }),
+    prisma.category.findMany({ orderBy: [{ createdAt: "asc" }, { id: "asc" }] }),
   ]);
 
   if (!post) {
@@ -39,6 +40,7 @@ export default async function EditPostPage({
         submitLabel="Save changes"
         initialPost={post}
         mediaLibrary={mediaLibrary}
+        categories={categories}
       />
     </>
   );

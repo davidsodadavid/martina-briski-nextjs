@@ -4,7 +4,10 @@ const GROUP_ID = process.env.MAILERLITE_GROUP_ID;
 /** Adds (or updates) a subscriber in MailerLite. Silently does nothing if
  * MAILERLITE_API_KEY isn't configured, so local/dev setups without it don't
  * break the newsletter form — only logs on actual API failure. */
-export async function addMailerliteSubscriber(email: string) {
+export async function addMailerliteSubscriber(
+  email: string,
+  name?: { firstName: string; lastName: string }
+) {
   if (!API_KEY) return;
 
   try {
@@ -17,6 +20,9 @@ export async function addMailerliteSubscriber(email: string) {
       },
       body: JSON.stringify({
         email,
+        ...(name
+          ? { fields: { name: name.firstName, last_name: name.lastName } }
+          : {}),
         ...(GROUP_ID ? { groups: [GROUP_ID] } : {}),
       }),
     });

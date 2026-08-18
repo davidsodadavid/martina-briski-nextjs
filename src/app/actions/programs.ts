@@ -194,3 +194,17 @@ export async function deleteProgram(id: string) {
   revalidatePath("/admin/programs");
   revalidatePath(`/programs/${program.slug}`);
 }
+
+export async function toggleProgramPublished(id: string) {
+  await requireAdmin();
+  const program = await prisma.program.findUnique({ where: { id } });
+  if (!program) return;
+
+  const updated = await prisma.program.update({
+    where: { id },
+    data: { published: !program.published },
+  });
+
+  revalidatePath("/admin/programs");
+  revalidatePath(`/programs/${updated.slug}`);
+}

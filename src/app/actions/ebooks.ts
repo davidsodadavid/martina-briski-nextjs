@@ -26,10 +26,18 @@ export async function requestEbookDownload(
   _prevState: EbookDownloadState,
   formData: FormData
 ): Promise<EbookDownloadState> {
+  const firstName = String(formData.get("firstName") || "").trim();
+  const lastName = String(formData.get("lastName") || "").trim();
   const email = String(formData.get("email") || "")
     .trim()
     .toLowerCase();
 
+  if (!firstName) {
+    return { error: "Unesite ime" };
+  }
+  if (!lastName) {
+    return { error: "Unesite prezime" };
+  }
   if (!EMAIL_RE.test(email)) {
     return { error: "Unesite ispravnu email adresu" };
   }
@@ -40,12 +48,18 @@ export async function requestEbookDownload(
   }
 
   try {
-    await prisma.subscriber.create({ data: { email } });
+    await prisma.subscriber.create({ data: { firstName, lastName, email } });
   } catch {
     // Unique constraint (already subscribed) — fine, continue to unlock.
   }
 
-  await addMailerliteSubscriber(email);
+  await prisma.ebookDownload.create({
+    data: { ebookId, firstName, lastName, email },
+  });
+
+  await addMailerliteSubscriber(email, { firstName, lastName });
+
+  revalidatePath("/admin/ebooks/downloads");
 
   return { success: true, pdfUrl: ebook.pdfUrl, pdfFilename: ebook.pdfFilename };
 }
@@ -188,6 +202,12 @@ export async function deleteEbook(id: string) {
   await deleteFromR2(ebook.pdfUrl);
   revalidatePath("/free-content");
   revalidatePath("/admin/ebooks");
+}
+
+export async function deleteEbookDownload(id: string) {
+  await requireAdmin();
+  await prisma.ebookDownload.delete({ where: { id } });
+  revalidatePath("/admin/ebooks/downloads");
 }
 
 export async function toggleEbookPublished(id: string) {

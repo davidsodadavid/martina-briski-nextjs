@@ -4,7 +4,7 @@ import { useActionState, useRef, useState } from "react";
 import ThumbnailPicker from "@/components/ThumbnailPicker";
 import type { EbookFormState } from "@/app/actions/ebooks";
 
-type MediaItem = { id: string; url: string; filename: string };
+type MediaItem = { id: string; url: string; filename: string; alt: string | null };
 
 type EbookFormProps = {
   action: (

@@ -5,7 +5,6 @@ import { redirect } from "next/navigation";
 import slugify from "slugify";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
-import { PostType } from "@/generated/prisma/enums";
 
 export type PostFormState = { error?: string };
 
@@ -28,9 +27,9 @@ function readPostFields(formData: FormData) {
   const slug = String(formData.get("slug") || "").trim();
   const thumbnail = String(formData.get("thumbnail") || "").trim();
   const content = String(formData.get("content") || "").trim();
-  const type = String(formData.get("type") || "OTHER") as PostType;
+  const categoryId = String(formData.get("categoryId") || "").trim();
   const metaDescription = String(formData.get("metaDescription") || "").trim();
-  return { title, slug, thumbnail, content, type, metaDescription };
+  return { title, slug, thumbnail, content, categoryId, metaDescription };
 }
 
 export async function createPost(
@@ -39,13 +38,10 @@ export async function createPost(
 ): Promise<PostFormState> {
   await requireAdmin();
 
-  const { title, slug: customSlug, thumbnail, content, type, metaDescription } =
+  const { title, slug: customSlug, thumbnail, content, categoryId, metaDescription } =
     readPostFields(formData);
   if (!title || !content) {
     return { error: "Title and content are required" };
-  }
-  if (!Object.values(PostType).includes(type)) {
-    return { error: "Invalid post type" };
   }
 
   const slug = await uniqueSlug(customSlug || title);
@@ -56,7 +52,7 @@ export async function createPost(
       slug,
       thumbnail: thumbnail || null,
       content,
-      type,
+      categoryId: categoryId || null,
       metaDescription: metaDescription || null,
     },
   });
@@ -73,13 +69,10 @@ export async function updatePost(
 ): Promise<PostFormState> {
   await requireAdmin();
 
-  const { title, slug: customSlug, thumbnail, content, type, metaDescription } =
+  const { title, slug: customSlug, thumbnail, content, categoryId, metaDescription } =
     readPostFields(formData);
   if (!title || !content) {
     return { error: "Title and content are required" };
-  }
-  if (!Object.values(PostType).includes(type)) {
-    return { error: "Invalid post type" };
   }
 
   const existing = await prisma.post.findUnique({ where: { id } });
@@ -96,7 +89,7 @@ export async function updatePost(
       slug,
       thumbnail: thumbnail || null,
       content,
-      type,
+      categoryId: categoryId || null,
       metaDescription: metaDescription || null,
     },
   });
@@ -113,4 +106,19 @@ export async function deletePost(id: string) {
   revalidatePath("/");
   revalidatePath("/admin");
   revalidatePath(`/blog/${post.slug}`);
+}
+
+export async function togglePostPublished(id: string) {
+  await requireAdmin();
+  const post = await prisma.post.findUnique({ where: { id } });
+  if (!post) return;
+
+  const updated = await prisma.post.update({
+    where: { id },
+    data: { published: !post.published },
+  });
+
+  revalidatePath("/");
+  revalidatePath("/admin");
+  revalidatePath(`/blog/${updated.slug}`);
 }

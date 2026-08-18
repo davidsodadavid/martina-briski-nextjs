@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import ProductGallery from "@/components/ProductGallery";
 import BuyButton from "@/components/BuyButton";
+import { getAltMap } from "@/lib/mediaAlt";
 
 export default async function ProductPage({
   params,
@@ -31,6 +32,10 @@ export default async function ProductPage({
     : gallery;
 
   const related = allProducts.filter((p) => p.id !== product.id).slice(0, 3);
+  const altMap = await getAltMap([
+    ...images,
+    ...related.map((p) => p.thumbnail),
+  ]);
 
   return (
     <main className="w-full flex-1 bg-[var(--nav-overlay-text)] text-[var(--nav-dark-text)]">
@@ -47,7 +52,7 @@ export default async function ProductPage({
 
         {/* Product detail */}
         <section className="grid grid-cols-1 items-start gap-8 pt-6 md:grid-cols-[1.1fr_1fr] md:gap-14 md:pt-7">
-          <ProductGallery images={images} alt={product.name} />
+          <ProductGallery images={images} altMap={altMap} fallbackAlt={product.name} />
 
           <div className="flex flex-col gap-5">
             <div>
@@ -110,7 +115,7 @@ export default async function ProductPage({
                     {prod.thumbnail && (
                       <Image
                         src={prod.thumbnail}
-                        alt={prod.name}
+                        alt={altMap[prod.thumbnail] ?? prod.name}
                         fill
                         className="object-cover"
                       />

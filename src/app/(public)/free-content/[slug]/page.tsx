@@ -3,6 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import EbookDownloadForm from "@/components/EbookDownloadForm";
+import { getAltMap } from "@/lib/mediaAlt";
 
 export default async function EbookPage({
   params,
@@ -17,6 +18,7 @@ export default async function EbookPage({
   }
 
   const description = ebook.longDescription || ebook.description;
+  const altMap = await getAltMap([ebook.thumbnail]);
 
   return (
     <main className="w-full flex-1 bg-[var(--nav-overlay-text)] text-[var(--nav-dark-text)]">
@@ -25,7 +27,7 @@ export default async function EbookPage({
         {ebook.thumbnail && (
           <Image
             src={ebook.thumbnail}
-            alt={ebook.title}
+            alt={altMap[ebook.thumbnail] ?? ebook.title}
             fill
             priority
             className="object-cover grayscale"

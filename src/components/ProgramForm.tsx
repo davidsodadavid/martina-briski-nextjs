@@ -6,7 +6,7 @@ import GalleryPicker from "@/components/GalleryPicker";
 import type { ProgramFormState } from "@/app/actions/programs";
 import { PROGRAM_STEP_COUNT, type ProgramStep } from "@/lib/program";
 
-type MediaItem = { id: string; url: string; filename: string };
+type MediaItem = { id: string; url: string; filename: string; alt: string | null };
 
 type ProgramFormProps = {
   action: (

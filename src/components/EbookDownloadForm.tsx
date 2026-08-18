@@ -28,10 +28,26 @@ export default function EbookDownloadForm({ ebookId }: { ebookId: string }) {
   }
 
   return (
-    <form action={formAction} className="mt-10 flex max-w-[420px] flex-col gap-2.5">
+    <form action={formAction} className="mt-10 flex w-full flex-col gap-2.5">
       <label className="mb-1.5 block text-[11px] font-medium tracking-[0.14em] text-[var(--nav-dark-text)]/60 uppercase">
-        Unesi email za preuzimanje
+        Unesi podatke za preuzimanje
       </label>
+      <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+        <input
+          required
+          name="firstName"
+          type="text"
+          placeholder="Ime"
+          className="border border-[#D5D2C4] bg-[var(--nav-overlay-text)] px-[18px] py-3.5 text-[14.5px] text-[#2E332F] focus:border-[var(--nav-bg)] focus:outline-none"
+        />
+        <input
+          required
+          name="lastName"
+          type="text"
+          placeholder="Prezime"
+          className="border border-[#D5D2C4] bg-[var(--nav-overlay-text)] px-[18px] py-3.5 text-[14.5px] text-[#2E332F] focus:border-[var(--nav-bg)] focus:outline-none"
+        />
+      </div>
       <input
         required
         name="email"

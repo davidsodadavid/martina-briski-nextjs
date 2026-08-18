@@ -2,10 +2,10 @@
 
 import { useRef, useState, useTransition } from "react";
 import Image from "next/image";
-import { uploadMedia } from "@/app/actions/media";
+import { uploadMedia, updateMediaAlt } from "@/app/actions/media";
 import { MAX_UPLOAD_BYTES, MAX_UPLOAD_MB } from "@/lib/uploads";
 
-type MediaItem = { id: string; url: string; filename: string };
+type MediaItem = { id: string; url: string; filename: string; alt: string | null };
 
 export default function GalleryPicker({
   name,
@@ -20,7 +20,15 @@ export default function GalleryPicker({
   const [error, setError] = useState<string | undefined>();
   const [libraryOpen, setLibraryOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const [isSavingAlt, startAltTransition] = useTransition();
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [idByUrl, setIdByUrl] = useState<Record<string, string>>(() =>
+    Object.fromEntries(mediaLibrary.map((m) => [m.url, m.id]))
+  );
+  const [altByUrl, setAltByUrl] = useState<Record<string, string>>(() =>
+    Object.fromEntries(mediaLibrary.map((m) => [m.url, m.alt ?? ""]))
+  );
 
   function toggleUrl(url: string) {
     setUrls((prev) =>
@@ -30,6 +38,12 @@ export default function GalleryPicker({
 
   function removeUrl(url: string) {
     setUrls((prev) => prev.filter((u) => u !== url));
+  }
+
+  function handleAltBlur(url: string) {
+    const id = idByUrl[url];
+    if (!id) return;
+    startAltTransition(() => updateMediaAlt(id, altByUrl[url] ?? ""));
   }
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -52,6 +66,9 @@ export default function GalleryPicker({
         setError(result.error);
       } else if (result.url) {
         setUrls((prev) => [...prev, result.url as string]);
+        if (result.id) {
+          setIdByUrl((prev) => ({ ...prev, [result.url as string]: result.id as string }));
+        }
       }
       e.target.value = "";
     });
@@ -69,23 +86,36 @@ export default function GalleryPicker({
       />
 
       {urls.length > 0 && (
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-3">
           {urls.map((url) => (
-            <div
-              key={url}
-              className="relative h-20 w-20 shrink-0 overflow-hidden rounded-md border border-neutral-200 bg-neutral-100"
-            >
-              <Image src={url} alt="" fill className="object-cover" />
-              <button
-                type="button"
-                onClick={() => removeUrl(url)}
-                aria-label="Remove image"
-                className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-black/60 text-xs text-white hover:bg-black/80"
-              >
-                ×
-              </button>
+            <div key={url} className="flex w-20 flex-col gap-1">
+              <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-md border border-neutral-200 bg-neutral-100">
+                <Image src={url} alt="" fill className="object-cover" />
+                <button
+                  type="button"
+                  onClick={() => removeUrl(url)}
+                  aria-label="Remove image"
+                  className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-black/60 text-xs text-white hover:bg-black/80"
+                >
+                  ×
+                </button>
+              </div>
+              <input
+                type="text"
+                value={altByUrl[url] ?? ""}
+                onChange={(e) =>
+                  setAltByUrl((prev) => ({ ...prev, [url]: e.target.value }))
+                }
+                onBlur={() => handleAltBlur(url)}
+                placeholder="Alt text"
+                disabled={!idByUrl[url]}
+                className="w-full rounded-md border border-neutral-300 px-1.5 py-1 text-[11px] focus:border-neutral-500 focus:outline-none disabled:opacity-50"
+              />
             </div>
           ))}
+          {isSavingAlt && (
+            <p className="w-full text-[11px] text-neutral-400">Saving…</p>
+          )}
         </div>
       )}
 

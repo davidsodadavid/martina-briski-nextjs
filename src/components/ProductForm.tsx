@@ -6,7 +6,7 @@ import ThumbnailPicker from "@/components/ThumbnailPicker";
 import GalleryPicker from "@/components/GalleryPicker";
 import type { ProductFormState } from "@/app/actions/products";
 
-type MediaItem = { id: string; url: string; filename: string };
+type MediaItem = { id: string; url: string; filename: string; alt: string | null };
 
 type ProductFormProps = {
   action: (

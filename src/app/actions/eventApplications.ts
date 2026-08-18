@@ -26,6 +26,12 @@ export async function applyToEvent(
   if (!EMAIL_RE.test(email)) {
     return { error: "Unesite ispravnu email adresu" };
   }
+  if (!phone) {
+    return { error: "Unesite broj telefona" };
+  }
+  if (!message) {
+    return { error: "Unesite poruku" };
+  }
 
   const event = await prisma.event.findUnique({ where: { id: eventId } });
   if (!event || !event.published) {
@@ -37,8 +43,8 @@ export async function applyToEvent(
       eventId,
       name,
       email,
-      phone: phone || null,
-      message: message || null,
+      phone,
+      message,
     },
   });
 

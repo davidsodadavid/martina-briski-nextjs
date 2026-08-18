@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import EventApplyForm from "@/components/EventApplyForm";
 import { formatEventTiming } from "@/lib/eventTime";
+import { getAltMap } from "@/lib/mediaAlt";
 
 export default async function EventPage({
   params,
@@ -16,6 +17,8 @@ export default async function EventPage({
   if (!event || !event.published) {
     notFound();
   }
+
+  const altMap = await getAltMap([event.thumbnail]);
 
   return (
     <main className="w-full flex-1 bg-[var(--nav-overlay-text)] text-[var(--nav-dark-text)]">
@@ -52,7 +55,7 @@ export default async function EventPage({
           <div className="relative mt-8 aspect-21/9 w-full overflow-hidden">
             <Image
               src={event.thumbnail}
-              alt=""
+              alt={altMap[event.thumbnail] ?? event.title}
               fill
               className="object-cover grayscale"
             />

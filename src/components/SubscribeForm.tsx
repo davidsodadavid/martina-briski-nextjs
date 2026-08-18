@@ -57,6 +57,22 @@ export default function SubscribeForm() {
             action={formAction}
             className="mt-2 flex max-w-[420px] flex-col gap-2.5"
           >
+            <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+              <input
+                required
+                name="firstName"
+                type="text"
+                placeholder={dict.home.firstNamePlaceholder}
+                className="border border-[#D5D2C4] bg-[var(--nav-overlay-text)] px-[18px] py-3.5 text-[14.5px] text-[#2E332F] focus:border-[var(--nav-bg)] focus:outline-none"
+              />
+              <input
+                required
+                name="lastName"
+                type="text"
+                placeholder={dict.home.lastNamePlaceholder}
+                className="border border-[#D5D2C4] bg-[var(--nav-overlay-text)] px-[18px] py-3.5 text-[14.5px] text-[#2E332F] focus:border-[var(--nav-bg)] focus:outline-none"
+              />
+            </div>
             <input
               required
               name="email"

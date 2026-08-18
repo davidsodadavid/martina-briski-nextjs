@@ -15,27 +15,36 @@ export async function subscribe(
   _prevState: SubscribeState,
   formData: FormData
 ): Promise<SubscribeState> {
+  const firstName = String(formData.get("firstName") || "").trim();
+  const lastName = String(formData.get("lastName") || "").trim();
   const email = String(formData.get("email") || "")
     .trim()
     .toLowerCase();
 
+  const dict = getDictionary(await getLocale());
+
+  if (!firstName || !lastName) {
+    return { error: dict.forms.nameRequired };
+  }
   if (!EMAIL_RE.test(email)) {
-    const dict = getDictionary(await getLocale());
     return { error: dict.forms.invalidEmail };
   }
   if (!(await verifyTurnstile(formData.get("cf-turnstile-response")))) {
-    const dict = getDictionary(await getLocale());
     return { error: dict.forms.botCheckFailed };
   }
 
   try {
-    await prisma.subscriber.create({ data: { email } });
+    await prisma.subscriber.create({ data: { firstName, lastName, email } });
   } catch {
-    // Unique constraint (already subscribed) — treat as success so we
-    // don't leak which emails are already in the list.
+    // Unique constraint (already subscribed) — update the name in case it
+    // was missing/different, and treat as success so we don't leak which
+    // emails are already in the list.
+    await prisma.subscriber
+      .update({ where: { email }, data: { firstName, lastName } })
+      .catch(() => {});
   }
 
-  await addMailerliteSubscriber(email);
+  await addMailerliteSubscriber(email, { firstName, lastName });
 
   revalidatePath("/admin/subscribers");
   return { success: true };

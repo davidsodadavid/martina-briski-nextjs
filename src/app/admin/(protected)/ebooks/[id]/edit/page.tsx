@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import EbookForm from "@/components/EbookForm";
-import EbookPublishToggle from "@/components/EbookPublishToggle";
+import PublishToggle from "@/components/PublishToggle";
 import { prisma } from "@/lib/prisma";
-import { updateEbook } from "@/app/actions/ebooks";
+import { updateEbook, toggleEbookPublished } from "@/app/actions/ebooks";
 
 export default async function EditEbookPage({
   params,
@@ -25,9 +25,9 @@ export default async function EditEbookPage({
     <>
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-xl font-semibold text-white">Edit book</h1>
-        <EbookPublishToggle
-          id={ebook.id}
+        <PublishToggle
           published={ebook.published}
+          onToggle={toggleEbookPublished.bind(null, ebook.id)}
           className="text-neutral-300"
         />
       </div>

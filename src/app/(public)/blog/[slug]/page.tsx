@@ -4,10 +4,10 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { ABOUT_ID } from "@/lib/about";
-import { CATEGORY_LABELS } from "@/lib/postCategory";
 import { estimateReadTime, stripHtml, truncate } from "@/lib/text";
 import { BLOG_SETTINGS_ID } from "@/lib/blogSettings";
 import { getLocale, getDictionary } from "@/lib/i18n";
+import { getAltMap } from "@/lib/mediaAlt";
 
 const META_DESCRIPTION_MAX = 160;
 
@@ -44,7 +44,10 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = await prisma.post.findUnique({ where: { slug } });
+  const post = await prisma.post.findUnique({
+    where: { slug },
+    include: { category: true },
+  });
 
   if (!post || !post.published) {
     notFound();
@@ -53,7 +56,11 @@ export default async function BlogPostPage({
   const [about, sameType, others, blogSettings, locale] = await Promise.all([
     prisma.about.findUnique({ where: { id: ABOUT_ID } }),
     prisma.post.findMany({
-      where: { published: true, type: post.type, id: { not: post.id } },
+      where: {
+        published: true,
+        categoryId: post.categoryId,
+        id: { not: post.id },
+      },
       orderBy: { createdAt: "desc" },
       take: 3,
     }),
@@ -72,6 +79,11 @@ export default async function BlogPostPage({
 
   const dict = getDictionary(locale);
   const photoCredit = blogSettings?.photoCredit || dict.home.photoCredit;
+  const altMap = await getAltMap([
+    about?.thumbnail,
+    post.thumbnail,
+    ...related.map((r) => r.thumbnail),
+  ]);
 
   return (
     <main className="w-full flex-1 bg-[var(--nav-overlay-text)] text-[var(--nav-dark-text)]">
@@ -93,7 +105,7 @@ export default async function BlogPostPage({
               className="bg-[#E7E3D4] px-3 py-1.5 text-[11px] font-medium tracking-[0.16em] text-[var(--nav-dark-text)] uppercase"
               style={{ fontFamily: "var(--font-jost), sans-serif" }}
             >
-              {CATEGORY_LABELS[post.type]}
+              {post.category?.label ?? "Ostalo"}
             </span>
             <span className="text-[13px] text-[#8A8371]">
               {post.createdAt.toLocaleDateString("hr-HR")}
@@ -114,7 +126,7 @@ export default async function BlogPostPage({
               {about?.thumbnail && (
                 <Image
                   src={about.thumbnail}
-                  alt="Martina Briški"
+                  alt={altMap[about.thumbnail] ?? "Martina Briški"}
                   fill
                   className="object-cover"
                 />
@@ -149,7 +161,7 @@ export default async function BlogPostPage({
           <div className="relative aspect-4/5 w-full overflow-hidden sm:aspect-21/9">
             <Image
               src={post.thumbnail}
-              alt={post.title}
+              alt={altMap[post.thumbnail] ?? post.title}
               fill
               className="object-cover grayscale"
             />
@@ -186,7 +198,7 @@ export default async function BlogPostPage({
                     {rel.thumbnail && (
                       <Image
                         src={rel.thumbnail}
-                        alt={rel.title}
+                        alt={altMap[rel.thumbnail] ?? rel.title}
                         fill
                         className="object-cover grayscale"
                       />

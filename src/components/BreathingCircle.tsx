@@ -65,6 +65,14 @@ export interface BreathingCircleProps {
   /** Seconds to rest at full contraction after exhaling, before it starts
    * to grow again. No text is shown during the rest. Default 0 (no rest). */
   restSeconds?: number;
+  /** Vertical position of the circle on narrow (mobile) screens — "center"
+   * keeps it centered like on desktop, "top" moves it higher up. Only
+   * affects screens ≤640px; desktop/tablet are unaffected. Default "center". */
+  mobileAlign?: "center" | "top";
+  /** Show the staggered "TVOJ DAH / TVOJ RITAM / TVOJ PROSTOR" intro on
+   * mount instead of jumping straight to the regular udah/izdah phase text.
+   * Default true. */
+  showIntro?: boolean;
 }
 
 export default function BreathingCircle({
@@ -80,6 +88,8 @@ export default function BreathingCircle({
   phaseFade = false,
   holdSeconds = 0,
   restSeconds = 0,
+  mobileAlign = "center",
+  showIntro = true,
 }: BreathingCircleProps) {
   const pathRef = useRef<SVGPathElement>(null);
   const phaseRef = useRef<SVGTextElement>(null);
@@ -179,7 +189,7 @@ export default function BreathingCircle({
               el.style.transition = "none";
               el.textContent = "";
               el.style.opacity = "0";
-            } else if (prevPhase === null) {
+            } else if (prevPhase === null && showIntro) {
               // very first frame on mount — the opening cue ("your breath,
               // your rhythm, your space") instead of the regular one-word
               // phase label, each line fading in one after another
@@ -188,6 +198,19 @@ export default function BreathingCircle({
                 INTRO_LINES,
                 phaseFontSize * 1.3
               );
+            } else if (prevPhase === null) {
+              // very first frame on mount, intro skipped — still ease the
+              // regular udah/izdah text in rather than having it just pop
+              // in at full opacity immediately
+              el.textContent = nextText;
+              el.style.transition = "none";
+              el.style.opacity = "0";
+              requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                  el.style.transition = `opacity ${TEXT_FADE_MS}ms ease`;
+                  el.style.opacity = "1";
+                });
+              });
             } else {
               // leaving a pause (hold/rest) — start fading in right away,
               // finishing partway into the new inhale/exhale phase
@@ -275,6 +298,7 @@ export default function BreathingCircle({
     restSeconds,
     ink,
     phaseFontSize,
+    showIntro,
   ]);
 
   return (
@@ -345,13 +369,11 @@ export default function BreathingCircle({
       )}
 
       <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
+        className={
+          mobileAlign === "top"
+            ? "breathing-circle-wrap breathing-circle-wrap--top"
+            : "breathing-circle-wrap"
+        }
       >
         <svg
           viewBox="0 0 400 400"

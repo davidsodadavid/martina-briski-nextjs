@@ -25,12 +25,6 @@ const en: Dictionary = {
     pages: "Pages",
     backToTop: "Back to top",
   },
-  categories: {
-    OTHER: "Other",
-    ADAPTATION: "Adaptation",
-    PRANAYAMA: "Pranayama",
-    CALMING: "Calming practice",
-  },
   home: {
     label: "Blog",
     title: "Notes on breathing and practice",
@@ -43,6 +37,8 @@ const en: Dictionary = {
     newsletterTitle: "Stay connected with the practice",
     newsletterText:
       "News, upcoming sessions and free guides — once a month.",
+    firstNamePlaceholder: "First name",
+    lastNamePlaceholder: "Last name",
     emailPlaceholder: "your@email.com",
     subscribe: "Subscribe",
     subscribing: "Subscribing…",
@@ -50,6 +46,7 @@ const en: Dictionary = {
   },
   forms: {
     invalidEmail: "Enter a valid email address",
+    nameRequired: "Please enter your first and last name",
     botCheckFailed: "Verification failed. Please try again.",
   },
   homepage: {

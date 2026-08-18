@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import DeleteProgramButton from "@/components/DeleteProgramButton";
+import PublishToggle from "@/components/PublishToggle";
+import { toggleProgramPublished } from "@/app/actions/programs";
 
 export default async function AdminProgramsPage() {
   const programs = await prisma.program.findMany({
@@ -35,6 +37,10 @@ export default async function AdminProgramsPage() {
                 </span>
               </div>
               <div className="flex shrink-0 items-center gap-4">
+                <PublishToggle
+                  published={program.published}
+                  onToggle={toggleProgramPublished.bind(null, program.id)}
+                />
                 <Link
                   href={`/programs/${program.slug}`}
                   className="text-sm text-neutral-500 hover:underline"

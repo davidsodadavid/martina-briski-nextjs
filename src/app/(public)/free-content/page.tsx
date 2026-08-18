@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import { FREE_CONTENT_SETTINGS_ID } from "@/lib/freeContentSettings";
+import { getAltMap } from "@/lib/mediaAlt";
 
 export default async function FreeContentPage() {
   const [ebooks, settings] = await Promise.all([
@@ -16,6 +17,10 @@ export default async function FreeContentPage() {
   const coverImage = settings?.coverImage ?? null;
   const description = settings?.description ?? null;
   const label = settings?.label || "Besplatan sadržaj";
+  const altMap = await getAltMap([
+    coverImage,
+    ...ebooks.map((e) => e.thumbnail),
+  ]);
 
   return (
     <main className="w-full flex-1 bg-[var(--nav-overlay-text)] px-6 text-[var(--nav-dark-text)] md:px-10">
@@ -25,7 +30,7 @@ export default async function FreeContentPage() {
           <section className="relative -mx-6 h-[calc(100vh-72px)] md:-mx-10">
             <Image
               src={coverImage}
-              alt=""
+              alt={altMap[coverImage] ?? ""}
               fill
               priority
               className="object-cover"
@@ -101,7 +106,7 @@ export default async function FreeContentPage() {
                 {ebook.thumbnail ? (
                   <Image
                     src={ebook.thumbnail}
-                    alt=""
+                    alt={altMap[ebook.thumbnail] ?? ebook.title}
                     fill
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                   />

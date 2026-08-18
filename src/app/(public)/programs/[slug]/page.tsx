@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { parseSteps } from "@/lib/program";
 import ProgramPathSteps from "@/components/ProgramPathSteps";
 import ProgramGallerySlider from "@/components/ProgramGallerySlider";
+import { getAltMap } from "@/lib/mediaAlt";
 
 export default async function ProgramPage({
   params,
@@ -19,6 +20,10 @@ export default async function ProgramPage({
   }
 
   const steps = parseSteps(program.steps).filter((s) => s.title);
+  const altMap = await getAltMap([
+    program.thumbnail,
+    ...program.galleryImages,
+  ]);
 
   return (
     <main className="w-full flex-1 bg-[var(--nav-overlay-text)] text-[var(--nav-dark-text)]">
@@ -27,7 +32,7 @@ export default async function ProgramPage({
         {program.thumbnail && (
           <Image
             src={program.thumbnail}
-            alt={program.name}
+            alt={altMap[program.thumbnail] ?? program.name}
             fill
             priority
             className="object-cover grayscale"
@@ -96,7 +101,8 @@ export default async function ProgramPage({
           <section className="pt-14 md:pt-20">
             <ProgramGallerySlider
               images={program.galleryImages}
-              alt={program.name}
+              altMap={altMap}
+              fallbackAlt={program.name}
             />
           </section>
         )}

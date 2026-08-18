@@ -19,7 +19,7 @@ export default function HomePracticeCta() {
 
   return (
     <div
-      className="absolute inset-x-0 bottom-10 z-[46] flex justify-end px-6 transition-[opacity,transform] duration-700 ease-out md:px-10"
+      className="absolute inset-x-0 bottom-[50px] z-[46] flex justify-end px-6 transition-[opacity,transform] duration-700 ease-out md:bottom-10 md:px-10"
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0)" : "translateY(16px)",

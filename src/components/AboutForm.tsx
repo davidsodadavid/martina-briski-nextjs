@@ -6,7 +6,7 @@ import PdfPicker from "@/components/PdfPicker";
 import { saveAbout } from "@/app/actions/about";
 import { ABOUT_STEP_COUNT, type AboutStep } from "@/lib/about";
 
-type MediaItem = { id: string; url: string; filename: string };
+type MediaItem = { id: string; url: string; filename: string; alt: string | null };
 type PdfItem = { key: string; url: string; filename: string };
 
 type AboutFormProps = {

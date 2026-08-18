@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import DeleteEventButton from "@/components/DeleteEventButton";
+import PublishToggle from "@/components/PublishToggle";
+import { toggleEventPublished } from "@/app/actions/events";
 import { formatEventTiming } from "@/lib/eventTime";
 import type { prisma } from "@/lib/prisma";
 
@@ -39,6 +41,10 @@ function EventList({ events }: { events: EventWithCount[] }) {
             </span>
           </div>
           <div className="flex shrink-0 items-center gap-4">
+            <PublishToggle
+              published={event.published}
+              onToggle={toggleEventPublished.bind(null, event.id)}
+            />
             <Link
               href={`/events/${event.slug}`}
               className="text-sm text-neutral-500 hover:underline"

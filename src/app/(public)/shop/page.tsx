@@ -3,6 +3,7 @@ import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import { stripHtml, truncate } from "@/lib/text";
 import { SHOP_SETTINGS_ID } from "@/lib/shopSettings";
+import { getAltMap } from "@/lib/mediaAlt";
 
 export default async function ShopPage() {
   const [products, settings] = await Promise.all([
@@ -14,6 +15,7 @@ export default async function ShopPage() {
   ]);
   const title = settings?.title || "Oprema za tvoju praksu";
   const description = settings?.description;
+  const altMap = await getAltMap(products.map((p) => p.thumbnail));
 
   return (
     <main className="w-full flex-1 bg-[var(--nav-overlay-text)] px-6 text-[var(--nav-dark-text)] md:px-10">
@@ -57,7 +59,7 @@ export default async function ShopPage() {
                   {product.thumbnail && (
                     <Image
                       src={product.thumbnail}
-                      alt={product.name}
+                      alt={altMap[product.thumbnail] ?? product.name}
                       fill
                       className="object-cover"
                     />

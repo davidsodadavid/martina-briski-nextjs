@@ -1,6 +1,7 @@
 import MediaUploadForm from "@/components/MediaUploadForm";
 import MediaSyncButton from "@/components/MediaSyncButton";
 import MediaThumbnail from "@/components/MediaThumbnail";
+import MediaAltInput from "@/components/MediaAltInput";
 import DeleteMediaButton from "@/components/DeleteMediaButton";
 import { prisma } from "@/lib/prisma";
 
@@ -30,6 +31,7 @@ export default async function MediaPage() {
               <span className="truncate text-xs text-neutral-500">
                 {m.filename}
               </span>
+              <MediaAltInput id={m.id} initialAlt={m.alt} />
               <DeleteMediaButton id={m.id} />
             </div>
           ))}

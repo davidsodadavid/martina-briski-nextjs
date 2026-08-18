@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { ABOUT_ID, parseSteps } from "@/lib/about";
 import AboutTestimonialsCarousel from "@/components/AboutTestimonialsCarousel";
+import { getAltMap } from "@/lib/mediaAlt";
 
 export default async function AboutPage() {
   const [about, programs, testimonials] = await Promise.all([
@@ -31,6 +32,12 @@ export default async function AboutPage() {
   const marqueeLine =
     marqueeWords.length > 0 ? marqueeWords.join("  /  ") : "";
 
+  const altMap = await getAltMap([
+    about.thumbnail,
+    intro.image,
+    ...programs.map((p) => p.thumbnail),
+  ]);
+
   return (
     <main className="w-full flex-1 bg-[var(--nav-overlay-text)] text-[var(--nav-dark-text)]">
       {/* Hero */}
@@ -39,7 +46,7 @@ export default async function AboutPage() {
           <section className="relative h-[calc(100vh-72px)] w-full overflow-hidden">
             <Image
               src={about.thumbnail}
-              alt=""
+              alt={altMap[about.thumbnail] ?? ""}
               fill
               priority
               className="object-cover"
@@ -99,12 +106,12 @@ export default async function AboutPage() {
 
       {/* Marquee */}
       {marqueeLine && (
-        <section className="my-14 overflow-hidden bg-[var(--nav-bg)] py-4 whitespace-nowrap">
+        <section className="my-14 overflow-hidden py-4 whitespace-nowrap">
           <div className="inline-flex animate-[marquee_26s_linear_infinite] will-change-transform">
             {[0, 1].map((rep) => (
               <span
                 key={rep}
-                className="text-xl tracking-[0.14em] text-[var(--nav-overlay-text)] uppercase"
+                className="text-[clamp(42px,6.5vw,74px)] tracking-[0.14em] text-[var(--nav-bg)] uppercase"
                 style={{ fontFamily: "var(--font-marcellus), serif" }}
               >
                 {marqueeLine} &nbsp;/&nbsp; {marqueeLine} &nbsp;/&nbsp;
@@ -120,7 +127,7 @@ export default async function AboutPage() {
         <div className="mx-auto grid max-w-[1267px] grid-cols-1 items-center gap-8 md:grid-cols-[0.85fr_1.15fr] md:gap-16">
           {intro.image && (
             <div className="relative aspect-4/5 overflow-hidden bg-[#D8D5C7]">
-              <Image src={intro.image} alt="" fill className="object-cover" />
+              <Image src={intro.image} alt={altMap[intro.image] ?? ""} fill className="object-cover" />
             </div>
           )}
           <div>
@@ -239,7 +246,7 @@ export default async function AboutPage() {
                 {program.thumbnail && (
                   <Image
                     src={program.thumbnail}
-                    alt=""
+                    alt={altMap[program.thumbnail] ?? program.name}
                     fill
                     className="object-cover grayscale"
                   />

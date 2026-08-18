@@ -10,20 +10,21 @@ datasource db {
   provider = "postgresql"
 }
 
-enum PostType {
-  OTHER
-  ADAPTATION
-  PRANAYAMA
-  CALMING
+model Category {
+  id        String   @id @default(cuid())
+  label     String
+  createdAt DateTime @default(now())
+  posts     Post[]
 }
 
 model Post {
-  id        String   @id @default(cuid())
-  title     String
-  slug      String   @unique
-  thumbnail String?
-  content   String
-  type      PostType
+  id         String    @id @default(cuid())
+  title      String
+  slug       String    @unique
+  thumbnail  String?
+  content    String
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   // SEO meta description (~160 chars), used as the <meta name="description">
   // on the post's page. Falls back to a truncated excerpt of content when empty.
   metaDescription String?
@@ -34,14 +35,17 @@ model Post {
 
 model Subscriber {
   id        String   @id @default(cuid())
+  firstName String?
+  lastName  String?
   email     String   @unique
   createdAt DateTime @default(now())
 }
 
 model Media {
   id        String   @id @default(cuid())
-  url       String
+  url       String   @unique
   filename  String
+  alt       String?
   createdAt DateTime @default(now())
 }
 
@@ -170,6 +174,18 @@ model Ebook {
   published   Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  downloads   EbookDownload[]
+}
+
+// One row per person who unlocked a PDF download on the /free-content pages.
+model EbookDownload {
+  id        String   @id @default(cuid())
+  ebookId   String
+  ebook     Ebook    @relation(fields: [ebookId], references: [id], onDelete: Cascade)
+  firstName String
+  lastName  String
+  email     String
+  createdAt DateTime @default(now())
 }
 
 // Singleton "Practice" page — same id-default pattern as About.
@@ -215,6 +231,24 @@ model ShopSettings {
   id          String   @id @default("shop")
   title       String?
   description String?
+  updatedAt   DateTime @updatedAt
+}
+
+// Singleton settings for the public contact page — same id-default
+// pattern as FreeContentSettings/ShopSettings.
+model ContactSettings {
+  id          String   @id @default("contact")
+  heroPhoto   String?
+  // Small bracketed label shown over the hero image, e.g. "Kontakt".
+  label       String?
+  heading     String?
+  // Intro paragraph shown above the form; the email address is appended
+  // to it separately as a clickable mailto link.
+  text        String?
+  // Secondary note shown under the intro paragraph, e.g. expected reply time.
+  note        String?
+  email       String?
+  mapAddress  String?
   updatedAt   DateTime @updatedAt
 }
 

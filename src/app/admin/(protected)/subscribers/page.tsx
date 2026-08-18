@@ -29,13 +29,20 @@ export default async function SubscribersPage() {
             >
               <div className="flex flex-col">
                 <span className="flex items-center gap-2 text-sm font-medium">
-                  {sub.email}
+                  {sub.firstName || sub.lastName
+                    ? `${sub.firstName ?? ""} ${sub.lastName ?? ""}`.trim()
+                    : sub.email}
                   {now - sub.createdAt.getTime() < THREE_DAYS_MS && (
                     <span className="rounded-full bg-[var(--brand-yellow)] px-2 py-0.5 text-[10px] font-semibold text-[var(--brand-text)] uppercase">
                       New!
                     </span>
                   )}
                 </span>
+                {(sub.firstName || sub.lastName) && (
+                  <span className="text-sm text-neutral-600">
+                    {sub.email}
+                  </span>
+                )}
                 <span className="text-xs text-neutral-400">
                   {sub.createdAt.toLocaleDateString()}
                 </span>

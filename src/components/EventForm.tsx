@@ -6,7 +6,7 @@ import ThumbnailPicker from "@/components/ThumbnailPicker";
 import type { EventFormState } from "@/app/actions/events";
 import { toDatetimeLocalValue } from "@/lib/eventTime";
 
-type MediaItem = { id: string; url: string; filename: string };
+type MediaItem = { id: string; url: string; filename: string; alt: string | null };
 
 type EventFormProps = {
   action: (

@@ -7,7 +7,7 @@ import { requireAdmin } from "@/lib/auth";
 import { ALLOWED_IMAGE_TYPES, MAX_UPLOAD_BYTES, MAX_UPLOAD_MB } from "@/lib/uploads";
 import { uploadToR2, deleteFromR2, listR2Objects } from "@/lib/r2";
 
-export type UploadState = { error?: string; url?: string };
+export type UploadState = { error?: string; url?: string; id?: string };
 
 export async function uploadMedia(
   _prevState: UploadState,
@@ -37,11 +37,22 @@ export async function uploadMedia(
     return { error: e instanceof Error ? e.message : "Upload failed" };
   }
 
-  await prisma.media.create({ data: { url, filename: file.name } });
+  const media = await prisma.media.create({
+    data: { url, filename: file.name },
+  });
 
   revalidatePath("/admin/media");
   revalidatePath("/admin/posts/new");
-  return { url };
+  return { url, id: media.id };
+}
+
+export async function updateMediaAlt(id: string, alt: string) {
+  await requireAdmin();
+  await prisma.media.update({
+    where: { id },
+    data: { alt: alt.trim() || null },
+  });
+  revalidatePath("/admin/media");
 }
 
 export type SyncState = { error?: string; added?: number };

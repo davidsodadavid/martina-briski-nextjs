@@ -9,10 +9,12 @@ const SLIDE_MS = 5000;
  * than one image; a single image just displays statically. */
 export default function ProgramGallerySlider({
   images,
-  alt,
+  altMap,
+  fallbackAlt,
 }: {
   images: string[];
-  alt: string;
+  altMap: Record<string, string>;
+  fallbackAlt: string;
 }) {
   const [active, setActive] = useState(0);
 
@@ -30,7 +32,7 @@ export default function ProgramGallerySlider({
         <Image
           key={src}
           src={src}
-          alt={alt}
+          alt={altMap[src] ?? fallbackAlt}
           fill
           priority={i === 0}
           className="object-cover grayscale transition-opacity duration-1000 ease-in-out"

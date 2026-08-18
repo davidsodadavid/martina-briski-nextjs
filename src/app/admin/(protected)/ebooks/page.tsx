@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import DeleteEbookButton from "@/components/DeleteEbookButton";
-import EbookPublishToggle from "@/components/EbookPublishToggle";
+import PublishToggle from "@/components/PublishToggle";
+import { toggleEbookPublished } from "@/app/actions/ebooks";
 
 export default async function AdminEbooksPage() {
   const ebooks = await prisma.ebook.findMany({
     orderBy: { createdAt: "desc" },
+    include: { _count: { select: { downloads: true } } },
   });
 
   return (
@@ -15,6 +17,12 @@ export default async function AdminEbooksPage() {
           Free content
         </h1>
         <div className="flex items-center gap-3">
+          <Link
+            href="/admin/ebooks/downloads"
+            className="rounded-md border border-neutral-600 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800"
+          >
+            Downloads
+          </Link>
           <Link
             href="/admin/free-content-cover"
             className="rounded-md border border-neutral-600 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800"
@@ -42,11 +50,15 @@ export default async function AdminEbooksPage() {
               <div className="flex flex-col gap-1">
                 <span className="font-medium">{ebook.title}</span>
                 <span className="text-xs text-neutral-400">
-                  {ebook.pdfFilename}
+                  {ebook.pdfFilename} · {ebook._count.downloads} download
+                  {ebook._count.downloads === 1 ? "" : "s"}
                 </span>
               </div>
               <div className="flex shrink-0 items-center gap-4">
-                <EbookPublishToggle id={ebook.id} published={ebook.published} />
+                <PublishToggle
+                  published={ebook.published}
+                  onToggle={toggleEbookPublished.bind(null, ebook.id)}
+                />
                 <Link
                   href={`/free-content/${ebook.slug}`}
                   className="text-sm text-neutral-500 hover:underline"

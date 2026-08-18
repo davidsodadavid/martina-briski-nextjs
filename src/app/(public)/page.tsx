@@ -9,13 +9,13 @@ export default function HomePage() {
         <BreathingCircle
           inhaleSeconds={4}
           exhaleSeconds={4}
-          showLabel
-          labelRevealDelayMs={5000}
+          showLabel={false}
           sizeScale={1.5}
           phaseFontSize={16}
           phaseFade
           holdSeconds={3}
           restSeconds={3}
+          mobileAlign="top"
         />
       </HomeCursor>
       <HomePracticeCta />

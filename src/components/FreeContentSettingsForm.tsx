@@ -4,7 +4,7 @@ import { useActionState } from "react";
 import ThumbnailPicker from "@/components/ThumbnailPicker";
 import { saveFreeContentSettings } from "@/app/actions/freeContentSettings";
 
-type MediaItem = { id: string; url: string; filename: string };
+type MediaItem = { id: string; url: string; filename: string; alt: string | null };
 
 export default function FreeContentSettingsForm({
   initialCoverImage,

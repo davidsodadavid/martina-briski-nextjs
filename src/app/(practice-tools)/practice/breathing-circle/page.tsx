@@ -13,6 +13,7 @@ export default function BreathingCirclePage() {
         phaseFade
         holdSeconds={3}
         restSeconds={3}
+        showIntro={false}
       />
     </main>
   );

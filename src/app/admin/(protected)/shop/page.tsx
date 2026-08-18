@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import DeleteProductButton from "@/components/DeleteProductButton";
+import PublishToggle from "@/components/PublishToggle";
+import { toggleProductPublished } from "@/app/actions/products";
 
 export default async function AdminShopPage() {
   const products = await prisma.product.findMany({
@@ -52,6 +54,10 @@ export default async function AdminShopPage() {
                 </span>
               </div>
               <div className="flex shrink-0 items-center gap-4">
+                <PublishToggle
+                  published={product.published}
+                  onToggle={toggleProductPublished.bind(null, product.id)}
+                />
                 <Link
                   href={`/shop/${product.slug}`}
                   className="text-sm text-neutral-500 hover:underline"

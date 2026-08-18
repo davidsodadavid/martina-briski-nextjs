@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { PostType } from "@/generated/prisma/enums";
 import { stripHtml, truncate } from "@/lib/text";
 import { useDict, useLocale } from "@/components/LocaleProvider";
 
@@ -13,13 +12,19 @@ type PostCardData = {
   id: string;
   slug: string;
   thumbnail: string | null;
-  type: PostType;
+  category: { label: string } | null;
   createdAt: Date;
   title: string;
   content: string;
 };
 
-export default function PostGrid({ posts }: { posts: PostCardData[] }) {
+export default function PostGrid({
+  posts,
+  altMap,
+}: {
+  posts: PostCardData[];
+  altMap: Record<string, string>;
+}) {
   const dict = useDict();
   const locale = useLocale();
   const dateLocale = locale === "en" ? "en-GB" : "hr-HR";
@@ -40,7 +45,7 @@ export default function PostGrid({ posts }: { posts: PostCardData[] }) {
               {post.thumbnail && (
                 <Image
                   src={post.thumbnail}
-                  alt={post.title}
+                  alt={altMap[post.thumbnail] ?? post.title}
                   fill
                   className="object-cover grayscale"
                 />
@@ -49,10 +54,10 @@ export default function PostGrid({ posts }: { posts: PostCardData[] }) {
             <div className="flex flex-col gap-2.5 p-[22px]">
               <div className="flex items-center gap-2.5">
                 <span
-                  className="text-[10.5px] font-medium tracking-[0.14em] text-[var(--accent-clay)] uppercase"
+                  className="text-[10.5px] font-medium tracking-[0.14em] text-[var(--nav-dark-text)] uppercase"
                   style={{ fontFamily: "var(--font-jost), sans-serif" }}
                 >
-                  {dict.categories[post.type]}
+                  {post.category?.label ?? "Ostalo"}
                 </span>
                 <span className="h-[3px] w-[3px] rounded-full bg-[#C3BCA9]" />
                 <span className="text-xs text-[#8A8371]">

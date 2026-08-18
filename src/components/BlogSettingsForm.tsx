@@ -4,7 +4,7 @@ import { useActionState } from "react";
 import ThumbnailPicker from "@/components/ThumbnailPicker";
 import { saveBlogSettings } from "@/app/actions/blogSettings";
 
-type MediaItem = { id: string; url: string; filename: string };
+type MediaItem = { id: string; url: string; filename: string; alt: string | null };
 
 export default function BlogSettingsForm({
   initialCoverImage,
