@@ -39,8 +39,8 @@ export default async function ProgramPage({
           />
         )}
         <div
-          className="absolute top-6 left-6 flex items-center gap-2 text-[#F7F5EF] md:top-8 md:left-10"
-          style={{ textShadow: "0 2px 12px rgba(0,0,0,0.5)" }}
+          className="absolute top-6 left-6 flex items-center gap-2 bg-black/35 px-3 py-1.5 text-[#F7F5EF] backdrop-blur-[2px] md:top-8 md:left-10"
+          style={{ textShadow: "0 2px 12px rgba(0,0,0,0.7)" }}
         >
           <span className="text-[16px] font-light">[</span>
           <span
