@@ -38,18 +38,13 @@ export default async function ProgramPage({
             className="object-cover grayscale"
           />
         )}
-        <div
-          className="absolute top-6 left-6 flex items-center gap-2 bg-black/35 px-3 py-1.5 text-[#F7F5EF] backdrop-blur-[2px] md:top-8 md:left-10"
-          style={{ textShadow: "0 2px 12px rgba(0,0,0,0.7)" }}
-        >
-          <span className="text-[16px] font-light">[</span>
+        <div className="absolute top-6 left-6 bg-[var(--nav-overlay-text)] px-4 py-2 md:top-8 md:left-10">
           <span
-            className="text-[13px] font-medium tracking-[0.25em] uppercase"
+            className="text-[13px] font-medium tracking-[0.25em] text-[var(--nav-dark-text)] uppercase"
             style={{ fontFamily: "var(--font-jost), sans-serif" }}
           >
             {program.name}
           </span>
-          <span className="text-[16px] font-light">]</span>
         </div>
       </section>
 
