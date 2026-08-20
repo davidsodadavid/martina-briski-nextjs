@@ -94,7 +94,7 @@ export default function PracticeSection({
           {TOOLS.map((tool, i) => (
             <div
               key={tool.href}
-              className="group relative flex h-[260px] flex-col overflow-hidden border border-[var(--nav-overlay-text)]/25 bg-[var(--nav-bg)] transition-colors hover:border-[var(--nav-highlight)]"
+              className="group relative flex h-[190px] flex-col overflow-hidden border border-[var(--nav-overlay-text)]/25 bg-[var(--nav-bg)] transition-colors hover:border-[var(--nav-highlight)]"
             >
               <Link
                 href={tool.href}
@@ -117,12 +117,6 @@ export default function PracticeSection({
               )}
 
               <div className="pointer-events-none relative z-10 mt-auto flex flex-col gap-2 p-6">
-                <span
-                  className="text-xs tracking-[0.2em] text-[var(--nav-highlight)] uppercase"
-                  style={{ fontFamily: "var(--font-jost), sans-serif" }}
-                >
-                  {String(i + 1).padStart(2, "0")}
-                </span>
                 <span
                   className="text-xl text-[var(--nav-overlay-text)]"
                   style={{ fontFamily: "var(--font-marcellus), serif" }}
