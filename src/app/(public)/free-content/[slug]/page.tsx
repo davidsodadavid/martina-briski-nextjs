@@ -39,13 +39,18 @@ export default async function EbookPage({
         >
           ← Sav besplatan sadržaj
         </Link>
-        <div className="absolute top-6 left-6 bg-[var(--nav-bg)] px-4 py-2 md:top-8 md:left-10">
+        <div
+          className="absolute top-6 left-6 flex items-center gap-2 text-[#F7F5EF] md:top-8 md:left-10"
+          style={{ textShadow: "0 2px 12px rgba(0,0,0,0.5)" }}
+        >
+          <span className="text-[16px] font-light">[</span>
           <span
-            className="text-[13px] font-medium tracking-[0.25em] text-[var(--nav-overlay-text)] uppercase"
+            className="text-[13px] font-black tracking-[0.25em] uppercase"
             style={{ fontFamily: "var(--font-jost), sans-serif" }}
           >
             Besplatan sadržaj
           </span>
+          <span className="text-[16px] font-light">]</span>
         </div>
       </section>
 
