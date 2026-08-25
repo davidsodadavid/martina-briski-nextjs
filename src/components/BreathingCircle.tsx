@@ -387,16 +387,14 @@ export default function BreathingCircle({
           }
         >
           <g transform="translate(200, 200)">
-            <g className="breathing-circle-spin">
-              <path
-                ref={pathRef}
-                fill="none"
-                stroke={ink}
-                strokeWidth="1"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </g>
+            <path
+              ref={pathRef}
+              fill="none"
+              stroke={ink}
+              strokeWidth="1"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
             <text
               ref={phaseRef}
               x="0"

@@ -175,21 +175,6 @@ button:disabled {
   }
 }
 
-.breathing-circle-spin {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: breathingCircleSpin 24s linear infinite;
-}
-
-@keyframes breathingCircleSpin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 .breathing-circle-wrap {
   position: absolute;
   inset: 0;
