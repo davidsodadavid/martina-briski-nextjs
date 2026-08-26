@@ -5,7 +5,11 @@ import { useEffect, useRef, useState } from "react";
 const INTRO_LINES = ["TVOJ DAH", "TVOJ RITAM", "TVOJ PROSTOR"];
 
 const INTRO_LINE_FADE_MS = 1200;
-const INTRO_LINE_STAGGER_MS = 850;
+// The intro plays during the very first "inhale" phase and gets wiped the
+// moment that phase ends — on the homepage that's inhaleSeconds={4}, i.e. a
+// 4000ms window. Keep (lines.length-1) * STAGGER + FADE comfortably under
+// that or the last line gets cut off mid-fade (or never becomes visible).
+const INTRO_LINE_STAGGER_MS = 1000;
 
 /** Replaces an SVG <text> element's content with several vertically centered
  * <tspan> lines — plain textContent can't wrap/stack inside SVG text — and
@@ -100,6 +104,11 @@ export default function BreathingCircle({
   const preFadeStartedRef = useRef(false);
   const preColorFadeStartedRef = useRef(false);
   const introTimeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+  // While the multi-line intro is still staggering/fading its <tspan>s in,
+  // the regular single-word pre-fade below (which targets the shared parent
+  // <text> element) must not run — it would fade the whole group out from
+  // under the intro before it's finished appearing.
+  const introActiveRef = useRef(false);
   const [labelVisible, setLabelVisible] = useState(labelRevealDelayMs === 0);
 
   useEffect(() => {
@@ -193,11 +202,23 @@ export default function BreathingCircle({
               // very first frame on mount — the opening cue ("your breath,
               // your rhythm, your space") instead of the regular one-word
               // phase label, each line fading in one after another
-              introTimeoutsRef.current = showIntroLines(
-                el,
-                INTRO_LINES,
-                phaseFontSize * 1.3
-              );
+              introActiveRef.current = true;
+              const introDurationMs =
+                (INTRO_LINES.length - 1) * INTRO_LINE_STAGGER_MS +
+                INTRO_LINE_FADE_MS;
+              introTimeoutsRef.current = [
+                ...showIntroLines(el, INTRO_LINES, phaseFontSize * 2.2),
+                setTimeout(() => {
+                  introActiveRef.current = false;
+                  // Suppress the pre-fade below for the rest of this phase —
+                  // its job (a smooth handoff into the upcoming pause) isn't
+                  // relevant right after the intro, and letting it run would
+                  // start fading everything straight back out the instant
+                  // the last line finishes appearing. Stay fully visible
+                  // until the normal phase-change wipe instead.
+                  preFadeStartedRef.current = true;
+                }, introDurationMs),
+              ];
             } else if (prevPhase === null) {
               // very first frame on mount, intro skipped — still ease the
               // regular udah/izdah text in rather than having it just pop
@@ -230,7 +251,8 @@ export default function BreathingCircle({
         phaseFade &&
         ((phase === "inhale" && holdMs > 0) ||
           (phase === "exhale" && restMs > 0)) &&
-        !preFadeStartedRef.current
+        !preFadeStartedRef.current &&
+        !introActiveRef.current
       ) {
         const phaseEndT =
           phase === "inhale" ? inhaleMs : inhaleMs + holdMs + exhaleMs;
@@ -270,7 +292,7 @@ export default function BreathingCircle({
       const points: [number, number][] = [];
       for (let i = 0; i <= NUM_POINTS; i++) {
         const angle = (Math.PI * 2 * i) / NUM_POINTS;
-        const wave = Math.sin(angle * 4 + elapsed);
+        const wave = Math.sin(angle * 4 - elapsed);
         const r = baseRadius + wave * 8 + breath * 40;
         points.push([r * Math.cos(angle) * xScale, r * Math.sin(angle) * yScale]);
       }
