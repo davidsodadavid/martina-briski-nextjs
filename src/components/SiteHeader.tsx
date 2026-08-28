@@ -348,7 +348,7 @@ export default function SiteHeader({
   return (
     <>
       <header
-        className={`sticky top-0 z-40 flex items-center justify-between px-6 py-5 md:px-10 ${
+        className={`sticky top-0 z-[9990] flex items-center justify-between px-6 py-5 md:px-10 ${
           isCreamPage ? "bg-[var(--nav-overlay-text)]" : "bg-[var(--nav-bg)]"
         }`}
       >
@@ -418,7 +418,7 @@ export default function SiteHeader({
           opacity: open ? 1 : 0,
           pointerEvents: open ? "auto" : "none",
         }}
-        className="fixed inset-x-0 top-[72px] bottom-0 z-[90] flex flex-col bg-[var(--nav-bg)] text-[var(--nav-overlay-text)] transition-opacity duration-[450ms] ease-out"
+        className="fixed inset-x-0 top-[72px] bottom-0 z-[9999] flex flex-col bg-[var(--nav-bg)] text-[var(--nav-overlay-text)] transition-opacity duration-[450ms] ease-out"
       >
         {/* Mobile & tablet: its own independent layout. The "07 Practice"
             label stays up with the rest of the list (scrolls together if
